@@ -1,0 +1,3 @@
+visium_crop: shape=(684, 18078), dtype=float32, sparsity=0.7035
+visium_full: shape=(2688, 18078), dtype=float32, sparsity=0.6828
+slideseqv2: shape=(41786, 4000), dtype=float32, sparsity=0.9736

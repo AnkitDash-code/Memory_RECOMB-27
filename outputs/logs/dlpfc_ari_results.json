@@ -1,0 +1,37 @@
+{
+  "our_methods": {
+    "Scanpy PCA+Leiden (baseline)": {
+      "ari_vs_ground_truth": 0.2532221817678108,
+      "n_clusters": 7,
+      "wall_time_s": 46.631
+    },
+    "EmbeddedMemoryLayer (trained)": {
+      "ari_vs_ground_truth": 0.3032044412318704,
+      "n_clusters": 10,
+      "wall_time_s": 37.499,
+      "final_recon_loss": 2.9901862144470215,
+      "final_median_entropy": 2.595294952392578
+    },
+    "GraphST (local run)": {
+      "ari_vs_ground_truth": 0.4911223258676305,
+      "n_clusters": 7,
+      "wall_time_s": 228.048
+    }
+  },
+  "literature_kang_et_al_2025": {
+    "GraphST": 0.6327,
+    "STAGATE": 0.5892,
+    "Spatial_MGCN": 0.5561,
+    "BayesSpace": 0.5499,
+    "DeepST": 0.5384,
+    "conST": 0.5277,
+    "STMGCN": 0.5107,
+    "SEDR": 0.4723,
+    "SpaGCN": 0.4652,
+    "Seurat": 0.4295,
+    "stLearn": 0.3681,
+    "CCST": 0.3563,
+    "SpaceFlow": 0.351,
+    "SCGDL": 0.3216
+  }
+}

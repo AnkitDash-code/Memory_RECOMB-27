@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Downloaded datasets (squidpy/scanpy cache)
+data/
+
+# Large intermediate checkpoints (h5ad snapshots, ~100-300MB each) -- keep
+# the small .pt model weights, but not these, to avoid bloating the repo
+outputs/checkpoints/*.h5ad

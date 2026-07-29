@@ -1,0 +1,18 @@
+[
+  {
+    "dataset": "visium_crop",
+    "n_cells": 684,
+    "n_genes": 14530,
+    "wall_time_s": 26.519,
+    "peak_ram_mb": 1136.6,
+    "n_clusters_found": 10
+  },
+  {
+    "dataset": "visium_full",
+    "n_cells": 2688,
+    "n_genes": 16957,
+    "wall_time_s": 2.542,
+    "peak_ram_mb": 936.6,
+    "n_clusters_found": 18
+  }
+]

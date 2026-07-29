@@ -1,0 +1,66 @@
+{
+  "results": [
+    {
+      "method": "Scanpy PCA+Leiden (baseline)",
+      "n_clusters": 10,
+      "silhouette": 0.1443282961845398,
+      "spatial_coherence_morans_i": 0.5925123439912643,
+      "wall_time_s": 19.195,
+      "dataset": "crop"
+    },
+    {
+      "method": "EmbeddedMemoryLayer (trained)",
+      "n_clusters": 14,
+      "silhouette": 0.28868600726127625,
+      "spatial_coherence_morans_i": 0.7790155481048228,
+      "wall_time_s": 5.017,
+      "final_recon_loss": 2.2724838256835938,
+      "final_median_entropy": 3.006052255630493,
+      "dataset": "crop"
+    },
+    {
+      "method": "GraphST",
+      "n_clusters": 10,
+      "silhouette": 0.1454421877861023,
+      "spatial_coherence_morans_i": 0.6381110730671364,
+      "wall_time_s": 18.924,
+      "dataset": "crop"
+    },
+    {
+      "method": "Scanpy PCA+Leiden (baseline)",
+      "n_clusters": 18,
+      "silhouette": 0.12934531271457672,
+      "spatial_coherence_morans_i": 0.718833169806809,
+      "wall_time_s": 2.175,
+      "dataset": "full"
+    },
+    {
+      "method": "EmbeddedMemoryLayer (trained)",
+      "n_clusters": 25,
+      "silhouette": 0.30018654465675354,
+      "spatial_coherence_morans_i": 0.8093213696333678,
+      "wall_time_s": 1.532,
+      "final_recon_loss": 1.4486150741577148,
+      "final_median_entropy": 2.111264944076538,
+      "dataset": "full"
+    },
+    {
+      "method": "GraphST",
+      "n_clusters": 18,
+      "silhouette": 0.1469399333000183,
+      "spatial_coherence_morans_i": 0.5802297128285552,
+      "wall_time_s": 67.083,
+      "dataset": "full"
+    }
+  ],
+  "ari_agreements": {
+    "crop": {
+      "baseline_vs_memory": 0.3140865247285194,
+      "baseline_vs_graphst": 0.5015611484517907
+    },
+    "full": {
+      "baseline_vs_memory": 0.3999335250076005,
+      "baseline_vs_graphst": 0.4963876880535481
+    }
+  }
+}
