@@ -257,6 +257,38 @@ than this project's local tuning suggested. Any further work should tune
 hyperparameters via cross-validation across multiple slices, not a single one, to
 avoid repeating this exact failure mode.
 
+## Stage 7 — why the gap widened: within-subject variance analysis
+
+DLPFC's 12 slices come from 3 subjects × 4 sections each (2 pairs of spatially
+adjacent replicates per subject). Breaking the 12-slice result down by subject
+(`src/eval/analyze_multislice_variance.py`) separates two competing
+explanations for the widened gap: some biological samples are genuinely harder
+(between-subject effect), vs. our model being fragile to section-to-section
+variation even within one tissue block (within-subject effect — real model
+instability, not dataset difficulty).
+
+| | avg within-subject std | between-subject std |
+|---|---|---|
+| Ours | **0.0694** | 0.0592 |
+| GraphST | 0.0494 | 0.0560 |
+
+Our within-subject variance is **larger than our between-subject variance**, and
+larger than GraphST's within-subject variance for 2 of 3 subjects (subject1:
+0.068 vs. 0.036; subject3: 0.085 vs. 0.025). Concretely: 151673 (the tuning
+slice, subject3) scores 0.571, but its same-subject, same-layer-count siblings
+151674/151675/151676 score 0.404/0.388/0.349 — close to the worst slices in the
+whole set. **151673 was not "an easy biological sample"; it was an outlier
+within its own subject.** This points at real model fragility to section-level
+nuisance variation (exact HVG set selected, exact spot layout, exact spatial
+graph) as the dominant unaddressed problem, not something the architecture or
+loss function choices investigated so far were built to handle.
+
+Also checked and ruled out: slice size (`corr(n_spots, ARI) = -0.13`, weak).
+Confirmed real: slices with only 5 annotated layers (subject2) score higher on
+average (0.531) than 7-layer slices (0.410) — an easier task with fewer true
+domains — but this does not explain the within-subject-3 spread since all four
+of its slices have 7 layers.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=32,
