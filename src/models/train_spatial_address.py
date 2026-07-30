@@ -34,7 +34,7 @@ def train_spatial_address_model(
     epochs=600,
     lr=1e-3,
     weight_decay=0.0,
-    memory_slots=32,
+    memory_slots=16,
     memory_dim=128,
     hidden_dim=256,
     n_hops=4,
@@ -60,18 +60,27 @@ def train_spatial_address_model(
     directions: spread usage across the codebook, but keep each spot's own
     assignment confident.
 
-    Defaults are the tuned configuration from the DLPFC 151673 sweeps
-    (0.5713 ± 0.0057 over 5 seeds):
+    memory_slots=16 is a CROSS-VALIDATED choice (3 held-out slices, none of them
+    151673), not a single-slice-tuned one. An earlier sweep on 151673 alone picked
+    memory_slots=32 (0.5713 there) -- but on a true held-out set (8 slices used
+    in neither the original tuning nor this cross-validation), memory_slots=32
+    scored only 0.4601 while memory_slots=16 reached 0.5025. Single-slice
+    hyperparameter tuning had overfit to 151673's idiosyncrasies; see
+    outputs/logs/stage2_progress.md (Stage 8) for the full CV sweep and both
+    held-out comparisons.
 
-      memory_slots=32  -- a compact codebook clearly beats a large one when there
-                          are only ~7 true domains. Measured: 32 -> 0.569,
-                          64 -> 0.542, 128 -> 0.515, 256 -> 0.408, and going
-                          below 32 (8/16) became unstable across seeds.
-      n_hops=4         -- ARI rises monotonically with address-propagation hops
-                          (1 -> 0.489, 2 -> 0.538, 4 -> 0.549).
-      lambda_usage=0.1 -- enough to prevent collapse; larger values
-                          over-regularize toward uniform usage (1.0 -> ~0.34,
-                          5.0 -> ~0.22).
+    n_hops=4 and lambda_usage=0.1 remain from the original (single-slice)
+    Stage 2/5 sweeps and were not re-validated by cross-validation -- a
+    reasonable next step if pursuing this further.
+
+      lambda_usage > 0 maximizes the entropy of MARGINAL slot usage, which is
+      what stops slot collapse (see usage_entropy). With it at 0 the model
+      reliably collapses to a single slot decoding the dataset mean (measured:
+      slots_used=1, ARI=0.0), so it defaults on rather than off.
+      lambda_sharpen > 0 additionally *minimizes* per-row entropy, pushing each
+      spot to commit to a slot -- pulls in a complementary direction to
+      lambda_usage (spread usage across the codebook, but keep each spot's own
+      assignment confident).
 
     feature_hops/latent_hops default to 0, the pure formulation. Both hybrid
     variants were tested and lost to it -- see outputs/logs/stage2_progress.md.

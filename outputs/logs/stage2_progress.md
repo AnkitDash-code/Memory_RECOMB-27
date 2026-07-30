@@ -289,10 +289,61 @@ average (0.531) than 7-layer slices (0.410) — an easier task with fewer true
 domains — but this does not explain the within-subject-3 spread since all four
 of its slices have 7 layers.
 
+## Stage 8 — cross-validated retuning fixes real overfitting (memory_slots: 32 → 16)
+
+Stage 7 found the tuning-slice gap (0.026) was not representative because our
+model is fragile to section-level variation, not because DLPFC is uniformly
+easy. One concrete, fixable instance: the Stage 5 capacity sweep picked
+`memory_slots=32` using **151673 alone** — a single-slice-tuned hyperparameter,
+exactly the methodology that produced the misleading tuning-slice result in the
+first place.
+
+`src/eval/cross_validate_capacity.py` fixes this with a proper train/validation/
+test split:
+
+- **CV validation set** (used only to pick `memory_slots`, never 151673): one
+  slice per DLPFC subject — 151508, 151670, 151674.
+- **True held-out test set** (used for neither original tuning nor this CV):
+  the other 8 slices.
+
+Cross-validating `memory_slots ∈ {16, 24, 32, 48, 64}` on the validation set:
+
+| memory_slots | CV mean (3 slices, 3 seeds) |
+|---|---|
+| **16** | **0.4672** |
+| 24 | 0.4007 |
+| 32 | 0.3839 |
+| 48 | 0.4077 |
+| 64 | 0.3968 |
+
+**`memory_slots=32` — the single-slice-tuned choice — is the worst of the five
+candidates under cross-validation.** `memory_slots=16` wins clearly.
+
+Checked on the 8 true held-out slices (never used to pick anything):
+
+| memory_slots | True held-out mean (8 slices, 3 seeds) |
+|---|---|
+| 32 (old, single-slice-tuned) | 0.4601 ± 0.0919 |
+| **16 (new, cross-validated)** | **0.5025 ± 0.0892** |
+| GraphST, same 8 slices | 0.5766 ± 0.0896 |
+
+A real +0.042 ARI improvement from fixing the tuning *methodology*, not from a
+new architecture or loss. The gap to GraphST on this fair comparison narrows
+from **0.117 → 0.074** (roughly a third smaller), though it does not close.
+`memory_slots=16` is now the default in `train_spatial_address_model`.
+
+`n_hops` and `lambda_usage` were not re-validated by this cross-validation and
+remain at their single-slice-tuned values (4 and 0.1) — a reasonable next step
+if pursuing this further, now that the methodology for doing so correctly is
+established.
+
 ## Current best configuration (defaults updated in code)
 
-`train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=32,
+`train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=16,
 memory_dim=128, hidden_dim=256, epochs=600)` on `preprocess_hvg()` output,
-clustered with `cluster_embedding(..., refine=True)`. **0.5713 ± 0.0057** on the
-tuning slice (151673), vs. GraphST's **0.5972 ± 0.0120** under the identical
-protocol. Not yet evaluated on the other 11 slices.
+clustered with `cluster_embedding(..., refine=True)`. `memory_slots=16` is
+cross-validated (Stage 8), not single-slice-tuned. On the 8 truly-unseen slices:
+**0.5025 ± 0.0892** vs. GraphST's **0.5766 ± 0.0896** (gap 0.074). On the tuning
+slice alone (151673, not representative — see Stage 7/8):
+`memory_slots=32` reached 0.5713 there specifically, but generalizes worse
+(0.4601 on the true held-out set) than the CV-selected `memory_slots=16`.
