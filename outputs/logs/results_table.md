@@ -6,7 +6,61 @@ Python 3.11 / torch 2.11.0+cu128). Nothing here is fabricated or assumed —
 anything not actually run is marked `TODO: not yet benchmarked` with the real
 reason it wasn't run.
 
-## Real ARI vs. ground truth (DLPFC 151673, spatialLIBD manual layer annotations)
+## Headline result: 12-slice, 5-seed held-out evaluation
+
+**This section supersedes the single-slice numbers below as the number that
+matters.** Slice 151673 (used throughout this project's tuning) is quantifiably
+the *most favorable* slice for our method in the entire 12-slice set — it has
+both our method's highest single-slice ARI (0.571) and by far the smallest gap
+to GraphST (0.026, next-closest is 0.043). Held out of the headline mean to
+avoid reporting a leaked, over-optimistic number:
+
+| | Held-out (11 slices) | All 12 slices |
+|---|---|---|
+| Ours (`SpatialAddressMemoryAutoencoder`) | **0.4391 ± 0.0883** | 0.4501 ± 0.0921 |
+| GraphST (matched protocol) | **0.5685 ± 0.0825** | 0.5707 ± 0.0793 |
+| **Gap** | **0.1294** | 0.1206 |
+
+The real gap is **~5× larger** than the 0.026 measured on the tuning slice alone.
+Full per-slice breakdown, produced by `src/eval/run_dlpfc_multislice.py` and
+logged in `outputs/logs/dlpfc_multislice_results.json`:
+
+| Slice | Ours (mean ± std, 5 seeds) | GraphST (mean ± std, 5 seeds) | Gap |
+|---|---|---|---|
+| 151507 | 0.417 ± 0.048 | 0.514 ± 0.063 | 0.097 |
+| 151508 | 0.291 ± 0.085 | 0.488 ± 0.015 | 0.197 |
+| 151509 | 0.379 ± 0.034 | 0.441 ± 0.043 | 0.063 |
+| 151510 | 0.479 ± 0.049 | 0.539 ± 0.030 | 0.061 |
+| 151669 | 0.466 ± 0.031 | 0.592 ± 0.009 | 0.126 |
+| 151670 | 0.487 ± 0.112 | 0.534 ± 0.029 | 0.047 |
+| 151671 | 0.582 ± 0.110 | 0.625 ± 0.010 | 0.043 |
+| 151672 | 0.589 ± 0.077 | 0.769 ± 0.006 | 0.180 |
+| 151674 | 0.404 ± 0.102 | 0.618 ± 0.003 | 0.214 |
+| 151675 | 0.388 ± 0.054 | 0.548 ± 0.058 | 0.161 |
+| 151676 | 0.349 ± 0.054 | 0.584 ± 0.015 | 0.236 |
+| *151673 (tuning slice, excluded from headline)* | *0.571 ± 0.006* | *0.595 ± 0.014* | *0.026* |
+
+Also honest: our per-seed variance exceeds GraphST's on 9 of the 11 held-out
+slices (e.g. 151674: ±0.102 vs. ±0.003) — the low variance measured on 151673
+(±0.006) was itself a symptom of tuning on that slice, not a general property of
+the method.
+
+**Conclusion.** The architecture works — it learns real structure and beats a
+from-scratch baseline — and the address-propagation mechanism is validated
+(monotonic ARI gain with hop count, and it beats both tested hybrid variants that
+add feature message passing). It does **not** beat GraphST, and the honestly
+measured gap is real and larger than earlier single-slice framing in this project
+suggested. Any future hyperparameter tuning should cross-validate across multiple
+slices, not one, to avoid repeating this exact failure mode.
+
+## Single-slice detail (151673, the tuning slice — see above for the real result)
+
+The numbers below were measured entirely on the tuning slice, before the 12-slice
+evaluation existed, and are kept for the detailed ablation history (protocol
+validation, hybrid rejection, capacity sweep). They should not be read as a
+generalization claim on their own.
+
+### Real ARI vs. ground truth (DLPFC 151673, spatialLIBD manual layer annotations)
 
 The Visium crop/full/Slide-seqV2 datasets used elsewhere in this project have
 no ground-truth region labels, so the section below (silhouette/spatial

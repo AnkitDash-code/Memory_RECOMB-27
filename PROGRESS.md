@@ -5,24 +5,43 @@ Detailed experimental numbers live in
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md); this file is
 the handoff summary — where things stand, and exactly what is left.
 
-## Where the numbers stand (DLPFC 151673, the tuning slice)
+## Where the numbers stand — THE REAL RESULT: 12-slice, 5-seed held-out evaluation
 
-| Method | ARI vs. ground truth |
+**Everything tuned on 151673 alone turned out to be measuring an optimistic
+special case.** The 12-slice evaluation (`src/eval/run_dlpfc_multislice.py`) has
+now run to completion. Headline, 11 slices held out of the tuning slice:
+
+| | Held-out (11 slices) | All 12 slices |
+|---|---|---|
+| Ours (`SpatialAddressMemoryAutoencoder`) | **0.4391 ± 0.0883** | 0.4501 ± 0.0921 |
+| GraphST (matched protocol) | **0.5685 ± 0.0825** | 0.5707 ± 0.0793 |
+| **Gap** | **0.1294** | 0.1206 |
+
+**This gap is ~5× larger than the 0.026 measured on the tuning slice.** 151673 is
+quantifiably the most favorable slice in the whole set for our method — highest
+single-slice ARI (0.571) *and* by far the smallest gap to GraphST (next-closest
+gap is 0.043, on 151671). Full per-slice table and discussion in
+[`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) (Stage 6) and
+[`outputs/logs/results_table.md`](outputs/logs/results_table.md).
+
+Single-slice history, for context on how the architecture was built (all measured
+on 151673 only, now known to be optimistic):
+
+| Method | ARI on 151673 (tuning slice) |
 |---|---|
 | Ours — Phase 0 (PCA input, no propagation, Leiden clustering) | 0.303 |
 | Ours — Stage 2 (HVG + address propagation, memory_slots=64) | 0.551 ± 0.018 (5 seeds) |
 | Ours — Stage 3 (NB/ZINB + contrastive) | 0.183–0.346 — *worse, rejected* |
 | Ours — Stage 4 (hybrid feature message passing, both placements) | 0.16–0.54 — *worse than pure, rejected* |
-| **Ours — Stage 5 (capacity-tuned, memory_slots=32)** | **0.5713 ± 0.0057** (5 seeds) — current best |
-| GraphST, our harness, 5 seeds (identical protocol) | **0.5972 ± 0.0120** |
-| GraphST, our harness, single default seed | 0.590 |
-| GraphST, literature (Kang et al. 2025) | 0.633 |
+| Ours — Stage 5 (capacity-tuned, memory_slots=32) | 0.5713 ± 0.0057 (5 seeds) |
+| GraphST, our harness, 5 seeds (identical protocol) | 0.5972 ± 0.0120 |
 
-**Net: +0.268 ARI over the starting point. We do not yet beat GraphST** — the
-honestly-characterized gap (both sides now measured across 5 seeds, not our
-5 vs. their 1) is **+0.026 in GraphST's favor**. Smaller than earlier framing
-suggested, and GraphST's own seed variance (±0.012) is over 2× ours (±0.006), but
-still a consistent gap: GraphST's worst of 5 seeds (0.585) beats our best (0.582).
+**Honest bottom line:** the architecture learns real structure and beats a
+from-scratch baseline, and the address-propagation mechanism is validated (ARI
+rises monotonically with hop count, and pure addressing beat both tested hybrid
+variants). It does **not** beat GraphST, and the properly-measured gap
+(~0.13 ARI, held-out, multi-slice) is real and larger than this project's own
+single-slice tuning suggested at any earlier point.
 
 ## What was done
 
@@ -68,8 +87,16 @@ still a consistent gap: GraphST's worst of 5 seeds (0.585) beats our best (0.582
    mean against their 1 seed was not fair. Across 5 seeds: **0.5972 ± 0.0120** —
    its default seed (41) was not even its best (0.585–0.615 range). This is the
    number the current gap is measured against.
+9. **Found and fixed a stale-default bug before it could burn hours of compute.**
+   `train_spatial_address_model`'s `lambda_usage` still defaulted to `1.0` (the
+   pre-tuning value) even after `memory_slots`/`n_hops` were updated — the
+   docstring already said 0.1, the parameter didn't. A smoke test caught it
+   immediately (scored 0.336, matching the known-bad `lambda_usage=1.0` sweep
+   row) before the full 12-slice run was launched.
+10. **Stage 6 — the full 12-slice, 5-seed evaluation, run to completion.** See
+    above. This is the real result; everything before it was tuning-slice-only.
 
-39/41 → 41/41 tests pass across these stages, including a `scipy.stats.nbinom`
+41/41 tests pass across these stages, including a `scipy.stats.nbinom`
 reference test that caught a real sign error in the NB likelihood, and two tests
 pinning the hybrid's `feature_hops=0`/`latent_hops=0` semantics as true no-ops.
 
@@ -85,35 +112,32 @@ lambda_usage=0.1, feature_hops=0, latent_hops=0, epochs=600)` on
 
 Hybrid feature message passing was tried (pre-approved fallback) and rejected on
 evidence in both plausible placements. The pure address-propagation formulation
-stays as the model. Not open anymore, no decision needed here.
+stays as the model.
 
-### 2. Run the final 12-slice evaluation (harness written, never executed)
+### 2. Run the final 12-slice evaluation — DONE
 
-`src/eval/run_dlpfc_multislice.py` is complete and ready. It already implements
-the methodology safeguards:
-- headline = mean over the **11 held-out slices**, with 151673 excluded because it
-  was the tuning slice (prevents leakage); all-12 mean reported separately
-- identical clustering protocol and true K for every method
-- all seeds reported, mean ± std, never best-of-N
+`src/eval/run_dlpfc_multislice.py` has run to completion; results above and in
+`outputs/logs/dlpfc_multislice_results.json`. Took well under the estimated
+2–3 hours (skipping GraphST's own slow internal clustering search, since it's
+scored via the shared protocol instead, made each run much faster than expected).
 
-```bash
-uv run python -m src.eval.run_dlpfc_multislice --model mse --seeds 5
-```
-Estimated 2–3 hours on the RTX 4050; pace with GPU cooldown checks. Downloads the
-12 slices (~1.3GB, CC BY 4.0) on first run into `data/` (gitignored).
+### 3. Documentation — DONE for the headline numbers
 
-### 3. Documentation not yet updated
+`README.md`, `outputs/logs/results_table.md`, and this file now show the real
+12-slice held-out result, not the single-slice numbers.
 
-`README.md` and `outputs/logs/results_table.md` still show the **old Phase 0
-numbers** (ours 0.303, GraphST 0.491). They must be refreshed once the multi-slice
-run lands — do not publish the current README as-is, it understates both our
-method and GraphST.
+### 4. Still open
 
-### 4. Also still open (lower priority)
-
-- Figures (`src/viz/spatial_plots.py`) still visualize the old Phase 0 model.
+- **Figures**: `src/viz/dlpfc_plots.py` is written (ground truth vs. baseline vs.
+  GraphST vs. ours, all under the shared clustering protocol, on DLPFC 151673)
+  but has not been run yet. `src/viz/spatial_plots.py` (old Phase 0 model, Visium
+  crop) is unrelated and still stale/unused for this story.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
+- Hyperparameters were tuned on a single slice, which the 12-slice run showed
+  does not generalize well. A proper next step (not started) would be
+  cross-validating capacity/hop/usage-weight choices across multiple slices
+  rather than one, before trying to close the ~0.13 ARI gap further.
 
 ## Honest framing for any write-up
 

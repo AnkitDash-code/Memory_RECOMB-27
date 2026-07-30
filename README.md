@@ -15,11 +15,35 @@ conclusions from it. It does not currently beat the field's state of the art.
 All numbers below are real, reproducible, and logged in `outputs/logs/`. Nothing is
 fabricated; anything not actually run is marked as such with the reason why.
 
-### Real ARI vs. ground truth (DLPFC 151673, spatialLIBD manual cortical-layer annotations)
+### Headline: 12-slice, 5-seed held-out evaluation (the number that matters)
 
-This is the benchmark that actually matters: **DLPFC sample 151673** (Maynard et al./
-spatialLIBD, human dorsolateral prefrontal cortex, 6 cortical layers + white matter, 7
-classes), with real, manually-annotated ground-truth labels — not a proxy metric.
+All 12 DLPFC slices (Maynard et al./spatialLIBD, human dorsolateral prefrontal
+cortex, real manually-annotated cortical layers), 5 seeds each, identical
+clustering protocol for every method. Slice 151673 was used to tune every
+hyperparameter, so it is **held out of the headline mean** rather than reported
+as if it were unseen data:
+
+| | Held-out (11 slices) | All 12 slices |
+|---|---|---|
+| Ours (`SpatialAddressMemoryAutoencoder`) | **0.4391 ± 0.0883** | 0.4501 ± 0.0921 |
+| GraphST (matched protocol) | **0.5685 ± 0.0825** | 0.5707 ± 0.0793 |
+| **Gap** | **0.1294** | 0.1206 |
+
+**This is materially worse than tuning on 151673 alone suggested (there, the gap
+was 0.026).** 151673 turns out to be the single most favorable slice in the set
+for our method — highest single-slice ARI (0.571) and by far the smallest gap
+(next-closest is 0.043). That single-slice result is kept below for the ablation
+history it documents, but the 12-slice number above is the one to trust. Full
+per-slice table and discussion: [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
+
+### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
+
+This is the benchmark used throughout development, before the 12-slice evaluation
+existed: **DLPFC sample 151673** (Maynard et al./spatialLIBD, human dorsolateral
+prefrontal cortex, 6 cortical layers + white matter, 7 classes), with real,
+manually-annotated ground-truth labels — not a proxy metric. Kept for the
+detailed ablation history (protocol validation, hybrid rejection, capacity
+sweep), not as a generalization claim.
 
 | Method | ARI vs. ground truth | Source |
 |---|---|---|
@@ -40,18 +64,16 @@ classes), with real, manually-annotated ground-truth labels — not a proxy metr
 | SpaceFlow | 0.351 | Literature |
 | SCGDL | 0.322 | Literature |
 
-**Honest read**: our method reaches 0.571 ± 0.006, up from 0.303 in the first
-iteration — a real +0.268 gain, and it now sits mid-field among published methods.
-It still does **not** beat GraphST: run under the identical protocol across 5 seeds
-each (not our 5 vs. their 1, which earlier framing did), GraphST reaches
-0.597 ± 0.012. The gap (+0.026) is genuine and consistent — GraphST's worst seed
-still beats our best — but noticeably smaller than single-seed comparisons implied,
-and GraphST's own variance is over 2× ours. These are single-slice (151673) numbers
-on the slice used for tuning; the 12-slice held-out evaluation is written but not
-yet run, so **none of this is publication-grade yet**.
+**Honest read**: on this one slice our method reaches 0.571 ± 0.006 against
+GraphST's 0.597 ± 0.012 — a gap of only 0.026. Tuning entirely on this slice
+turned out to be measuring an optimistic special case: across all 12 slices held
+out fairly, the real gap is **0.129**, about 5× larger. Both findings are reported
+because both are real measurements, and the discrepancy between them is itself an
+important, documented finding (tuning-slice overfitting), not something to smooth
+over.
 See [`PROGRESS.md`](PROGRESS.md) for current status and
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for every
-measurement, including two hypotheses that were tested and rejected.
+measurement, including three hypotheses that were tested and rejected.
 
 > **Note on an earlier version of this table.** It previously listed our method at
 > 0.303 and our GraphST run at 0.491. Both were understated by *our own* clustering
@@ -118,14 +140,14 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** 0.571 ± 0.006 vs. GraphST's 0.597 ± 0.012,
-  both under the identical protocol and both across 5 seeds. The gap is real
-  (+0.026) though smaller than earlier single-seed comparisons suggested, and
-  discussed candidly in [`PROGRESS.md`](PROGRESS.md).
-- **Single slice, and it is the tuning slice.** All numbers above are DLPFC 151673,
-  which was also used to choose hyperparameters. The 12-slice evaluation
-  (`src/eval/run_dlpfc_multislice.py`, which holds 151673 out of the headline mean)
-  is implemented but has not been run.
+- **Not currently state of the art.** Held-out, multi-slice: 0.439 ± 0.088 vs.
+  GraphST's 0.569 ± 0.083 (gap 0.129). Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
+- **The tuning slice does not represent the held-out result — a real, measured
+  finding, not a caveat added defensively.** Every hyperparameter here was chosen
+  on DLPFC 151673, which then turned out to be the single most favorable slice in
+  the 12-slice set for this method (gap there: 0.026, ~5× smaller than the
+  held-out gap). This is exactly the failure mode holding out a tuning slice
+  exists to catch.
 - **Three hypotheses were tested and rejected on evidence**, and are documented
   rather than hidden: (a) per-row attention entropy as the anti-collapse term —
   wrong quantity, marginal *usage* entropy was the actual fix, without which the

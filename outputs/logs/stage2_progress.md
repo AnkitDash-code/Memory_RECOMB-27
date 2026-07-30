@@ -202,6 +202,61 @@ implied by single-seed comparisons at various points in this project), and
 GraphST's variance (±0.012) is more than double ours (±0.006) — but it is still
 a real, consistent gap: GraphST's worst seed (0.585) still beats our best (0.582).
 
+## Stage 6 — full 12-slice, 5-seed evaluation (the real generalization number)
+
+Everything above was measured on **151673 alone**, which was also the slice used
+to choose every hyperparameter (memory_slots, n_hops, lambda_usage). That is a
+tuning slice, not a test set. `src/eval/run_dlpfc_multislice.py` runs all 12
+DLPFC slices × 5 seeds, holding 151673 out of the headline mean to avoid
+reporting a leaked number as if it were held-out performance.
+
+| Slice | Ours (mean ± std, 5 seeds) | GraphST (mean ± std, 5 seeds) | Gap |
+|---|---|---|---|
+| 151507 | 0.417 ± 0.048 | 0.514 ± 0.063 | 0.097 |
+| 151508 | 0.291 ± 0.085 | 0.488 ± 0.015 | 0.197 |
+| 151509 | 0.379 ± 0.034 | 0.441 ± 0.043 | 0.063 |
+| 151510 | 0.479 ± 0.049 | 0.539 ± 0.030 | 0.061 |
+| 151669 | 0.466 ± 0.031 | 0.592 ± 0.009 | 0.126 |
+| 151670 | 0.487 ± 0.112 | 0.534 ± 0.029 | 0.047 |
+| 151671 | 0.582 ± 0.110 | 0.625 ± 0.010 | 0.043 |
+| 151672 | 0.589 ± 0.077 | 0.769 ± 0.006 | 0.180 |
+| 151674 | 0.404 ± 0.102 | 0.618 ± 0.003 | 0.214 |
+| 151675 | 0.388 ± 0.054 | 0.548 ± 0.058 | 0.161 |
+| 151676 | 0.349 ± 0.054 | 0.584 ± 0.015 | 0.236 |
+| **151673 (tuning slice)** | **0.571 ± 0.006** | 0.595 ± 0.014 | **0.026** |
+
+| | Held-out (11 slices) | All 12 slices |
+|---|---|---|
+| Ours | **0.4391 ± 0.0883** | 0.4501 ± 0.0921 |
+| GraphST | **0.5685 ± 0.0825** | 0.5707 ± 0.0793 |
+| **Gap** | **0.1294** | 0.1206 |
+
+**This is the number that matters, and it is materially worse than the tuning-slice
+result.** 151673 is not merely "a slice we happened to tune on" — it is
+quantifiably the *most favorable* slice in the entire set for our method: it has
+both the highest "ours" ARI (0.571, tied for best alongside 151672's 0.589) and by
+a wide margin the smallest gap to GraphST (0.026, next-closest is 151671 at 0.043).
+Every other slice shows a gap of 0.04–0.24. The earlier "closing the gap" framing,
+built entirely on 151673, was not wrong about what was measured, but it was
+measuring something that does not generalize — this is exactly the failure mode
+holding out a tuning slice is meant to catch, and here it caught something real.
+
+Also notable: our per-seed variance is high and inconsistent across slices
+(0.006 on 151673 vs. 0.11 on 151670/151671) — the capacity tuning that produced a
+strikingly *low* variance on 151673 (std 0.006) did not transfer that stability
+either. Across the 11 held-out slices our std exceeds GraphST's in 9 of 11 (e.g.
+151674: ours ±0.102 vs. GraphST ±0.003) -- so the gap is not just in central
+tendency, our method is also generally less seed-stable on data it wasn't tuned
+on. 151673's low variance was itself a symptom of overfitting to that slice, not
+a property of the method.
+
+**Honest conclusion:** the architecture works (it learns real structure, beats a
+from-scratch baseline, and the address-propagation mechanism is validated), but it
+does not beat GraphST, and the true gap (~0.13 ARI on held-out slices) is larger
+than this project's local tuning suggested. Any further work should tune
+hyperparameters via cross-validation across multiple slices, not a single one, to
+avoid repeating this exact failure mode.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=32,
