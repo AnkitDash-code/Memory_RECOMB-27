@@ -125,6 +125,19 @@ Full table with wall-clock times and ARI-between-methods (agreement, not accurac
 
 ### Figures
 
+**Ground truth vs. baseline vs. GraphST vs. ours** (DLPFC 151673, shared clustering
+protocol for every panel). This corroborates the quantitative gap rather than
+hiding it: ground truth, the baseline, and GraphST all recover the true horizontal
+laminar banding of cortex; ours captures real spatial structure but with more
+blob-like, vertically-smeared regions that respect the layering less cleanly —
+visually consistent with the measured 0.439 vs. 0.569 held-out ARI:
+
+![DLPFC ground truth vs methods](outputs/figures/dlpfc_ground_truth_vs_methods.png)
+
+The three figures below are from Phase 0 (Visium mouse brain, no ground truth) and
+predate the current architecture; kept for the untrained-vs-trained illustration
+they show, not as current-model results.
+
 **Trained memory-layer clusters on real tissue** (Visium mouse brain, crop) — spatially
 coherent domains, not the salt-and-pepper noise an untrained/random-init model produces:
 
