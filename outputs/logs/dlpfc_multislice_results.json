@@ -1,0 +1,52 @@
+{
+  "per_slice": [
+    {
+      "sample": "151673",
+      "n_spots": 3639,
+      "n_layers": 7,
+      "ours": {
+        "per_seed": [
+          0.5702985665872198,
+          0.5676148237226121
+        ],
+        "mean": 0.5689566951549159,
+        "std": 0.0013418714323038539
+      },
+      "graphst": {
+        "per_seed": [
+          0.6152659334424089,
+          0.6071618889596667
+        ],
+        "mean": 0.6112139112010377,
+        "std": 0.004052022241371078
+      }
+    }
+  ],
+  "summary": {
+    "held_out_11_slices": {
+      "ours": {
+        "n_slices": 0,
+        "mean": null,
+        "std": null
+      },
+      "graphst": {
+        "n_slices": 0,
+        "mean": null,
+        "std": null
+      }
+    },
+    "all_12_slices": {
+      "ours": {
+        "n_slices": 1,
+        "mean": 0.5689566951549159,
+        "std": 0.0
+      },
+      "graphst": {
+        "n_slices": 1,
+        "mean": 0.6112139112010377,
+        "std": 0.0
+      }
+    },
+    "tuning_slice_excluded_from_headline": "151673"
+  }
+}

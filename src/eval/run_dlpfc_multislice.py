@@ -35,7 +35,11 @@ def _ari(truth, labels, mask):
     return float(adjusted_rand_score(truth[mask], np.asarray(labels)[mask]))
 
 
-def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="count"):
+def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
+    """model="mse" is the tuned, winning configuration (pure address propagation,
+    memory_slots=32 -- see train_spatial_address_model's defaults). model="count"
+    is the rejected NB/ZINB ablation, kept available for reproducing that negative
+    result on demand, never as the default for a real evaluation."""
     raw = load_dlpfc_slice(sample)
     adata = preprocess_hvg(raw.copy())
 
@@ -57,8 +61,7 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="count"):
             embedding = trained.obsm["X_count_address"]
         else:
             _, trained, _ = train_spatial_address_model(
-                adata.copy(), n_hops=4, lambda_usage=0.1, seed=seed,
-                device=device, verbose=False,
+                adata.copy(), seed=seed, device=device, verbose=False,
             )
             embedding = trained.obsm["X_spatial_address"]
         labels = cluster_embedding(embedding, n_layers, coords=coords, refine=True)
@@ -66,14 +69,27 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="count"):
     results["ours"] = {"per_seed": ours, "mean": float(np.mean(ours)), "std": float(np.std(ours))}
 
     if run_graphst_too:
-        graphst_adata = run_graphst(raw.copy(), n_clusters=n_layers, device=device)
-        labels = cluster_embedding(
-            graphst_adata.obsm["emb"], n_layers,
-            coords=graphst_adata.obsm["spatial"], refine=True,
-        )
-        gt = graphst_adata.obs["ground_truth_layer"] = truth.reindex(graphst_adata.obs_names)
-        gmask = gt.notna().to_numpy()
-        results["graphst"] = {"mean": _ari(gt, labels, gmask), "per_seed": None}
+        # Same seeds, same clustering protocol as "ours" -- comparing a 5-seed
+        # mean against GraphST's single default seed was measured on 151673 to
+        # be unfair (its default seed wasn't even its best of 5).
+        graphst_aris = []
+        for seed in seeds:
+            graphst_adata = run_graphst(
+                raw.copy(), n_clusters=n_layers, device=device,
+                random_seed=seed, cluster=False,
+            )
+            labels = cluster_embedding(
+                graphst_adata.obsm["emb"], n_layers,
+                coords=graphst_adata.obsm["spatial"], refine=True,
+            )
+            gt = truth.reindex(graphst_adata.obs_names)
+            gmask = gt.notna().to_numpy()
+            graphst_aris.append(_ari(gt, labels, gmask))
+        results["graphst"] = {
+            "per_seed": graphst_aris,
+            "mean": float(np.mean(graphst_aris)),
+            "std": float(np.std(graphst_aris)),
+        }
 
     return results
 
@@ -82,7 +98,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--seeds", type=int, default=5)
     parser.add_argument("--samples", nargs="*", default=ALL_DLPFC_SAMPLES)
-    parser.add_argument("--model", choices=["count", "mse"], default="count")
+    parser.add_argument("--model", choices=["count", "mse"], default="mse")
     parser.add_argument("--skip-graphst", action="store_true")
     args = parser.parse_args()
 

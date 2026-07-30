@@ -41,7 +41,7 @@ def train_spatial_address_model(
     temperature=1.0,
     feature_hops=0,
     latent_hops=0,
-    lambda_usage=1.0,
+    lambda_usage=0.1,
     lambda_sharpen=0.0,
     seed=0,
     device=None,
