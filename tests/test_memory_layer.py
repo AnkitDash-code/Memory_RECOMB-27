@@ -5,8 +5,11 @@ import torch
 from src.models.memory_layer import (
     EmbeddedMemoryAutoencoder,
     EmbeddedMemoryLayer,
+    SpatialAddressMemoryAutoencoder,
+    SpatialAddressMemoryLayer,
     attention_entropy,
     connectivities_to_edge_index,
+    normalized_adjacency,
     spatial_smoothness_loss,
 )
 
@@ -122,3 +125,114 @@ def test_connectivities_to_edge_index_roundtrip():
 
     assert edge_index.shape[0] == 2
     assert edge_index.shape[1] == edge_weight.shape[0] == 4
+
+
+def _ring_connectivities(n):
+    """Sparse ring graph: spot i adjacent to i-1 and i+1 (wraparound)."""
+    import numpy as np
+    import scipy.sparse as sp
+
+    rows = list(range(n)) + list(range(n))
+    cols = [(i + 1) % n for i in range(n)] + [(i - 1) % n for i in range(n)]
+    return sp.csr_matrix((np.ones(len(rows)), (rows, cols)), shape=(n, n))
+
+
+def test_normalized_adjacency_rows_sum_to_one():
+    conn = _ring_connectivities(10)
+
+    adjacency = normalized_adjacency(conn)
+    row_sums = torch.sparse.sum(adjacency, dim=1).to_dense()
+
+    assert torch.allclose(row_sums, torch.ones(10), atol=1e-5)
+
+
+def test_address_propagation_keeps_valid_simplex():
+    n_spots, feature_dim, memory_slots = 30, 16, 8
+    layer = SpatialAddressMemoryLayer(
+        feature_dim, memory_slots=memory_slots, memory_dim=8, n_hops=3
+    )
+    x = torch.randn(n_spots, feature_dim)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+
+    embedding, attn = layer(x, adjacency)
+
+    assert embedding.shape == (n_spots, 8)
+    assert attn.shape == (n_spots, memory_slots)
+    # Propagating a row-stochastic matrix over a simplex must stay a simplex.
+    assert torch.allclose(attn.sum(dim=-1), torch.ones(n_spots), atol=1e-5)
+    assert (attn >= -1e-6).all()
+
+
+def test_no_adjacency_reduces_to_unpropagated():
+    torch.manual_seed(0)
+    layer = SpatialAddressMemoryLayer(feature_dim=16, memory_slots=8, memory_dim=8, n_hops=2)
+    x = torch.randn(20, 16)
+
+    _, attn_no_graph = layer(x, adjacency=None)
+    layer_zero_hops = layer
+    layer_zero_hops.n_hops = 0
+    adjacency = normalized_adjacency(_ring_connectivities(20))
+    _, attn_zero_hops = layer_zero_hops(x, adjacency)
+
+    assert torch.allclose(attn_no_graph, attn_zero_hops, atol=1e-6)
+
+
+def test_address_propagation_smooths_neighbors():
+    """More hops should make spatially adjacent spots' addresses more similar."""
+    torch.manual_seed(0)
+    n_spots = 40
+    layer = SpatialAddressMemoryLayer(feature_dim=16, memory_slots=8, memory_dim=8, n_hops=0)
+    x = torch.randn(n_spots, 16)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+
+    _, attn_0 = layer(x, adjacency)
+    layer.n_hops = 4
+    _, attn_4 = layer(x, adjacency)
+
+    def neighbor_divergence(attn):
+        return (attn - torch.roll(attn, shifts=1, dims=0)).abs().sum(dim=-1).mean()
+
+    assert neighbor_divergence(attn_4) < neighbor_divergence(attn_0)
+
+
+def test_spatial_address_autoencoder_reconstructs_feature_dim():
+    n_spots, feature_dim = 25, 40
+    model = SpatialAddressMemoryAutoencoder(feature_dim, memory_slots=8, memory_dim=8)
+    x = torch.randn(n_spots, feature_dim)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+
+    reconstruction, embedding, attn = model(x, adjacency)
+
+    assert reconstruction.shape == x.shape
+    assert embedding.shape == (n_spots, 8)
+    assert attn.shape == (n_spots, 8)
+
+
+def test_usage_entropy_distinguishes_collapse_from_spread():
+    """Marginal usage entropy must be near 0 when all spots pick one slot,
+    and near log(n_slots) when usage is spread -- this is the quantity that
+    actually detects slot collapse."""
+    from src.models.memory_layer import usage_entropy
+
+    n_spots, n_slots = 50, 8
+
+    collapsed = torch.zeros(n_spots, n_slots)
+    collapsed[:, 3] = 1.0  # every spot addresses the same slot
+
+    spread = torch.eye(n_slots).repeat(n_spots // n_slots, 1)  # slots used evenly
+
+    assert usage_entropy(collapsed).item() < 0.01
+    assert usage_entropy(spread).item() > math.log(n_slots) - 0.01
+
+
+def test_usage_entropy_differs_from_row_entropy():
+    """Confident-but-balanced routing: per-row entropy ~0 (each spot commits)
+    while usage entropy is maximal (all slots used). The two must not be
+    conflated -- maximizing the wrong one gives mushy assignments."""
+    from src.models.memory_layer import usage_entropy
+
+    n_slots = 8
+    confident_but_balanced = torch.eye(n_slots).repeat(5, 1)
+
+    assert attention_entropy(confident_but_balanced).mean().item() < 0.01
+    assert usage_entropy(confident_but_balanced).item() > math.log(n_slots) - 0.01

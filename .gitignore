@@ -9,8 +9,10 @@ wheels/
 # Virtual environments
 .venv
 
-# Downloaded datasets (squidpy/scanpy cache)
-data/
+# Downloaded datasets (squidpy/scanpy cache).
+# Leading slash matters: a bare `data/` also matches `src/data/`, which silently
+# excluded the entire data-loader package from the repo.
+/data/
 
 # Large intermediate checkpoints (h5ad snapshots, ~100-300MB each) -- keep
 # the small .pt model weights, but not these, to avoid bloating the repo

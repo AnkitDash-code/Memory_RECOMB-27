@@ -19,9 +19,40 @@ class EmbeddedMemoryLayer(nn.Module):
 
 
 def attention_entropy(attn_weights):
-    """Per-row entropy of the attention distribution, in nats."""
+    """Per-row entropy of the attention distribution, in nats.
+
+    High per-row entropy means an individual spot is smeared across many slots
+    (a mushy assignment). This is a diagnostic, not something to maximize --
+    see usage_entropy for the quantity that actually prevents collapse.
+    """
     eps = 1e-12
     return -(attn_weights * torch.log(attn_weights + eps)).sum(dim=-1)
+
+
+def usage_entropy(attn_weights):
+    """Entropy of the MARGINAL slot-usage distribution (mean over spots), in nats.
+
+    This is the quantity that prevents slot collapse, and it is a different
+    thing from per-row entropy -- a distinction that matters in practice:
+
+      * per-row entropy high  -> each spot spread thinly over many slots
+                                 (soft, uninformative assignments)
+      * usage entropy high    -> across the dataset, all slots get used,
+                                 while any individual spot may still commit
+                                 confidently to one slot
+
+    We want the second, not the first. Maximizing usage entropy is the same
+    load-balancing / equipartition idea used to stop codebook collapse in
+    VQ-VAE-style models and expert collapse in mixture-of-experts routing.
+
+    Without it, an MSE reconstruction objective has a strong early optimum:
+    route every spot to a single slot that decodes to the dataset mean. That
+    is exactly the failure observed here (slots_used=1, ARI=0.0) before this
+    term was added.
+    """
+    eps = 1e-12
+    usage = attn_weights.mean(dim=0)
+    return -(usage * torch.log(usage + eps)).sum()
 
 
 class EmbeddedMemoryAutoencoder(nn.Module):
@@ -71,6 +102,165 @@ def connectivities_to_edge_index(connectivities):
     edge_index = torch.tensor(np.stack([coo.row, coo.col]), dtype=torch.long)
     edge_weight = torch.tensor(coo.data, dtype=torch.float32)
     return edge_index, edge_weight
+
+
+def normalized_adjacency(connectivities, device=None):
+    """Row-normalized adjacency with self-loops, D^-1 (A + I), as a sparse tensor.
+
+    Row-normalized (rather than symmetric D^-1/2 A D^-1/2) on purpose: rows must
+    sum to 1 so that propagating a probability distribution keeps it a valid
+    probability distribution -- see SpatialAddressMemoryLayer.
+    """
+    import scipy.sparse as sp
+
+    adjacency = sp.csr_matrix(connectivities)
+    adjacency = adjacency + sp.eye(adjacency.shape[0], format="csr")
+    degree = np.asarray(adjacency.sum(axis=1)).ravel()
+    degree[degree == 0] = 1.0
+    normalized = sp.diags(1.0 / degree) @ adjacency
+
+    coo = normalized.tocoo()
+    indices = torch.tensor(np.stack([coo.row, coo.col]), dtype=torch.long)
+    values = torch.tensor(coo.data, dtype=torch.float32)
+    sparse = torch.sparse_coo_tensor(indices, values, coo.shape).coalesce()
+    return sparse.to(device) if device is not None else sparse
+
+
+class SpatialAddressMemoryLayer(nn.Module):
+    """Memory addressing where the ADDRESS -- not the feature -- is spatially propagated.
+
+    The project's premise is that memory-addressing can replace message passing.
+    The original EmbeddedMemoryLayer took that literally: spatial structure
+    entered only as a soft penalty in the loss, so a spot's embedding never saw
+    its neighbours at all, and it badly underperformed GNN methods that
+    aggregate neighbour features directly.
+
+    This layer keeps the premise but makes it work. Spot features are still
+    never mixed across spots. What gets propagated over the spatial graph is the
+    softmax address distribution -- "which memory slots am I?" -- so neighbouring
+    spots are pushed toward shared slot identity while their expression profiles
+    stay independent:
+
+        q = encoder(x)                    per-spot only, no neighbour info
+        A = softmax(q @ keys.T)           address distribution (rows sum to 1)
+        A = (D^-1 (Adj + I)) A   x k      propagate ADDRESSES, k hops
+        z = A @ values                    embedding
+
+    Because the propagation matrix is row-stochastic and A's rows are a
+    probability simplex, each propagation step is a convex combination of
+    neighbouring distributions and A stays a valid simplex -- no renormalization
+    needed. Multi-hop (k > 1) widens the receptive field, following MAEST's
+    finding that combining one-hop and multi-hop views helps.
+
+    Biologically this encodes the laminar prior directly: cortical layers are
+    spatially contiguous bands, so adjacent spots should share domain identity
+    even where their individual expression is noisy or dropout-heavy.
+    """
+
+    def __init__(self, feature_dim, memory_slots=512, memory_dim=128, hidden_dim=256, n_hops=2, temperature=1.0):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Linear(feature_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, memory_dim),
+        )
+        self.memory_keys = nn.Parameter(torch.randn(memory_slots, memory_dim) * 0.02)
+        self.memory_values = nn.Parameter(torch.randn(memory_slots, memory_dim) * 0.02)
+        self.n_hops = n_hops
+        self.temperature = temperature
+
+    def forward(self, x, adjacency=None):
+        queries = self.encoder(x)
+        attn_scores = torch.matmul(queries, self.memory_keys.T) / self.temperature
+        attn_weights = F.softmax(attn_scores, dim=-1)
+
+        propagated = attn_weights
+        if adjacency is not None:
+            for _ in range(self.n_hops):
+                propagated = torch.sparse.mm(adjacency, propagated)
+
+        embedding = torch.matmul(propagated, self.memory_values)
+        return embedding, propagated
+
+
+class SpatialAddressMemoryAutoencoder(nn.Module):
+    """SpatialAddressMemoryLayer + a decoder back to gene-expression space.
+
+    The decoder reconstructs the real (HVG) expression matrix rather than PCA
+    scores, so the training signal is gene-level biological variation instead of
+    an already-lossy linear compression.
+    """
+
+    def __init__(
+        self,
+        feature_dim,
+        memory_slots=512,
+        memory_dim=128,
+        hidden_dim=256,
+        n_hops=2,
+        temperature=1.0,
+    ):
+        super().__init__()
+        self.memory = SpatialAddressMemoryLayer(
+            feature_dim,
+            memory_slots=memory_slots,
+            memory_dim=memory_dim,
+            hidden_dim=hidden_dim,
+            n_hops=n_hops,
+            temperature=temperature,
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(memory_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, feature_dim),
+        )
+
+    def forward(self, x, adjacency=None):
+        embedding, attn_weights = self.memory(x, adjacency)
+        reconstruction = self.decoder(embedding)
+        return reconstruction, embedding, attn_weights
+
+
+class SpatialAddressCountAutoencoder(nn.Module):
+    """Address-propagation encoder with an NB/ZINB count decoder.
+
+    Same addressing mechanism as SpatialAddressMemoryAutoencoder, but the
+    decoder emits negative-binomial parameters over raw counts instead of a
+    point estimate scored with MSE. Given 68-97% measured zeros, the Gaussian
+    assumption behind MSE is a poor fit; NB/ZINB models overdispersion and
+    (optionally) dropout explicitly.
+    """
+
+    def __init__(
+        self,
+        feature_dim,
+        n_genes,
+        memory_slots=64,
+        memory_dim=128,
+        hidden_dim=256,
+        n_hops=4,
+        temperature=1.0,
+        zero_inflated=True,
+    ):
+        super().__init__()
+        from src.models.count_losses import CountDecoder
+
+        self.memory = SpatialAddressMemoryLayer(
+            feature_dim,
+            memory_slots=memory_slots,
+            memory_dim=memory_dim,
+            hidden_dim=hidden_dim,
+            n_hops=n_hops,
+            temperature=temperature,
+        )
+        self.decoder = CountDecoder(
+            memory_dim, n_genes, hidden_dim=hidden_dim, zero_inflated=zero_inflated
+        )
+
+    def forward(self, x, library_size, adjacency=None):
+        embedding, attn_weights = self.memory(x, adjacency)
+        mu, theta, pi_logits = self.decoder(embedding, library_size)
+        return (mu, theta, pi_logits), embedding, attn_weights
 
 
 def main():

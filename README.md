@@ -24,13 +24,14 @@ classes), with real, manually-annotated ground-truth labels — not a proxy metr
 | Method | ARI vs. ground truth | Source |
 |---|---|---|
 | GraphST | 0.633 | Literature ([Kang et al. 2025](https://academic.oup.com/nar/article/53/7/gkaf303/8114322), recomputed by us from their released per-spot predictions, not copied from the paper's text) |
+| **GraphST (our local run, matched protocol)** | **0.590** | Run locally, this repo |
 | STAGATE | 0.589 | Literature |
 | Spatial_MGCN | 0.556 | Literature |
+| **SpatialAddressMemoryAutoencoder (ours)** | **0.551 ± 0.018** | Run locally, this repo (5 seeds) |
 | BayesSpace | 0.550 | Literature |
 | DeepST | 0.538 | Literature |
 | conST | 0.528 | Literature |
 | STMGCN | 0.511 | Literature |
-| **GraphST (our local run)** | **0.491** | Run locally, this repo |
 | SEDR | 0.472 | Literature |
 | SpaGCN | 0.465 | Literature |
 | Seurat | 0.430 | Literature |
@@ -38,14 +39,45 @@ classes), with real, manually-annotated ground-truth labels — not a proxy metr
 | CCST | 0.356 | Literature |
 | SpaceFlow | 0.351 | Literature |
 | SCGDL | 0.322 | Literature |
-| **EmbeddedMemoryLayer (trained, ours)** | **0.303** | Run locally, this repo |
-| **Scanpy PCA+Leiden (baseline, ours)** | **0.253** | Run locally, this repo |
 
-**Honest read**: the trained memory layer beats our own from-scratch baseline (0.303 vs.
-0.253), which shows the architecture is learning real structure — but it does **not**
-currently beat GraphST or most of the field's published methods. Full writeup, including
-why the gap exists and what closing it would take, is in
-[`outputs/logs/results_table.md`](outputs/logs/results_table.md).
+**Honest read**: our method reaches 0.551 ± 0.018, up from 0.303 in the first
+iteration — a real +0.248 gain, and it now sits mid-field among published methods.
+It still does **not** beat GraphST: 0.551 vs. our own 0.590 GraphST run is roughly a
+2σ gap against our seed spread, so it is a genuine deficit, not noise. These are
+single-slice (151673) numbers on the slice used for tuning; the 12-slice held-out
+evaluation is written but not yet run, so **none of this is publication-grade yet**.
+See [`PROGRESS.md`](PROGRESS.md) for current status and
+[`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for every
+measurement, including two hypotheses that were tested and rejected.
+
+> **Note on an earlier version of this table.** It previously listed our method at
+> 0.303 and our GraphST run at 0.491. Both were understated by *our own* clustering
+> protocol (Leiden), not by the methods: the field reports these numbers using
+> mclust plus spatial refinement. Re-scoring the identical GraphST embedding under
+> the correct protocol moved it 0.491 → 0.590, close to the literature's 0.633 and
+> within published seed variance. All methods here now share that one protocol.
+
+### Biological validation of the data (model-independent)
+
+Before trusting any ARI, we check the data itself reproduces known cortical biology.
+Canonical DLPFC layer markers from Maynard et al. 2021 — the study that produced these
+annotations — are tested for enrichment in the layers they mark. This never looks at a
+model, so it cannot be gamed by one (`src/eval/biological_validation.py`).
+
+| Layer | Marker | log2 FC (in-layer vs. rest) | Enriched |
+|---|---|---|---|
+| Layer1 | AQP4 | +0.53 | yes |
+| Layer2 | HPCAL1 | +1.22 | yes |
+| Layer3 | FREM3 | +1.82 | yes |
+| Layer4 | RORB | +1.28 | yes |
+| Layer5 | TRABD2A | +3.04 | yes |
+| Layer5 | PCP4 | +1.38 | yes |
+| Layer6 | KRT17 | +1.78 | yes |
+| WM | MOBP | +2.36 | yes |
+
+**8/8 markers enriched.** Independently, the figshare `.h5ad` and Zenodo copies of
+slice 151673 agree exactly (3639 spots, identical per-layer counts), and the matrix is
+confirmed raw integer counts as `seurat_v3` HVG selection requires.
 
 ### Domain identification on Visium mouse brain (unsupervised proxy metrics only)
 
@@ -83,12 +115,23 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** See the ARI table above. The gap is real and is
-  discussed candidly in `outputs/logs/results_table.md`.
+- **Not currently state of the art.** 0.551 ± 0.018 vs. GraphST's 0.590 under the
+  identical protocol. The gap is real and discussed candidly in
+  [`PROGRESS.md`](PROGRESS.md).
+- **Single slice, and it is the tuning slice.** All numbers above are DLPFC 151673,
+  which was also used to choose hyperparameters. The 12-slice evaluation
+  (`src/eval/run_dlpfc_multislice.py`, which holds 151673 out of the headline mean)
+  is implemented but has not been run.
+- **Two hypotheses were tested and rejected on evidence**, and are documented rather
+  than hidden: (a) per-row attention entropy as the anti-collapse term — wrong
+  quantity, marginal *usage* entropy was the actual fix, without which the model
+  collapsed to a single memory slot at ARI 0.000; (b) an NB/ZINB count likelihood
+  plus contrastive regularization, which is principled given 68–97% zeros but made
+  results clearly worse (0.18–0.35 vs. 0.551).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
-  DLPFC, the model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17) until
-  a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the same
-  convention GraphST itself uses) was added and applied fairly to all methods.
+  DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
+  until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the
+  same convention GraphST itself uses) was added and applied fairly to all methods.
 - **Single run, no seed averaging.** Our local GraphST run (0.491) already undershoots
   its own literature-reported number (0.633) — some of the gap for our method is likely
   ordinary run-to-run variance on top of the real architectural gap, not yet disentangled.
