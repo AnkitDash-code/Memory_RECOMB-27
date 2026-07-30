@@ -153,9 +153,59 @@ architecture. That is a *positive* finding for the project's central claim —
 paid for here, it is the better-performing design in this model. It does not,
 however, close the gap to GraphST, which reaches 0.590 by a different route.
 
-## Current best configuration
+## Stage 5 — capacity sweep (found a real further improvement)
 
-`train_spatial_address_model(n_hops=4, lambda_usage=0.1, lambda_sharpen=0.0,
-memory_slots=64, memory_dim=128, hidden_dim=256, epochs=600)` on
-`preprocess_hvg()` output, clustered with
-`cluster_embedding(..., refine=True)`.
+With only ~7 true domains, `memory_slots=512` (the Phase 0 default) is heavily
+over-parameterized. Swept codebook size, embedding width, softmax temperature,
+training length, holding the Stage 2 config fixed otherwise:
+
+| memory_slots | ARI (3 seeds) |
+|---|---|
+| 8 | 0.496 ± 0.143 (unstable) |
+| 12 | 0.530 ± 0.001 |
+| 16 | 0.498 ± 0.133 (unstable) |
+| 24 | 0.556 ± 0.009 |
+| **32** | **0.569 ± 0.001** |
+| 64 (Stage 2 default) | 0.542 ± 0.015 |
+| 128 | 0.515 ± 0.074 |
+| 256 | 0.408 ± 0.083 |
+
+Clear inverted-U with a sharp optimum at 32: smaller than 32 becomes unstable
+across seeds (a discrete near-tie between assignments, plausibly), larger
+monotonically dilutes each slot's signal. `memory_dim`, `temperature`, and
+longer training (1200 epochs) were all neutral-to-worse and did not change this
+conclusion. Confirmed at `memory_slots=32` over 5 seeds: **0.5713 ± 0.0057** —
+tighter variance than the Stage 2 config, not just a higher mean.
+
+## GraphST's own seed variance (fairness check)
+
+Every earlier comparison used GraphST's single default-seed result (0.5902).
+Comparing a 5-seed mean against someone else's 1-seed number is not a fair
+comparison, so GraphST was run across 5 seeds under the identical clustering
+protocol:
+
+| seed | 41 (GraphST's own default) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|---|
+| ARI | 0.5902 | 0.6153 | 0.6077 | 0.5854 | 0.5876 |
+
+**GraphST: 0.5972 ± 0.0120 (5 seeds).** Its own default seed was not even its
+best. With variance now honestly characterized on both sides:
+
+| | ARI (5 seeds) |
+|---|---|
+| GraphST | 0.5972 ± 0.0120 |
+| **Ours (slots=32)** | **0.5713 ± 0.0057** |
+| Difference | +0.0259 in GraphST's favor |
+
+The gap is smaller than earlier framing suggested (0.026, not the 0.04–0.10
+implied by single-seed comparisons at various points in this project), and
+GraphST's variance (±0.012) is more than double ours (±0.006) — but it is still
+a real, consistent gap: GraphST's worst seed (0.585) still beats our best (0.582).
+
+## Current best configuration (defaults updated in code)
+
+`train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=32,
+memory_dim=128, hidden_dim=256, epochs=600)` on `preprocess_hvg()` output,
+clustered with `cluster_embedding(..., refine=True)`. **0.5713 ± 0.0057** on the
+tuning slice (151673), vs. GraphST's **0.5972 ± 0.0120** under the identical
+protocol. Not yet evaluated on the other 11 slices.

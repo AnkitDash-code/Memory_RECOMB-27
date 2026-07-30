@@ -33,18 +33,28 @@ true number of layers for every method, the standard convention in this benchmar
 
 This protocol change mattered a great deal and is worth stating plainly: an
 earlier version of this table scored our methods with Leiden and reported GraphST
-at 0.4911. Re-scoring the *identical* GraphST embedding under the correct protocol
-gives 0.5713, and 0.5902 with refinement — close to the literature's 0.6327 and
-within the ±0.05 seed variance published work reports. **Our harness had been
-understating GraphST, not GraphST underperforming.**
+at 0.4911 (single seed). Re-scoring the *identical* GraphST embedding under the
+correct protocol gives 0.5713, and 0.5902 with refinement (still single-seed) —
+close to the literature's 0.6327. **Our harness had been understating GraphST,
+not GraphST underperforming.**
+
+Both methods are now also compared across **5 seeds each**, not one seed vs.
+five — comparing a multi-seed mean against someone else's single run is not a
+fair comparison. GraphST's own default seed (41 → 0.590) was not even its best
+across the 5 tried (0.585–0.615). GraphST: 0.5972 ± 0.0120. Ours: 0.5713 ± 0.0057
+after a capacity sweep found `memory_slots=32` clearly beats the Stage 2 default
+of 64 (inverted-U: 8/16 unstable, 32 optimal, 256 → 0.408). **Remaining gap:
++0.026 in GraphST's favor** — smaller than earlier single-seed comparisons
+suggested, and GraphST's variance (±0.012) is over 2× ours (±0.006), but the gap
+is still real and consistent: GraphST's worst seed still beats our best.
 
 | Method | ARI vs. ground truth | Source |
 |---|---|---|
 | GraphST | 0.6327 | Literature (Kang et al. 2025, computed by us from their released predictions) |
-| **GraphST (our local run, matched protocol)** | **0.5902** | Run locally, this repo |
+| **GraphST (our local run, matched protocol, 5 seeds)** | **0.5972 ± 0.0120** | Run locally, this repo |
 | STAGATE | 0.5892 | Literature |
 | Spatial_MGCN | 0.5561 | Literature |
-| **SpatialAddressMemoryAutoencoder (ours)** | **0.5510 ± 0.0178** | Run locally, this repo (5 seeds) |
+| **SpatialAddressMemoryAutoencoder (ours, tuned, 5 seeds)** | **0.5713 ± 0.0057** | Run locally, this repo |
 | BayesSpace | 0.5499 | Literature |
 | DeepST | 0.5384 | Literature |
 | conST | 0.5277 | Literature |

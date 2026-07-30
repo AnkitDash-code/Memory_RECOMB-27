@@ -27,7 +27,7 @@ classes), with real, manually-annotated ground-truth labels — not a proxy metr
 | **GraphST (our local run, matched protocol)** | **0.590** | Run locally, this repo |
 | STAGATE | 0.589 | Literature |
 | Spatial_MGCN | 0.556 | Literature |
-| **SpatialAddressMemoryAutoencoder (ours)** | **0.551 ± 0.018** | Run locally, this repo (5 seeds) |
+| **SpatialAddressMemoryAutoencoder (ours, capacity-tuned)** | **0.571 ± 0.006** | Run locally, this repo (5 seeds) |
 | BayesSpace | 0.550 | Literature |
 | DeepST | 0.538 | Literature |
 | conST | 0.528 | Literature |
@@ -40,12 +40,15 @@ classes), with real, manually-annotated ground-truth labels — not a proxy metr
 | SpaceFlow | 0.351 | Literature |
 | SCGDL | 0.322 | Literature |
 
-**Honest read**: our method reaches 0.551 ± 0.018, up from 0.303 in the first
-iteration — a real +0.248 gain, and it now sits mid-field among published methods.
-It still does **not** beat GraphST: 0.551 vs. our own 0.590 GraphST run is roughly a
-2σ gap against our seed spread, so it is a genuine deficit, not noise. These are
-single-slice (151673) numbers on the slice used for tuning; the 12-slice held-out
-evaluation is written but not yet run, so **none of this is publication-grade yet**.
+**Honest read**: our method reaches 0.571 ± 0.006, up from 0.303 in the first
+iteration — a real +0.268 gain, and it now sits mid-field among published methods.
+It still does **not** beat GraphST: run under the identical protocol across 5 seeds
+each (not our 5 vs. their 1, which earlier framing did), GraphST reaches
+0.597 ± 0.012. The gap (+0.026) is genuine and consistent — GraphST's worst seed
+still beats our best — but noticeably smaller than single-seed comparisons implied,
+and GraphST's own variance is over 2× ours. These are single-slice (151673) numbers
+on the slice used for tuning; the 12-slice held-out evaluation is written but not
+yet run, so **none of this is publication-grade yet**.
 See [`PROGRESS.md`](PROGRESS.md) for current status and
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for every
 measurement, including two hypotheses that were tested and rejected.
@@ -115,19 +118,25 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** 0.551 ± 0.018 vs. GraphST's 0.590 under the
-  identical protocol. The gap is real and discussed candidly in
-  [`PROGRESS.md`](PROGRESS.md).
+- **Not currently state of the art.** 0.571 ± 0.006 vs. GraphST's 0.597 ± 0.012,
+  both under the identical protocol and both across 5 seeds. The gap is real
+  (+0.026) though smaller than earlier single-seed comparisons suggested, and
+  discussed candidly in [`PROGRESS.md`](PROGRESS.md).
 - **Single slice, and it is the tuning slice.** All numbers above are DLPFC 151673,
   which was also used to choose hyperparameters. The 12-slice evaluation
   (`src/eval/run_dlpfc_multislice.py`, which holds 151673 out of the headline mean)
   is implemented but has not been run.
-- **Two hypotheses were tested and rejected on evidence**, and are documented rather
-  than hidden: (a) per-row attention entropy as the anti-collapse term — wrong
-  quantity, marginal *usage* entropy was the actual fix, without which the model
-  collapsed to a single memory slot at ARI 0.000; (b) an NB/ZINB count likelihood
-  plus contrastive regularization, which is principled given 68–97% zeros but made
-  results clearly worse (0.18–0.35 vs. 0.551).
+- **Three hypotheses were tested and rejected on evidence**, and are documented
+  rather than hidden: (a) per-row attention entropy as the anti-collapse term —
+  wrong quantity, marginal *usage* entropy was the actual fix, without which the
+  model collapsed to a single memory slot at ARI 0.000; (b) an NB/ZINB count
+  likelihood plus contrastive regularization, principled given 68–97% zeros but
+  made results clearly worse (0.18–0.35); (c) hybrid feature message passing
+  (aggregating neighbour features, not just addresses) — tested in both a naive
+  placement and GraphST's actual placement (post-encoder), and pure address
+  propagation beat both. A capacity sweep (codebook size 8–256) then found a
+  genuine further improvement: 32 slots suits ~7 true domains far better than
+  the initial 64 (inverted-U, 0.571 vs. 0.542, with 256 collapsing to 0.408).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
   until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the

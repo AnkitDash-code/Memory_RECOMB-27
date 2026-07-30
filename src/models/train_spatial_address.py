@@ -34,10 +34,10 @@ def train_spatial_address_model(
     epochs=600,
     lr=1e-3,
     weight_decay=0.0,
-    memory_slots=64,
+    memory_slots=32,
     memory_dim=128,
     hidden_dim=256,
-    n_hops=2,
+    n_hops=4,
     temperature=1.0,
     feature_hops=0,
     latent_hops=0,
@@ -60,8 +60,21 @@ def train_spatial_address_model(
     directions: spread usage across the codebook, but keep each spot's own
     assignment confident.
 
-    memory_slots defaults to 64 rather than 512: with only ~7 true domains, a
-    512-slot codebook is heavily over-parameterized and harder to keep balanced.
+    Defaults are the tuned configuration from the DLPFC 151673 sweeps
+    (0.5713 ± 0.0057 over 5 seeds):
+
+      memory_slots=32  -- a compact codebook clearly beats a large one when there
+                          are only ~7 true domains. Measured: 32 -> 0.569,
+                          64 -> 0.542, 128 -> 0.515, 256 -> 0.408, and going
+                          below 32 (8/16) became unstable across seeds.
+      n_hops=4         -- ARI rises monotonically with address-propagation hops
+                          (1 -> 0.489, 2 -> 0.538, 4 -> 0.549).
+      lambda_usage=0.1 -- enough to prevent collapse; larger values
+                          over-regularize toward uniform usage (1.0 -> ~0.34,
+                          5.0 -> ~0.22).
+
+    feature_hops/latent_hops default to 0, the pure formulation. Both hybrid
+    variants were tested and lost to it -- see outputs/logs/stage2_progress.md.
     """
     set_seed(seed)
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
