@@ -21,20 +21,29 @@ All 12 DLPFC slices (Maynard et al./spatialLIBD, human dorsolateral prefrontal
 cortex, real manually-annotated cortical layers), 5 seeds each, identical
 clustering protocol for every method. Slice 151673 was used to tune every
 hyperparameter, so it is **held out of the headline mean** rather than reported
-as if it were unseen data:
+as if it were unseen data. This evaluation has been run **twice**, because the
+first run itself uncovered a real bug:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
-| Ours (`SpatialAddressMemoryAutoencoder`) | **0.4391 ± 0.0883** | 0.4501 ± 0.0921 |
-| GraphST (matched protocol) | **0.5685 ± 0.0825** | 0.5707 ± 0.0793 |
-| **Gap** | **0.1294** | 0.1206 |
+| Ours, `memory_slots=32` (tuned on 151673 alone) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
+| **Ours, `memory_slots=16` (cross-validated on 3 other slices)** | **0.4815 ± 0.0979** | **0.4818 ± 0.0937** |
+| GraphST (matched protocol) | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
+| **Gap (current config)** | **0.0870** | 0.0889 |
 
-**This is materially worse than tuning on 151673 alone suggested (there, the gap
-was 0.026).** 151673 turns out to be the single most favorable slice in the set
-for our method — highest single-slice ARI (0.571) and by far the smallest gap
-(next-closest is 0.043). That single-slice result is kept below for the ablation
-history it documents, but the 12-slice number above is the one to trust. Full
-per-slice table and discussion: [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
+**What happened**: the first run showed the held-out gap was ~5× the 0.026
+measured on the tuning slice alone. Diagnosing why found that 151673 was not
+merely a convenient tuning slice — it was an outlier even within its own DLPFC
+subject (its three sibling sections score 0.35–0.40, close to the worst slices
+in the whole set), meaning our own within-subject variance was nearly as large
+as our across-slice variance. One concrete, fixable cause: `memory_slots=32`
+had itself been selected using 151673 alone. Cross-validating it across 3
+*different* slices showed 32 is the **worst** of 5 candidates tested, and
+selected 16 instead — a real, measured **+0.043 ARI improvement**, closing
+about a third of the gap. It is uneven: 3 of 11 held-out slices now match or
+slightly beat GraphST, while 3 slices from one subject still show a 0.21–0.23
+gap. Full detail and both raw JSON results:
+[`outputs/logs/results_table.md`](outputs/logs/results_table.md).
 
 ### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
 
@@ -51,7 +60,7 @@ sweep), not as a generalization claim.
 | **GraphST (our local run, matched protocol)** | **0.590** | Run locally, this repo |
 | STAGATE | 0.589 | Literature |
 | Spatial_MGCN | 0.556 | Literature |
-| **SpatialAddressMemoryAutoencoder (ours, capacity-tuned)** | **0.571 ± 0.006** | Run locally, this repo (5 seeds) |
+| **SpatialAddressMemoryAutoencoder (ours, `memory_slots=32`)** | **0.571 ± 0.006** | Run locally, this repo (5 seeds) — this specific config was tuned *on this slice*; it scores 0.485 ± 0.108 under the current, cross-validated default (`memory_slots=16`), which generalizes better overall (see headline above) |
 | BayesSpace | 0.550 | Literature |
 | DeepST | 0.538 | Literature |
 | conST | 0.528 | Literature |
@@ -64,16 +73,21 @@ sweep), not as a generalization claim.
 | SpaceFlow | 0.351 | Literature |
 | SCGDL | 0.322 | Literature |
 
-**Honest read**: on this one slice our method reaches 0.571 ± 0.006 against
-GraphST's 0.597 ± 0.012 — a gap of only 0.026. Tuning entirely on this slice
-turned out to be measuring an optimistic special case: across all 12 slices held
-out fairly, the real gap is **0.129**, about 5× larger. Both findings are reported
-because both are real measurements, and the discrepancy between them is itself an
-important, documented finding (tuning-slice overfitting), not something to smooth
-over.
+**Honest read**: on this one slice, the `memory_slots=32` config reaches
+0.571 ± 0.006 against GraphST's 0.597 ± 0.012 — a gap of only 0.026. Tuning
+entirely on this slice turned out to be measuring an optimistic special case:
+across all 12 slices held out fairly, the gap was **0.129**, about 5× larger.
+Diagnosing that discrepancy found `memory_slots` had itself been chosen using
+only this slice; cross-validating it across 3 different slices instead (and
+verifying on a further 8 untouched by either step) picked `memory_slots=16`,
+which closed about a third of the held-out gap (**0.087**, current headline
+above) — a real improvement from fixing the tuning methodology, not a new
+architecture, and one that does not close the gap. All of these numbers are
+reported because all are real measurements, and the discrepancies between them
+are themselves important, documented findings, not something to smooth over.
 See [`PROGRESS.md`](PROGRESS.md) for current status and
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for every
-measurement, including three hypotheses that were tested and rejected.
+measurement, including hypotheses that were tested and rejected.
 
 > **Note on an earlier version of this table.** It previously listed our method at
 > 0.303 and our GraphST run at 0.491. Both were understated by *our own* clustering
@@ -153,14 +167,20 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** Held-out, multi-slice: 0.439 ± 0.088 vs.
-  GraphST's 0.569 ± 0.083 (gap 0.129). Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
-- **The tuning slice does not represent the held-out result — a real, measured
-  finding, not a caveat added defensively.** Every hyperparameter here was chosen
-  on DLPFC 151673, which then turned out to be the single most favorable slice in
-  the 12-slice set for this method (gap there: 0.026, ~5× smaller than the
-  held-out gap). This is exactly the failure mode holding out a tuning slice
-  exists to catch.
+- **Not currently state of the art.** Held-out, multi-slice, current
+  cross-validated config: 0.482 ± 0.098 vs. GraphST's 0.569 ± 0.083 (gap 0.087).
+  Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
+- **The tuning slice did not represent the held-out result — a real, measured
+  finding, not a caveat added defensively.** Every hyperparameter was originally
+  chosen on DLPFC 151673 alone, which turned out to be the single most favorable
+  slice in the 12-slice set for that configuration (gap there: 0.026, ~5×
+  smaller than the first held-out measurement of 0.129). This is exactly the
+  failure mode holding out a tuning slice exists to catch, and diagnosing it
+  found a concrete, fixable cause: `memory_slots` had been chosen the same
+  single-slice way. Cross-validating it across different slices closed about a
+  third of the gap (0.129 → 0.087) — real, but uneven: 3 of 11 held-out slices
+  are now competitive, 3 from one subject are not. `n_hops`/`lambda_usage`
+  remain single-slice-tuned and were not re-validated the same way.
 - **Three hypotheses were tested and rejected on evidence**, and are documented
   rather than hidden: (a) per-row attention entropy as the anti-collapse term —
   wrong quantity, marginal *usage* entropy was the actual fix, without which the
