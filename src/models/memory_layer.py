@@ -157,7 +157,17 @@ class SpatialAddressMemoryLayer(nn.Module):
     even where their individual expression is noisy or dropout-heavy.
     """
 
-    def __init__(self, feature_dim, memory_slots=512, memory_dim=128, hidden_dim=256, n_hops=2, temperature=1.0):
+    def __init__(
+        self,
+        feature_dim,
+        memory_slots=512,
+        memory_dim=128,
+        hidden_dim=256,
+        n_hops=2,
+        temperature=1.0,
+        feature_hops=0,
+        latent_hops=0,
+    ):
         super().__init__()
         self.encoder = nn.Sequential(
             nn.Linear(feature_dim, hidden_dim),
@@ -168,9 +178,30 @@ class SpatialAddressMemoryLayer(nn.Module):
         self.memory_values = nn.Parameter(torch.randn(memory_slots, memory_dim) * 0.02)
         self.n_hops = n_hops
         self.temperature = temperature
+        # Two distinct hybrid variants, deliberately separated because WHERE the
+        # neighbour aggregation happens turns out to matter enormously:
+        #
+        #   feature_hops : smooth RAW features before encoding
+        #   latent_hops  : smooth the ENCODED representation, which is what
+        #                  GraphST actually does (z = adj @ (feat @ W1))
+        #
+        # Conflating the two would make an ablation of "hybrid vs. pure"
+        # misleading, since only the latter matches the reference method.
+        # Both default to 0, i.e. the pure "addressing replaces message
+        # passing" formulation.
+        self.feature_hops = feature_hops
+        self.latent_hops = latent_hops
 
     def forward(self, x, adjacency=None):
+        if adjacency is not None and self.feature_hops:
+            for _ in range(self.feature_hops):
+                x = torch.sparse.mm(adjacency, x)
+
         queries = self.encoder(x)
+
+        if adjacency is not None and self.latent_hops:
+            for _ in range(self.latent_hops):
+                queries = torch.sparse.mm(adjacency, queries)
         attn_scores = torch.matmul(queries, self.memory_keys.T) / self.temperature
         attn_weights = F.softmax(attn_scores, dim=-1)
 
@@ -199,6 +230,8 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
         hidden_dim=256,
         n_hops=2,
         temperature=1.0,
+        feature_hops=0,
+        latent_hops=0,
     ):
         super().__init__()
         self.memory = SpatialAddressMemoryLayer(
@@ -208,6 +241,8 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
             hidden_dim=hidden_dim,
             n_hops=n_hops,
             temperature=temperature,
+            feature_hops=feature_hops,
+            latent_hops=latent_hops,
         )
         self.decoder = nn.Sequential(
             nn.Linear(memory_dim, hidden_dim),

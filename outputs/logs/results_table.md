@@ -25,34 +25,86 @@ paper's text — two independent attempts to read the paper's own summarized
 numbers gave inconsistent figures (0.498 vs. 0.515 for STAGATE in two separate
 fetches), so we went to the source data instead rather than trust either.
 
-All of "our methods" rows use Leiden resolution matched to the true number of
-layers (7) via `src/eval/metrics.py::search_leiden_resolution` — the same
-convention GraphST's own `clustering()` uses — for a fair, equal-K comparison.
-Before this fix, the untrained-for-this-domain memory layer produced 34
-clusters against 7 true layers and scored ARI=0.172; matching resolution to
-K=7 raised that to 0.303. This is reported to show the fix was necessary and
-real, not to bury the fact that hyperparameters tuned on mouse Visium data did
-not transparently transfer to human DLPFC data.
+**All methods now share one clustering protocol** (`src/eval/clustering.py`):
+mclust-equivalent (`GaussianMixture(covariance_type="tied")`, the correct mapping
+for mclust's `EEE`) on PCA-20 of the embedding, then spatial label refinement —
+which is what GraphST and the benchmarking studies actually use. K is set to the
+true number of layers for every method, the standard convention in this benchmark.
 
-| Method | ARI vs. ground truth | n_clusters | Source |
-|---|---|---|---|
-| GraphST | 0.6327 | -- | Literature (Kang et al. 2025, computed by us from their released predictions) |
-| STAGATE | 0.5892 | -- | Literature |
-| Spatial_MGCN | 0.5561 | -- | Literature |
-| BayesSpace | 0.5499 | -- | Literature |
-| DeepST | 0.5384 | -- | Literature |
-| conST | 0.5277 | -- | Literature |
-| STMGCN | 0.5107 | -- | Literature |
-| **GraphST (our local run)** | **0.4911** | 7 | Run locally, this repo |
-| SEDR | 0.4723 | -- | Literature |
-| SpaGCN | 0.4652 | -- | Literature |
-| Seurat | 0.4295 | -- | Literature |
-| stLearn | 0.3681 | -- | Literature |
-| CCST | 0.3563 | -- | Literature |
-| SpaceFlow | 0.3510 | -- | Literature |
-| SCGDL | 0.3216 | -- | Literature |
-| **EmbeddedMemoryLayer (trained, ours)** | **0.3032** | 10 | Run locally, this repo |
-| **Scanpy PCA+Leiden (baseline, ours)** | **0.2532** | 7 | Run locally, this repo |
+This protocol change mattered a great deal and is worth stating plainly: an
+earlier version of this table scored our methods with Leiden and reported GraphST
+at 0.4911. Re-scoring the *identical* GraphST embedding under the correct protocol
+gives 0.5713, and 0.5902 with refinement — close to the literature's 0.6327 and
+within the ±0.05 seed variance published work reports. **Our harness had been
+understating GraphST, not GraphST underperforming.**
+
+| Method | ARI vs. ground truth | Source |
+|---|---|---|
+| GraphST | 0.6327 | Literature (Kang et al. 2025, computed by us from their released predictions) |
+| **GraphST (our local run, matched protocol)** | **0.5902** | Run locally, this repo |
+| STAGATE | 0.5892 | Literature |
+| Spatial_MGCN | 0.5561 | Literature |
+| **SpatialAddressMemoryAutoencoder (ours)** | **0.5510 ± 0.0178** | Run locally, this repo (5 seeds) |
+| BayesSpace | 0.5499 | Literature |
+| DeepST | 0.5384 | Literature |
+| conST | 0.5277 | Literature |
+| STMGCN | 0.5107 | Literature |
+| SEDR | 0.4723 | Literature |
+| SpaGCN | 0.4652 | Literature |
+| Seurat | 0.4295 | Literature |
+| stLearn | 0.3681 | Literature |
+| CCST | 0.3563 | Literature |
+| SpaceFlow | 0.3510 | Literature |
+| SCGDL | 0.3216 | Literature |
+| *Ours, Phase 0 (PCA input, no propagation, Leiden)* | *0.3032* | Superseded |
+| *Scanpy PCA+Leiden baseline (ours)* | *0.2532* | Superseded protocol |
+
+### Ablations behind the 0.303 → 0.551 improvement
+
+| Change | ARI | Note |
+|---|---|---|
+| Phase 0 starting point | 0.3032 | PCA-50 input, spatial info only as a loss penalty |
+| + HVG input, address propagation, **no** usage regularizer | **0.0000** | **Total slot collapse** — `slots_used=1`, identical loss at every hop count |
+| + marginal usage-entropy regularizer (1 address hop) | 0.4889 | The anti-collapse fix |
+| + 2 address hops | 0.5375 | |
+| + 4 address hops | **0.5487** | Monotonic in hops — the mechanism works |
+| + 5-seed average at best config | **0.5510 ± 0.0178** | |
+
+Two hypotheses were tested and **rejected on evidence**, recorded here rather than
+quietly dropped:
+
+| Rejected idea | ARI | Why it was plausible |
+|---|---|---|
+| Per-row attention entropy as the anti-collapse term | 0.0000 | Intuitive but the wrong quantity — the fix is *marginal* slot usage, not per-spot spread |
+| NB likelihood on raw counts | 0.346 ± 0.095 | 68–97% zeros genuinely violate MSE's Gaussian assumption |
+| ZINB likelihood | 0.331 ± 0.072 | Models dropout explicitly; stGRL's core contribution |
+| NB/ZINB + contrastive regularization | 0.183–0.251 | GraphST/MAEST both cite contrastive terms as essential |
+
+The count-likelihood result is a genuine negative: a more principled likelihood did
+not produce a more clusterable embedding, plausibly because fitting per-gene
+dispersion over 3000 genes gives the encoder a noisier gradient. Seed variance also
+grew 4–8×. The code is retained and tested (`src/models/count_losses.py`, verified
+against `scipy.stats.nbinom`) as a documented ablation.
+
+### Biological validation of the data (model-independent)
+
+Canonical layer markers from Maynard et al. 2021 vs. the annotated layers. This
+never looks at a model, so no model can game it (`src/eval/biological_validation.py`).
+
+| Layer | Marker | Provenance | log2 FC in-layer vs. rest | Enriched |
+|---|---|---|---|---|
+| Layer1 | AQP4 | verified | +0.53 | yes |
+| Layer2 | HPCAL1 | verified | +1.22 | yes |
+| Layer3 | FREM3 | verified | +1.82 | yes |
+| Layer4 | RORB | convention | +1.28 | yes |
+| Layer5 | TRABD2A | verified | +3.04 | yes |
+| Layer5 | PCP4 | verified | +1.38 | yes |
+| Layer6 | KRT17 | verified | +1.78 | yes |
+| WM | MOBP | verified | +2.36 | yes |
+
+**8/8 enriched.** Separately, the figshare `.h5ad` and Zenodo copies of this slice
+agree exactly (3639 spots, identical per-layer counts), and the matrix is confirmed
+raw integer counts as `seurat_v3` HVG selection requires.
 
 **Honest reading of this table**: on real ground-truth ARI, our trained
 memory layer beats our own Scanpy baseline (0.303 vs. 0.253), but it does
@@ -81,6 +133,15 @@ label-free datasets, what *is* reported:
   measure of how similarly two methods carve up the same tissue.
 
 ## Domain-identification comparison (real, run locally)
+
+> **Which model this section refers to.** The rows below measure the **Phase 0**
+> `EmbeddedMemoryLayer` (PCA-50 input, spatial information only as a loss penalty,
+> Leiden clustering) — *not* the current `SpatialAddressMemoryAutoencoder`. They are
+> kept because they are real measurements of that model on label-free data, but the
+> ground-truth ARI section above supersedes them as the headline result. Note also
+> the caveat below: scoring well on these unsupervised proxies did **not** translate
+> into competitive ARI once ground truth was available, which is precisely why the
+> proxies are not treated as evidence of correctness.
 
 | Method | Dataset | n_clusters | Silhouette | Spatial coherence (Moran's I) | Wall time (s) | ARI vs. baseline |
 |---|---|---|---|---|---|---|

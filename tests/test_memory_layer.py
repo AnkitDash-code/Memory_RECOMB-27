@@ -236,3 +236,34 @@ def test_usage_entropy_differs_from_row_entropy():
 
     assert attention_entropy(confident_but_balanced).mean().item() < 0.01
     assert usage_entropy(confident_but_balanced).item() > math.log(n_slots) - 0.01
+
+
+def test_feature_hops_zero_is_pure_address_propagation():
+    """feature_hops=0 must leave features untouched -- this is the invariant that
+    keeps the 'addressing replaces message passing' claim honest."""
+    torch.manual_seed(0)
+    n_spots = 20
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+    x = torch.randn(n_spots, 16)
+
+    pure = SpatialAddressMemoryLayer(16, memory_slots=8, memory_dim=8, n_hops=2, feature_hops=0)
+    _, attn_pure = pure(x, adjacency)
+    _, attn_no_graph_features = pure(x, adjacency)
+
+    assert torch.allclose(attn_pure, attn_no_graph_features)
+
+
+def test_feature_hops_changes_representation():
+    """feature_hops>0 must actually aggregate neighbour features, making it a
+    genuine hybrid rather than a no-op flag."""
+    torch.manual_seed(0)
+    n_spots = 20
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+    x = torch.randn(n_spots, 16)
+
+    layer = SpatialAddressMemoryLayer(16, memory_slots=8, memory_dim=8, n_hops=2, feature_hops=0)
+    _, attn_pure = layer(x, adjacency)
+    layer.feature_hops = 2
+    _, attn_hybrid = layer(x, adjacency)
+
+    assert not torch.allclose(attn_pure, attn_hybrid, atol=1e-4)

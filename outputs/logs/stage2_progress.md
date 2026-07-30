@@ -104,6 +104,55 @@ representation. Contrastive regularization made things worse in every pairing.
 This code is kept (tested, working) as a documented negative result and ablation,
 not deleted — but MSE remains the configuration to use.
 
+## Stage 4 — hybrid feature message passing (NEGATIVE RESULT, with a caveat)
+
+The pre-approved fallback: aggregate neighbour *features* in addition to
+propagating addresses, i.e. give up the "replaces message passing" premise if
+that is what it takes to close the gap. Implemented as an ablatable
+`feature_hops` parameter (0 = pure) rather than a fork.
+
+Smoothing **raw features before the encoder**, 3 seeds each:
+
+| feature_hops | addr_hops=2 | addr_hops=4 |
+|---|---|---|
+| **0 (pure)** | 0.5108 ± 0.037 | **0.5418 ± 0.015** |
+| 1 | 0.2165 ± 0.008 | 0.2232 ± 0.013 |
+| 2 | 0.1901 ± 0.011 | 0.2012 ± 0.006 |
+| 3 | 0.1588 ± 0.114 | 0.1623 ± 0.116 |
+
+Adding feature message passing roughly *halves* ARI, monotonically worse with
+more hops. Plausible mechanism: pre-smoothing 3000-dim expression destroys the
+per-spot signal the encoder needs to discriminate between memory slots — the
+representation is over-smoothed before it ever reaches the bottleneck.
+
+**Important caveat on this result.** GraphST does **not** aggregate raw features;
+it aggregates after a learned projection (`z = adj @ (feat @ W1)`). The sweep
+above therefore tests "smooth-then-encode", which is *not* the placement the
+reference method uses, so on its own it does not fairly refute the hybrid idea.
+A second variant (`latent_hops`, smoothing the encoded representation, matching
+GraphST's placement) was added specifically to test this properly rather than
+claim a conclusion the experiment did not support.
+
+Smoothing the **encoded representation** (GraphST's actual placement), 3 seeds:
+
+| latent_hops | addr_hops=2 | addr_hops=4 |
+|---|---|---|
+| **0 (pure)** | 0.5108 ± 0.037 | **0.5418 ± 0.015** |
+| 1 | 0.4248 ± 0.113 | 0.3369 ± 0.056 |
+| 2 | 0.3503 ± 0.033 | 0.4422 ± 0.123 |
+| 4 | 0.3023 ± 0.020 | 0.4849 ± 0.043 |
+
+Placement does matter — the GraphST-style hybrid recovers to 0.485 where the
+raw-feature version bottomed out at 0.22, vindicating the caveat above. But it
+**still loses to pure address propagation** (0.542), and it is markedly less
+stable across seeds.
+
+**Conclusion, now tested two ways:** feature message passing does not help this
+architecture. That is a *positive* finding for the project's central claim —
+"memory-addressing replaces message passing" is not merely a constraint being
+paid for here, it is the better-performing design in this model. It does not,
+however, close the gap to GraphST, which reaches 0.590 by a different route.
+
 ## Current best configuration
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.1, lambda_sharpen=0.0,

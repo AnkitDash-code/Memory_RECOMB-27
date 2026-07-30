@@ -39,6 +39,8 @@ def train_spatial_address_model(
     hidden_dim=256,
     n_hops=2,
     temperature=1.0,
+    feature_hops=0,
+    latent_hops=0,
     lambda_usage=1.0,
     lambda_sharpen=0.0,
     seed=0,
@@ -74,6 +76,8 @@ def train_spatial_address_model(
         hidden_dim=hidden_dim,
         n_hops=n_hops,
         temperature=temperature,
+        feature_hops=feature_hops,
+        latent_hops=latent_hops,
     ).to(device)
     optimizer = Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
 
