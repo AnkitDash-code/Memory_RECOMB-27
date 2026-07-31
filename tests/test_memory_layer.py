@@ -1,5 +1,6 @@
 import math
 
+import pytest
 import torch
 
 from src.models.memory_layer import (
@@ -10,7 +11,9 @@ from src.models.memory_layer import (
     address_distribution,
     attention_entropy,
     connectivities_to_edge_index,
+    contrastive_address_loss,
     expression_weighted_adjacency,
+    key_cosine_similarity,
     normalized_adjacency,
     spatial_smoothness_loss,
 )
@@ -226,8 +229,6 @@ def test_address_distribution_sparse_variants_produce_exact_zeros():
 
 
 def test_address_distribution_unknown_fn_raises():
-    import pytest
-
     with pytest.raises(ValueError):
         address_distribution(torch.randn(3, 4), "not_a_real_fn")
 
@@ -393,3 +394,32 @@ def test_kmeans_init_sets_keys_to_cluster_centers():
     for center in centers:
         closest = (layer.memory_keys.data - center).norm(dim=-1).min()
         assert closest < 1.0
+
+
+def test_key_cosine_similarity_high_for_near_duplicate_keys():
+    """A collapsed codebook (near-identical key vectors) should score close
+    to 1 -- the degenerate case this diagnostic exists to catch."""
+    base = torch.randn(1, 8)
+    keys = base.repeat(6, 1) + torch.randn(6, 8) * 1e-4
+    assert key_cosine_similarity(keys).item() > 0.99
+
+
+def test_key_cosine_similarity_low_for_orthogonal_keys():
+    keys = torch.eye(8)[:6]  # 6 orthonormal rows
+    assert key_cosine_similarity(keys).item() == pytest.approx(0.0, abs=1e-6)
+
+
+def test_contrastive_address_loss_minimal_for_disjoint_addresses():
+    """If real and corrupted addresses never pick the same slot, the
+    dot-product similarity (what the loss minimizes) should be ~0."""
+    real = torch.zeros(5, 4)
+    real[:, 0] = 1.0
+    corrupted = torch.zeros(5, 4)
+    corrupted[:, 1] = 1.0
+
+    assert contrastive_address_loss(real, corrupted).item() == pytest.approx(0.0, abs=1e-6)
+
+
+def test_contrastive_address_loss_maximal_for_identical_addresses():
+    real = torch.softmax(torch.randn(5, 4), dim=-1)
+    assert contrastive_address_loss(real, real).item() > 0.2

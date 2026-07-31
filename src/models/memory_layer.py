@@ -86,6 +86,48 @@ def usage_entropy(attn_weights):
     return -(usage * torch.log(usage + eps)).sum()
 
 
+def key_cosine_similarity(memory_keys):
+    """Mean pairwise cosine similarity between memory_keys rows (off-diagonal).
+
+    A diagnostic distinct from usage_entropy: usage_entropy can look healthy
+    (every slot gets used) while the KEY VECTORS themselves have collapsed to
+    be nearly identical -- a subtler, "quiet" form of codebook degeneracy that
+    usage statistics alone would not catch, since a spot can still be routed
+    to different (but near-duplicate) slots. Low mean similarity indicates a
+    well-spread codebook; a value approaching 1 indicates collapse. Added as
+    the instrumentation an external review recommended be in place *before*
+    running any new loss term that touches the codebook (e.g. a contrastive
+    term), rather than diagnosing a failure after the fact -- exactly what
+    happened with Stage 3's NB/ZINB + contrastive result, which was never
+    decomposed into which change actually caused the regression.
+    """
+    normed = F.normalize(memory_keys, dim=-1)
+    sim = normed @ normed.T
+    n = sim.shape[0]
+    off_diagonal_sum = sim.sum() - torch.diagonal(sim).sum()
+    return off_diagonal_sum / (n * (n - 1))
+
+
+def contrastive_address_loss(attn_weights, attn_corrupted):
+    """Penalize agreement between real and feature-corrupted address assignments.
+
+    GraphST and MAEST both report that a contrastive/denoising term is needed to
+    stop the representation collapsing. Here the discrimination is done in
+    ADDRESS space (not raw embeddings): a spot's address under real features
+    should NOT match its address when the features are shuffled across spots.
+    Implemented as the mean dot-product similarity between the two
+    distributions, which is minimized.
+
+    Originally introduced in Stage 3 (train_count_model.py) bundled together
+    with an NB/ZINB reconstruction likelihood, and rejected as part of that
+    combination without isolating which change caused the regression. Moved
+    here so it can be tested on its own, on top of the winning MSE model, as
+    an independent experiment -- see train_spatial_address_model's
+    lambda_contrastive parameter.
+    """
+    return (attn_weights * attn_corrupted).sum(dim=-1).mean()
+
+
 class EmbeddedMemoryAutoencoder(nn.Module):
     """Trainable wrapper around EmbeddedMemoryLayer.
 

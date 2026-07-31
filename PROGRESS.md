@@ -362,29 +362,7 @@ number (following a smaller, genuinely blind check on subject-3 alone first).
 The pattern held consistently across both checks, which is reassuring, but a
 fully disjoint validation would strengthen this further.
 
-### 11. Still open
-
-- The subject-3 slices (151674-676) still show the largest gaps in the whole
-  set, though considerably smaller than before Fix #4 -- worth investigating
-  directly; no data-level explanation (sparsity, layer proportions, spot
-  count) has been found so far.
-- 151671 has been volatile across fixes (jumped up under consensus at
-  `lambda_usage=0.02`, then further under expression-weighted adjacency) --
-  worth understanding whether this reflects a real interaction between the
-  fixes or noise.
-- `memory_slots`/`n_hops`/`lambda_usage` were cross-validated under uniform
-  adjacency (Stages 8, 11) -- now that expression-weighted adjacency is the
-  default, re-validating them under the new adjacency is a reasonable next
-  check, since the optimal values could interact with this architectural change.
-- An address-space contrastive loss was also proposed by the external review
-  (Fix #1, flagged as highest-risk) but not yet attempted -- needs
-  entropy/collapse instrumentation added *before* running it, not after,
-  given Stage 3's related NB/ZINB failure was never fully diagnosed at the
-  mechanism level.
-- Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
-  session; STAGATE and Garfield remain blocked on Windows as documented.
-
-### 12. entmax15/sparsemax address distribution (Fix #2) -- DONE, NOT ADOPTED
+### 11. entmax15/sparsemax address distribution (Fix #2) -- DONE, NOT ADOPTED
 
 Tested both as opt-in `attention_fn` alternatives to softmax
 (`memory_layer.address_distribution`, unit-tested for valid/sparse simplex
@@ -399,19 +377,78 @@ justified a full 12-slice run. Both kept as opt-in, unit-tested ablations;
 sparsity may prematurely commit ambiguous boundary spots to too few slots,
 losing the soft blending that lets them average two layers' address mass).
 
+### 12. Address-space contrastive loss (Fix #1) -- DONE, NOT ADOPTED, instrumented first
+
+The highest-risk item on the external review's list, tested carefully per
+its own recommendation: added `key_cosine_similarity()` (mean pairwise
+cosine similarity of `memory_keys` rows -- a codebook-collapse diagnostic
+distinct from `usage_entropy`, catching the "quiet" failure mode where every
+slot gets used but the key vectors themselves have become near-duplicates)
+and moved `contrastive_address_loss` (Stage 3's original term) into
+`memory_layer.py` so it could be tested in isolation, on top of the winning
+MSE model, rather than bundled with NB/ZINB as it was in Stage 3. **Turned up
+a correction to the reviewer's own diagnosis**: Gemini's hypothesis for why
+Stage 3 failed (contrastive loss on continuous embeddings, not addresses)
+was factually wrong -- the term was already address-space; the untested
+variable was the NB/ZINB pairing, not the space it operated in.
+
+Smoke-tested with instrumentation active first: no collapse signal at
+`lambda_contrastive=0.1` (key similarity stayed low/negative, 16/16 slots
+stayed used throughout). A single-seed sweep suggested 0.1 was promising
+(+0.053 ARI) -- but the Subject-3 5-seed check told a different story: mean
+delta -0.046 per-seed, -0.031 consensus, driven by a sharp drop on 151676
+(-0.126). The single-seed result was noise, not signal. No collapse, but no
+improvement either. Kept as an opt-in, unit-tested parameter
+(`lambda_contrastive`, `--lambda-contrastive` on the harness); `0.0` (off)
+remains the default. See `outputs/logs/stage2_progress.md` (Stage 15).
+
+**This completes the external review's full four-fix plan**, in the
+prioritized order it suggested: the significance test confirmed the gap was
+real; Fix #4 (expression-weighted adjacency) was adopted; Fix #2
+(entmax15/sparsemax) and Fix #1 (contrastive loss) were both tested properly
+and not adopted. Fix #3 (temperature annealing) was never tested standalone,
+per the reviewer's own reasoning that it only matters paired with a sparse
+projection -- moot since neither sparse variant showed promise.
+
+### 13. Still open
+
+- The subject-3 slices (151674-676) still show the largest gaps in the whole
+  set, though considerably smaller than before Fix #4 -- worth investigating
+  directly; no data-level explanation (sparsity, layer proportions, spot
+  count) has been found so far, and neither Fix #2 nor Fix #1 moved them.
+- 151671 has been volatile across fixes (jumped up under consensus at
+  `lambda_usage=0.02`, then further under expression-weighted adjacency) --
+  worth understanding whether this reflects a real interaction between the
+  fixes or noise.
+- `memory_slots`/`n_hops`/`lambda_usage` were cross-validated under uniform
+  adjacency (Stages 8, 11) -- now that expression-weighted adjacency is the
+  default, re-validating them under the new adjacency is a reasonable next
+  check, since the optimal values could interact with this architectural change.
+- All four of the external review's suggestions have now been tested; the
+  next genuinely new direction would need a fresh source of ideas rather
+  than further tuning of this same set of mechanisms.
+- Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
+  session; STAGATE and Garfield remain blocked on Windows as documented.
+
 ## Honest framing for any write-up
 
-The current result is real progress: four evidence-based fixes closed the
-held-out consensus gap from 0.129 to 0.010, and a paired significance test
-now shows no statistically significant difference from GraphST on either
-metric (n=11 held-out slices). It should be described as "no significant
-difference detected from a real spatial-transcriptomics SOTA method, after
-rigorous cross-validation and one targeted architectural fix," not as "beats
-state of the art" or "proven equivalent" -- GraphST still leads on 6 of 11
-held-out slices, most clearly on one subject's three slices (151674-676,
-still a loss on all three even after Fix #4), and a significance test at
-n=11 cannot rule out a real but small remaining difference. Several hypotheses were tested and rejected on evidence (per-row
-entropy as the anti-collapse term; NB/ZINB likelihood; hybrid feature message
-passing in two placements; naive embedding averaging across seeds; k-means
-codebook initialization), and the tuning slice must stay out of any headline
+The current result is real progress: one architectural fix (expression-weighted
+adjacency) closed the held-out consensus gap from 0.024 to 0.010 on top of
+three earlier hyperparameter cross-validations (0.129 -> 0.087 -> 0.073 ->
+0.024), and a paired significance test now shows no statistically significant
+difference from GraphST on either metric (n=11 held-out slices). Two further
+candidate fixes (entmax15/sparsemax, an address-space contrastive loss) were
+tested properly and did not help -- reported as negative results, not hidden.
+It should be described as "no significant difference detected from a real
+spatial-transcriptomics SOTA method, after rigorous cross-validation and one
+targeted architectural fix," not as "beats state of the art" or "proven
+equivalent" -- GraphST still leads on 6 of 11 held-out slices, most clearly
+on one subject's three slices (151674-676, still a loss on all three even
+after every fix tried so far), and a significance test at n=11 cannot rule
+out a real but small remaining difference. Several hypotheses were tested and
+rejected on evidence (per-row entropy as the anti-collapse term; NB/ZINB
+likelihood; hybrid feature message passing in two placements; naive embedding
+averaging across seeds; k-means codebook initialization; entmax15/sparsemax
+address distribution; address-space contrastive regularization), and the
+tuning slice must stay out of any headline
 average.

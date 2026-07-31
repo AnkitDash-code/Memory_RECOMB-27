@@ -714,6 +714,74 @@ single spot can use.
 (`attention_fn="entmax15"/"sparsemax"`, `--attention-fn` on the harness) for
 reproducibility; `"softmax"` remains the default.
 
+## Stage 15 -- address-space contrastive loss (Fix #1): NOT ADOPTED, instrumented first
+
+The external review's highest-risk suggestion, and the one it explicitly
+flagged needed care: Stage 3 (train_count_model.py) had already tested a
+contrastive term and rejected it, bundled together with an NB/ZINB
+likelihood, without ever isolating which change caused that regression.
+Gemini's specific hypothesis for *why* Stage 3 failed -- that the contrastive
+loss was applied to continuous embeddings rather than discrete address
+distributions -- turned out to be **factually wrong on inspection**:
+`contrastive_address_loss` was already operating in address space (mean
+dot-product similarity between a spot's real address and its address under a
+feature-permutation corruption, minimized). The actual untested variable was
+never the space it operated in, but the *combination* with NB/ZINB.
+
+Per the reviewer's own recommendation, instrumentation was added *before*
+running anything: moved `contrastive_address_loss` into `memory_layer.py`
+(shared, not NB/ZINB-specific) and added `key_cosine_similarity()` -- mean
+pairwise cosine similarity of `memory_keys` rows, a codebook-collapse
+diagnostic distinct from `usage_entropy` (usage entropy can look healthy
+while the key vectors themselves have collapsed to near-duplicates; this
+catches that "quiet" failure mode directly). Both logged every `log_every`
+epochs alongside the existing entropy/slot-usage diagnostics whenever
+`lambda_contrastive` is nonzero.
+
+**Smoke test with instrumentation active** (151674, seed 0, `lambda_contrastive`
+0.0 vs 0.1): `key_cosine_similarity` stayed low and negative throughout both
+runs (-0.02 to -0.04), `slots_used` stayed at 16 in both -- no collapse
+signal in either case. A quick sweep on the same slice/seed (0.0/0.05/0.1/0.3)
+showed 0.1 scoring notably higher (+0.053 ARI) and 0.3 destabilizing
+(-0.104) -- promising enough to check on more than one seed before deciding.
+
+**Subject-3 check (`lambda_contrastive=0.1`, 5 seeds, GraphST skipped):**
+
+| Slice | Baseline per-seed | Contrastive per-seed | Baseline consensus | Contrastive consensus |
+|---|---|---|---|---|
+| 151674 | 0.468 | 0.474 (+0.006) | 0.524 | 0.541 (+0.017) |
+| 151675 | 0.469 | 0.452 (-0.017) | 0.551 | 0.491 (-0.060) |
+| 151676 | 0.491 | 0.365 (-0.126) | 0.473 | 0.425 (-0.048) |
+| **Mean delta** | | **-0.046** | | **-0.031** |
+
+The single-seed sweep's promising result on 151674 (+0.053) turned out to be
+noise, not signal -- across 5 seeds, 151674 shows only a marginal +0.006, and
+the aggregate across all three subject-3 slices is a net regression, driven
+mainly by a sharp per-seed drop on 151676 (-0.126). This is exactly the kind
+of single-seed-optimistic pattern this project has now seen multiple times
+(the whole reason cross-validation and multi-seed checks exist), and a good
+reminder not to commit to a full 12-slice run off one seed's number, however
+promising.
+
+**Honest read.** No collapse (unlike the qualitative failure mode Stage 3's
+combined NB/ZINB+contrastive run produced) -- the instrumentation confirms
+this is a genuine "doesn't help" result, not a repeat of a training pathology.
+Not enough signal to justify a full 12-slice x 5-seed run. `lambda_contrastive`
+kept as an opt-in, unit-tested parameter (`train_spatial_address_model(...,
+lambda_contrastive=...)`, `--lambda-contrastive` on the harness) for
+reproducibility and further tuning if pursued; `0.0` (off) remains the
+default.
+
+**This completes the external review's full four-fix plan**, tested in the
+prioritized order it suggested: significance test (Stage 12) confirmed the
+gap was real; Fix #4 expression-weighted adjacency (Stage 13) was a genuine
+improvement and adopted; Fix #2 entmax15/sparsemax (Stage 14) and Fix #1
+address-space contrastive loss (Stage 15) were both tested properly and not
+adopted. Fix #3 (temperature annealing) was never tested standalone, per the
+reviewer's own reasoning that it only matters paired with a sparse
+projection -- since neither sparse variant showed promise, that pairing was
+moot.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

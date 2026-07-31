@@ -12,6 +12,7 @@ from src.models.count_losses import nb_loss, zinb_loss
 from src.models.memory_layer import (
     SpatialAddressCountAutoencoder,
     attention_entropy,
+    contrastive_address_loss,
     normalized_adjacency,
     usage_entropy,
 )
@@ -24,19 +25,6 @@ def _hvg_counts(adata):
     counts = subset.layers["counts"]
     counts = counts.toarray() if hasattr(counts, "toarray") else np.asarray(counts)
     return np.ascontiguousarray(counts, dtype=np.float32)
-
-
-def contrastive_address_loss(attn_weights, attn_corrupted):
-    """Penalize agreement between real and feature-corrupted address assignments.
-
-    GraphST and MAEST both report that a contrastive/denoising term is needed to
-    stop the representation collapsing. Here the discrimination is done in
-    address space: a spot's address under real features should NOT match its
-    address when the features are shuffled across spots. Implemented as the
-    mean dot-product similarity between the two distributions, which is
-    minimized.
-    """
-    return (attn_weights * attn_corrupted).sum(dim=-1).mean()
 
 
 def train_count_model(

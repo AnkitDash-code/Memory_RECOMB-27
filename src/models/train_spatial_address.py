@@ -17,7 +17,9 @@ from src.data.preprocess import get_hvg_features
 from src.models.memory_layer import (
     SpatialAddressMemoryAutoencoder,
     attention_entropy,
+    contrastive_address_loss,
     expression_weighted_adjacency,
+    key_cosine_similarity,
     normalized_adjacency,
     usage_entropy,
 )
@@ -44,6 +46,7 @@ def train_spatial_address_model(
     latent_hops=0,
     lambda_usage=0.02,
     lambda_sharpen=0.0,
+    lambda_contrastive=0.0,
     kmeans_init=False,
     expression_weighted=True,
     attention_fn="softmax",
@@ -109,13 +112,25 @@ def train_spatial_address_model(
     keep it).
 
     attention_fn selects how raw address scores are mapped to a probability
-    simplex: "softmax" (default, dense), "entmax15" (1.5-entmax, sparse and
-    differentiable), or "sparsemax" (exact Euclidean projection, sparsest,
-    can produce hard-zero gradients for pruned slots -- see
-    memory_layer.address_distribution). Candidate fix for boundary blur,
-    same motivation as expression_weighted but acting on the address itself
-    rather than the propagation graph. Not yet evaluated at scale; "softmax"
-    remains the default until it is.
+    simplex: "softmax" (default), "entmax15", or "sparsemax" (see
+    memory_layer.address_distribution). Both sparse alternatives were tested
+    (Stage 14) on the subject-3 slices and REJECTED: entmax15 regressed
+    clearly on every slice, sparsemax was a wash. "softmax" remains the
+    default.
+
+    lambda_contrastive > 0 adds contrastive_address_loss on top of the MSE
+    objective: a spot's address under real features is pushed to disagree
+    with its address when features are shuffled across spots (permutation
+    corruption), discriminating in ADDRESS space specifically. This loss term
+    already existed (Stage 3, train_count_model.py) but was only ever tested
+    bundled with an NB/ZINB likelihood, and rejected as part of that
+    combination without isolating which change caused the regression -- an
+    external review's hypothesis for why (contrastive loss applied to
+    continuous embeddings rather than discrete addresses) turned out to be
+    factually wrong, since it was already address-space; this parameter lets
+    it be tested on its own, on top of the winning MSE model. Off by default,
+    an explicit ablation. See key_cosine_similarity for the accompanying
+    codebook-collapse diagnostic, logged whenever lambda_contrastive != 0.
     """
     set_seed(seed)
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -166,6 +181,10 @@ def train_spatial_address_model(
         if lambda_sharpen:
             # Positive sign: MINIMIZE per-row entropy -> confident per-spot assignment.
             loss = loss + lambda_sharpen * attention_entropy(attn_weights).mean()
+        if lambda_contrastive:
+            permutation = torch.randperm(x.shape[0], device=device)
+            _, _, attn_corrupted = model(x[permutation], adjacency)
+            loss = loss + lambda_contrastive * contrastive_address_loss(attn_weights, attn_corrupted)
 
         loss.backward()
         optimizer.step()
@@ -174,6 +193,7 @@ def train_spatial_address_model(
             with torch.no_grad():
                 median_entropy = attention_entropy(attn_weights).median().item()
                 n_slots_used = (attn_weights.argmax(dim=-1).unique()).numel()
+                key_sim = key_cosine_similarity(model.memory.memory_keys).item()
             row = {
                 "epoch": epoch,
                 "recon_loss": recon_loss.item(),
@@ -182,6 +202,7 @@ def train_spatial_address_model(
                 "usage_entropy": slot_usage_entropy.item(),
                 "max_entropy": max_entropy,
                 "n_slots_used": int(n_slots_used),
+                "key_cosine_similarity": key_sim,
             }
             history.append(row)
             if verbose:
@@ -189,7 +210,7 @@ def train_spatial_address_model(
                     f"epoch {epoch:4d}  recon={row['recon_loss']:.4f}  "
                     f"row_entropy={median_entropy:.3f}  "
                     f"usage_entropy={row['usage_entropy']:.3f}/{max_entropy:.3f}  "
-                    f"slots_used={n_slots_used}"
+                    f"slots_used={n_slots_used}  key_cos_sim={key_sim:.3f}"
                 )
 
     model.eval()

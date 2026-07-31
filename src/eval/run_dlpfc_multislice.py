@@ -37,6 +37,9 @@ UNIFORM_ADJACENCY_OUTPUT_PATH = (
 ATTENTION_FN_OUTPUT_PATH = (
     Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_attention_{fn}.json"
 )
+CONTRASTIVE_OUTPUT_PATH = (
+    Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_contrastive.json"
+)
 TUNING_SLICE = "151673"
 
 
@@ -45,7 +48,7 @@ def _ari(truth, labels, mask):
 
 
 def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kmeans_init=False,
-                    expression_weighted=True, attention_fn="softmax"):
+                    expression_weighted=True, attention_fn="softmax", lambda_contrastive=0.0):
     """model="mse" is the tuned, winning configuration (pure address propagation,
     memory_slots=32 -- see train_spatial_address_model's defaults). model="count"
     is the rejected NB/ZINB ablation, kept available for reproducing that negative
@@ -56,7 +59,9 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kme
     Stage 13) reweights spatial edges by expression similarity; pass False for
     the plain-adjacency ablation. attention_fn selects the address-distribution
     normalization ("softmax" default, "entmax15"/"sparsemax" as sparse
-    alternatives -- see memory_layer.address_distribution)."""
+    alternatives -- see memory_layer.address_distribution). lambda_contrastive
+    adds address-space contrastive regularization (Stage 3's original term,
+    isolated from the NB/ZINB likelihood it was previously bundled with)."""
     raw = load_dlpfc_slice(sample)
     adata = preprocess_hvg(raw.copy())
 
@@ -81,7 +86,7 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kme
             _, trained, _ = train_spatial_address_model(
                 adata.copy(), seed=seed, device=device, verbose=False,
                 kmeans_init=kmeans_init, expression_weighted=expression_weighted,
-                attention_fn=attention_fn,
+                attention_fn=attention_fn, lambda_contrastive=lambda_contrastive,
             )
             embedding = trained.obsm["X_spatial_address"]
         labels = cluster_embedding(embedding, n_layers, coords=coords, refine=True)
@@ -142,6 +147,10 @@ def main():
                          default="softmax",
                          help="Ablation: address-distribution normalization. Non-default "
                               "choices write to a separate output file, not the main results.")
+    parser.add_argument("--lambda-contrastive", type=float, default=0.0,
+                         help="Ablation: address-space contrastive regularization weight "
+                              "(Stage 3's term, isolated from NB/ZINB). Nonzero writes to a "
+                              "separate output file, not the main results.")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -153,7 +162,7 @@ def main():
             sample, seeds, device,
             run_graphst_too=not args.skip_graphst, model=args.model,
             kmeans_init=args.kmeans_init, expression_weighted=not args.uniform_adjacency,
-            attention_fn=args.attention_fn,
+            attention_fn=args.attention_fn, lambda_contrastive=args.lambda_contrastive,
         )
         if result is None:
             continue
@@ -207,6 +216,8 @@ def main():
         output_path = UNIFORM_ADJACENCY_OUTPUT_PATH
     elif args.attention_fn != "softmax":
         output_path = Path(str(ATTENTION_FN_OUTPUT_PATH).format(fn=args.attention_fn))
+    elif args.lambda_contrastive:
+        output_path = CONTRASTIVE_OUTPUT_PATH
     else:
         output_path = OUTPUT_PATH
     output_path.parent.mkdir(parents=True, exist_ok=True)

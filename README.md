@@ -112,15 +112,24 @@ risk/cost — expression-weighted adjacency first (cheapest, most targeted to
 the actual failure mode), entmax/sparsemax second, and an address-space
 contrastive loss last (flagged as highest-risk, likely to repeat the Stage 3
 NB/ZINB-style failure if not instrumented carefully). This session
-implemented and tested all of the first three: the significance test and Fix
-#4 (expression-weighted adjacency) were real improvements; entmax15/sparsemax
-(Fix #2, tested on the same subject-3 subset used to validate Fix #4) were
-**not** — entmax15 regressed clearly on every slice, sparsemax was a wash —
-so `attention_fn` stays an opt-in ablation, softmax remains the default (see
-[`PROGRESS.md`](PROGRESS.md), section 12, and Stage 14 in
-[`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for the
-full numbers). The address-space contrastive loss (Fix #1) remains queued,
-not yet attempted.
+implemented and tested the entire plan: the significance test and Fix #4
+(expression-weighted adjacency) were real improvements and adopted;
+entmax15/sparsemax (Fix #2, tested on the same subject-3 subset used to
+validate Fix #4) were **not** — entmax15 regressed clearly on every slice,
+sparsemax was a wash. The contrastive loss (Fix #1) turned up a correction to
+the reviewer's own diagnosis: it had already been tried in Stage 3, and
+inspection showed it was already address-space, not continuous-embedding, as
+Gemini had guessed — the untested variable was the NB/ZINB pairing it was
+bundled with, not the space it operated in. Tested in isolation, with the
+recommended entropy/codebook-collapse instrumentation added first: no
+collapse, but no improvement either (a promising single-seed result on one
+slice didn't hold up across 5 seeds on the Subject-3 check). Both `attention_fn`
+and `lambda_contrastive` stay opt-in ablations; softmax/off remain the
+defaults (see [`PROGRESS.md`](PROGRESS.md), sections 11–12, and Stages 14–15
+in [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for
+the full numbers). Fix #3 (temperature annealing) was never tested standalone
+per the reviewer's own reasoning that it only matters paired with a sparse
+projection — moot since neither sparse variant showed promise.
 
 ### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
 
