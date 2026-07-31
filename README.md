@@ -109,12 +109,18 @@ sparse-attention alternatives to softmax (verified, not hallucinated APIs). A
 follow-up review of that plan added the significance-testing catch above
 (the std-comparison wasn't a real test) and prioritized the fixes by
 risk/cost — expression-weighted adjacency first (cheapest, most targeted to
-the actual failure mode), entmax/sparsemax + temperature annealing second,
-and an address-space contrastive loss last (flagged as highest-risk, likely
-to repeat the Stage 3 NB/ZINB-style failure if not instrumented carefully).
-This session implemented and validated the significance test and Fix #4
-within the same sitting; entmax/sparsemax and the contrastive-loss idea are
-queued, not yet attempted — see [`PROGRESS.md`](PROGRESS.md) for status.
+the actual failure mode), entmax/sparsemax second, and an address-space
+contrastive loss last (flagged as highest-risk, likely to repeat the Stage 3
+NB/ZINB-style failure if not instrumented carefully). This session
+implemented and tested all of the first three: the significance test and Fix
+#4 (expression-weighted adjacency) were real improvements; entmax15/sparsemax
+(Fix #2, tested on the same subject-3 subset used to validate Fix #4) were
+**not** — entmax15 regressed clearly on every slice, sparsemax was a wash —
+so `attention_fn` stays an opt-in ablation, softmax remains the default (see
+[`PROGRESS.md`](PROGRESS.md), section 12, and Stage 14 in
+[`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) for the
+full numbers). The address-space contrastive loss (Fix #1) remains queued,
+not yet attempted.
 
 ### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
 

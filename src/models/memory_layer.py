@@ -2,6 +2,37 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from entmax import entmax15, sparsemax
+
+
+def address_distribution(scores, attention_fn="softmax", dim=-1):
+    """Map raw address scores to a probability simplex, with a choice of
+    normalization. All three are valid drop-in alternatives for the same
+    address-distribution role in SpatialAddressMemoryLayer:
+
+      * "softmax"  -- dense, every slot gets nonzero (if tiny) weight
+      * "entmax15" -- 1.5-entmax (Tsallis alpha=1.5): sparse, differentiable,
+                      a soft middle ground between softmax and sparsemax
+      * "sparsemax"-- Euclidean projection onto the simplex: exact zeros for
+                      low-scoring slots, can produce hard zero gradients for
+                      pruned slots early in training (a known sparsemax
+                      failure mode, not a bug if slot usage looks unstable)
+
+    Motivation for the sparse variants: a dense softmax always gives every
+    memory slot *some* weight, which can blur the address distribution
+    (and thus the propagated embedding) across ambiguous spots even after
+    training. A sparse projection forces each spot to commit to a small
+    subset of slots, which may sharpen layer boundaries the same way
+    expression-weighted adjacency (Stage 13) does for propagation weights,
+    but acting on the address itself rather than the graph.
+    """
+    if attention_fn == "softmax":
+        return F.softmax(scores, dim=dim)
+    if attention_fn == "entmax15":
+        return entmax15(scores, dim=dim)
+    if attention_fn == "sparsemax":
+        return sparsemax(scores, dim=dim)
+    raise ValueError(f"Unknown attention_fn: {attention_fn!r}")
 
 
 class EmbeddedMemoryLayer(nn.Module):
@@ -214,6 +245,7 @@ class SpatialAddressMemoryLayer(nn.Module):
         temperature=1.0,
         feature_hops=0,
         latent_hops=0,
+        attention_fn="softmax",
     ):
         super().__init__()
         self.encoder = nn.Sequential(
@@ -225,6 +257,7 @@ class SpatialAddressMemoryLayer(nn.Module):
         self.memory_values = nn.Parameter(torch.randn(memory_slots, memory_dim) * 0.02)
         self.n_hops = n_hops
         self.temperature = temperature
+        self.attention_fn = attention_fn
         # Two distinct hybrid variants, deliberately separated because WHERE the
         # neighbour aggregation happens turns out to matter enormously:
         #
@@ -275,7 +308,7 @@ class SpatialAddressMemoryLayer(nn.Module):
             for _ in range(self.latent_hops):
                 queries = torch.sparse.mm(adjacency, queries)
         attn_scores = torch.matmul(queries, self.memory_keys.T) / self.temperature
-        attn_weights = F.softmax(attn_scores, dim=-1)
+        attn_weights = address_distribution(attn_scores, self.attention_fn, dim=-1)
 
         propagated = attn_weights
         if adjacency is not None:
@@ -304,6 +337,7 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
         temperature=1.0,
         feature_hops=0,
         latent_hops=0,
+        attention_fn="softmax",
     ):
         super().__init__()
         self.memory = SpatialAddressMemoryLayer(
@@ -315,6 +349,7 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
             temperature=temperature,
             feature_hops=feature_hops,
             latent_hops=latent_hops,
+            attention_fn=attention_fn,
         )
         self.decoder = nn.Sequential(
             nn.Linear(memory_dim, hidden_dim),

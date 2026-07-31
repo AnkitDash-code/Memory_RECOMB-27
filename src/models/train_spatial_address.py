@@ -46,6 +46,7 @@ def train_spatial_address_model(
     lambda_sharpen=0.0,
     kmeans_init=False,
     expression_weighted=True,
+    attention_fn="softmax",
     seed=0,
     device=None,
     log_every=100,
@@ -106,6 +107,15 @@ def train_spatial_address_model(
     blind held-out validation the way memory_slots/n_hops/lambda_usage's
     cross-validation was (the full-scale number was seen before deciding to
     keep it).
+
+    attention_fn selects how raw address scores are mapped to a probability
+    simplex: "softmax" (default, dense), "entmax15" (1.5-entmax, sparse and
+    differentiable), or "sparsemax" (exact Euclidean projection, sparsest,
+    can produce hard-zero gradients for pruned slots -- see
+    memory_layer.address_distribution). Candidate fix for boundary blur,
+    same motivation as expression_weighted but acting on the address itself
+    rather than the propagation graph. Not yet evaluated at scale; "softmax"
+    remains the default until it is.
     """
     set_seed(seed)
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -128,6 +138,7 @@ def train_spatial_address_model(
         temperature=temperature,
         feature_hops=feature_hops,
         latent_hops=latent_hops,
+        attention_fn=attention_fn,
     ).to(device)
 
     if kmeans_init:

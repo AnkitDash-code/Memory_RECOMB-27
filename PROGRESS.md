@@ -376,15 +376,28 @@ fully disjoint validation would strengthen this further.
   adjacency (Stages 8, 11) -- now that expression-weighted adjacency is the
   default, re-validating them under the new adjacency is a reasonable next
   check, since the optimal values could interact with this architectural change.
-- entmax/sparsemax (replacing the softmax address distribution with a sparse
-  alternative) and an address-space contrastive loss were also proposed by
-  the external review and prioritized after Fix #4, but not attempted this
-  session due to time -- queued as the next concrete experiments. The
-  contrastive-loss idea specifically needs entropy/collapse instrumentation
-  added *before* running it, not after, given Stage 3's related NB/ZINB
-  failure was never fully diagnosed at the mechanism level.
+- An address-space contrastive loss was also proposed by the external review
+  (Fix #1, flagged as highest-risk) but not yet attempted -- needs
+  entropy/collapse instrumentation added *before* running it, not after,
+  given Stage 3's related NB/ZINB failure was never fully diagnosed at the
+  mechanism level.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
+
+### 12. entmax15/sparsemax address distribution (Fix #2) -- DONE, NOT ADOPTED
+
+Tested both as opt-in `attention_fn` alternatives to softmax
+(`memory_layer.address_distribution`, unit-tested for valid/sparse simplex
+rows). Subject-3 check (same protocol used to validate Fix #4 before its full
+run): `entmax15` was a clear, consistent regression on every slice and both
+metrics (mean delta -0.064 per-seed, -0.087 consensus) -- rejected outright.
+`sparsemax` was a wash (-0.023 per-seed, -0.002 consensus, one slice up two
+down) -- nothing like Fix #4's clear signal on this same subset. Neither
+justified a full 12-slice run. Both kept as opt-in, unit-tested ablations;
+`"softmax"` remains the default. See `outputs/logs/stage2_progress.md`
+(Stage 14) for the full per-slice breakdown and a plausible mechanism (hard
+sparsity may prematurely commit ambiguous boundary spots to too few slots,
+losing the soft blending that lets them average two layers' address mass).
 
 ## Honest framing for any write-up
 

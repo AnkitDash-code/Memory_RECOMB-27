@@ -663,6 +663,57 @@ next step if pursuing this fix further.
 into the old behavior for the ablation). Previous uniform-adjacency full run
 archived in `outputs/logs/dlpfc_multislice_results_uniform_adjacency.json`.
 
+## Stage 14 -- entmax15 / sparsemax address distribution (Fix #2): NOT ADOPTED
+
+The external review's second-priority suggestion: replace the dense softmax
+mapping raw address scores to a probability simplex with a sparse
+alternative (`entmax15` or `sparsemax` from the `deep-spin/entmax` package,
+installed via `uv add entmax`), so each spot's address commits to a small
+subset of memory slots rather than always giving every slot some nonzero
+weight. Implemented as `address_distribution(scores, attention_fn, dim)` in
+`memory_layer.py` (dispatches to `F.softmax`/`entmax15`/`sparsemax`, all
+verified to produce valid, autograd-compatible simplex rows), wired through
+`SpatialAddressMemoryLayer`/`SpatialAddressMemoryAutoencoder`/
+`train_spatial_address_model` as an `attention_fn` parameter, `--attention-fn`
+on the harness. Unit-tested: sparse variants produce exact zeros (unlike
+softmax), sparsemax sparsest of the three, unknown values raise.
+
+**Single-seed smoke test** (151674, the current default config otherwise):
+softmax 0.4852, entmax15 0.4325, sparsemax 0.4818 -- inconclusive on its own,
+but suggestive that neither sparse variant obviously helps.
+
+**Subject-3 check (5 seeds, GraphST skipped), same protocol used to validate
+Fix #4 before committing to a full run:**
+
+| Slice | Baseline (softmax) per-seed | entmax15 | sparsemax | Baseline consensus | entmax15 | sparsemax |
+|---|---|---|---|---|---|---|
+| 151674 | 0.468 | 0.437 (-0.031) | 0.465 (-0.004) | 0.524 | 0.418 (-0.106) | 0.522 (-0.003) |
+| 151675 | 0.469 | 0.393 (-0.076) | 0.449 (-0.020) | 0.551 | 0.463 (-0.088) | 0.461 (-0.090) |
+| 151676 | 0.491 | 0.407 (-0.084) | 0.446 (-0.045) | 0.473 | 0.406 (-0.067) | 0.561 (+0.088) |
+| **Mean delta** | | **-0.064** | **-0.023** | | **-0.087** | **-0.002** |
+
+`entmax15` is a clear, consistent regression on every slice and both metrics
+-- rejected outright, no full run needed. `sparsemax` is a wash: per-seed
+mean slightly down, consensus mean essentially flat (one slice up, two down)
+-- nothing close to the clear, consistent improvement Fix #4 showed on this
+exact same subset (+0.015 per-seed, +0.041 consensus). Per the reviewer's own
+risk-prioritization (cheap check first, only escalate on signal), neither
+result justified the ~2x compute of a full 12-slice x 5-seed run for two
+variants.
+
+Plausible reason entmax15 in particular hurts: forcing hard sparsity on the
+address distribution *before* spatial propagation may prematurely commit
+each spot to too few slots, propagating a peakier (less informative)
+distribution across hops and losing the soft blending that lets ambiguous
+boundary spots average two layers' worth of address mass -- the opposite of
+what expression-weighted adjacency achieves by respecting boundaries in
+*where* mass flows rather than restricting *how much* of the codebook a
+single spot can use.
+
+**Decision:** both kept as opt-in, unit-tested ablations
+(`attention_fn="entmax15"/"sparsemax"`, `--attention-fn` on the harness) for
+reproducibility; `"softmax"` remains the default.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

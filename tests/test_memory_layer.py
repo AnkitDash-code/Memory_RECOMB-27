@@ -7,6 +7,7 @@ from src.models.memory_layer import (
     EmbeddedMemoryLayer,
     SpatialAddressMemoryAutoencoder,
     SpatialAddressMemoryLayer,
+    address_distribution,
     attention_entropy,
     connectivities_to_edge_index,
     expression_weighted_adjacency,
@@ -195,6 +196,55 @@ def test_expression_weighted_adjacency_identical_features_matches_uniform():
     weighted = expression_weighted_adjacency(conn, features).to_dense()
 
     assert torch.allclose(uniform, weighted, atol=1e-5)
+
+
+def test_address_distribution_softmax_matches_torch_softmax():
+    scores = torch.randn(10, 6)
+    assert torch.allclose(address_distribution(scores, "softmax"), torch.softmax(scores, dim=-1))
+
+
+def test_address_distribution_variants_are_valid_simplices():
+    scores = torch.randn(10, 6)
+    for fn in ("softmax", "entmax15", "sparsemax"):
+        p = address_distribution(scores, fn)
+        assert torch.allclose(p.sum(dim=-1), torch.ones(10), atol=1e-5)
+        assert (p >= 0).all()
+
+
+def test_address_distribution_sparse_variants_produce_exact_zeros():
+    """The whole point of entmax15/sparsemax over softmax: some slots get
+    exactly zero weight, not just a small positive one."""
+    torch.manual_seed(0)
+    scores = torch.randn(20, 16) * 3  # larger spread so sparsity is expected
+    dense = address_distribution(scores, "softmax")
+    entmax_p = address_distribution(scores, "entmax15")
+    sparsemax_p = address_distribution(scores, "sparsemax")
+
+    assert (dense == 0).sum() == 0  # softmax never gives exact zeros
+    assert (entmax_p == 0).sum() > 0
+    assert (sparsemax_p == 0).sum() >= (entmax_p == 0).sum()  # sparsemax sparsest
+
+
+def test_address_distribution_unknown_fn_raises():
+    import pytest
+
+    with pytest.raises(ValueError):
+        address_distribution(torch.randn(3, 4), "not_a_real_fn")
+
+
+def test_spatial_address_layer_accepts_attention_fn():
+    n_spots, feature_dim, memory_slots = 20, 16, 8
+    for fn in ("softmax", "entmax15", "sparsemax"):
+        layer = SpatialAddressMemoryLayer(
+            feature_dim, memory_slots=memory_slots, memory_dim=8, n_hops=1, attention_fn=fn
+        )
+        x = torch.randn(n_spots, feature_dim)
+        adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+
+        embedding, attn = layer(x, adjacency)
+
+        assert embedding.shape == (n_spots, 8)
+        assert torch.allclose(attn.sum(dim=-1), torch.ones(n_spots), atol=1e-4)
 
 
 def test_address_propagation_keeps_valid_simplex():
