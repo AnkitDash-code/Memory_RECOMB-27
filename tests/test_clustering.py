@@ -80,3 +80,26 @@ def test_consensus_cluster_agrees_when_all_inputs_identical():
 
     from sklearn.metrics import adjusted_rand_score
     assert adjusted_rand_score(labels, consensus) == 1.0
+
+
+def test_consensus_cluster_handles_near_identical_low_variance_labels():
+    """Regression test: a real run (GraphST, which has very low seed-to-seed
+    variance) produced near-identical label sets across seeds at ~3600-spot
+    scale with 7 clusters, and scipy's linkage()+fcluster(criterion="maxclust")
+    raised "Linkage 'Z' contains excessive observations in a cluster" on that
+    input -- a degenerate-tie edge case in the co-association distance matrix
+    when almost every run agrees. Reproduced at similar scale/shape here."""
+    rng = np.random.default_rng(0)
+    n_spots, n_clusters = 3639, 7
+    truth = rng.integers(0, n_clusters, size=n_spots).astype(str)
+
+    label_sets = []
+    for _ in range(5):
+        noisy = truth.copy()
+        flip = rng.choice(n_spots, size=5, replace=False)  # near-identical, not identical
+        noisy[flip] = rng.integers(0, n_clusters, size=len(flip)).astype(str)
+        label_sets.append(noisy)
+
+    consensus = consensus_cluster(label_sets, n_clusters)  # must not raise
+
+    assert len(consensus) == n_spots

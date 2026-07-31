@@ -11,8 +11,6 @@ repo can be scored the same way.
 """
 
 import numpy as np
-from scipy.cluster.hierarchy import fcluster, linkage
-from scipy.spatial.distance import squareform
 from sklearn.decomposition import PCA
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
@@ -104,6 +102,15 @@ def consensus_cluster(label_sets, n_clusters):
 
     distance = 1 - co_association
     np.fill_diagonal(distance, 0)
-    condensed = squareform(distance, checks=False)
-    linkage_matrix = linkage(condensed, method="average")
-    return fcluster(linkage_matrix, t=n_clusters, criterion="maxclust").astype(str)
+    # AgglomerativeClustering on a precomputed distance matrix, not scipy's
+    # linkage()+fcluster(criterion="maxclust"): the latter raised
+    # "Linkage 'Z' contains excessive observations in a cluster" on a real
+    # slice where one method's near-identical labels across seeds (GraphST is
+    # very low-variance) produced a co-association matrix with many exact
+    # ties, which is exactly the kind of degenerate input scipy's
+    # maxclust cut is fragile to. AgglomerativeClustering is the standard,
+    # more robust tool for "fixed K from a precomputed distance matrix".
+    from sklearn.cluster import AgglomerativeClustering
+
+    model = AgglomerativeClustering(n_clusters=n_clusters, metric="precomputed", linkage="average")
+    return model.fit_predict(distance).astype(str)
