@@ -22,7 +22,7 @@ from sklearn.metrics import adjusted_rand_score
 
 from src.data.load_dlpfc import ALL_DLPFC_SAMPLES, load_dlpfc_slice
 from src.data.preprocess import preprocess_hvg
-from src.eval.clustering import cluster_embedding
+from src.eval.clustering import cluster_embedding, consensus_cluster
 from src.models.run_graphst import run_graphst
 from src.models.train_count_model import train_count_model
 from src.models.train_spatial_address import train_spatial_address_model
@@ -52,7 +52,8 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
 
     results = {"sample": sample, "n_spots": int(adata.n_obs), "n_layers": n_layers}
 
-    ours = []
+    ours_labels = []
+    ours_aris = []
     for seed in seeds:
         if model == "count":
             _, trained, _ = train_count_model(
@@ -65,13 +66,21 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
             )
             embedding = trained.obsm["X_spatial_address"]
         labels = cluster_embedding(embedding, n_layers, coords=coords, refine=True)
-        ours.append(_ari(truth, labels, mask))
-    results["ours"] = {"per_seed": ours, "mean": float(np.mean(ours)), "std": float(np.std(ours))}
+        ours_labels.append(labels)
+        ours_aris.append(_ari(truth, labels, mask))
+    ours_consensus = consensus_cluster(ours_labels, n_layers)
+    results["ours"] = {
+        "per_seed": ours_aris,
+        "mean": float(np.mean(ours_aris)),
+        "std": float(np.std(ours_aris)),
+        "consensus": _ari(truth, ours_consensus, mask),
+    }
 
     if run_graphst_too:
-        # Same seeds, same clustering protocol as "ours" -- comparing a 5-seed
-        # mean against GraphST's single default seed was measured on 151673 to
-        # be unfair (its default seed wasn't even its best of 5).
+        # Same seeds, same clustering protocol, and the SAME consensus
+        # technique as "ours" -- if consensus-across-seeds helps, it must be
+        # offered to the baseline too, or the comparison silently favors us.
+        graphst_labels = []
         graphst_aris = []
         for seed in seeds:
             graphst_adata = run_graphst(
@@ -84,11 +93,14 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
             )
             gt = truth.reindex(graphst_adata.obs_names)
             gmask = gt.notna().to_numpy()
+            graphst_labels.append(labels)
             graphst_aris.append(_ari(gt, labels, gmask))
+        graphst_consensus = consensus_cluster(graphst_labels, n_layers)
         results["graphst"] = {
             "per_seed": graphst_aris,
             "mean": float(np.mean(graphst_aris)),
             "std": float(np.std(graphst_aris)),
+            "consensus": _ari(gt, graphst_consensus, gmask),
         }
 
     return results
@@ -115,14 +127,15 @@ def main():
             continue
         all_results.append(result)
         line = f"{sample}: ours={result['ours']['mean']:.4f}+/-{result['ours']['std']:.4f}"
+        line += f" (consensus={result['ours']['consensus']:.4f})"
         if "graphst" in result:
-            line += f"  graphst={result['graphst']['mean']:.4f}"
+            line += f"  graphst={result['graphst']['mean']:.4f} (consensus={result['graphst']['consensus']:.4f})"
         print(line, flush=True)
 
     held_out = [r for r in all_results if r["sample"] != TUNING_SLICE]
 
-    def summarize(rows, key):
-        values = [r[key]["mean"] for r in rows if key in r]
+    def summarize(rows, key, field="mean"):
+        values = [r[key][field] for r in rows if key in r]
         return {
             "n_slices": len(values),
             "mean": float(np.mean(values)) if values else None,
@@ -132,25 +145,29 @@ def main():
     summary = {
         "held_out_11_slices": {
             "ours": summarize(held_out, "ours"),
+            "ours_consensus": summarize(held_out, "ours", field="consensus"),
             "graphst": summarize(held_out, "graphst"),
+            "graphst_consensus": summarize(held_out, "graphst", field="consensus"),
         },
         "all_12_slices": {
             "ours": summarize(all_results, "ours"),
+            "ours_consensus": summarize(all_results, "ours", field="consensus"),
             "graphst": summarize(all_results, "graphst"),
+            "graphst_consensus": summarize(all_results, "graphst", field="consensus"),
         },
         "tuning_slice_excluded_from_headline": TUNING_SLICE,
     }
 
     print("\n=== HEADLINE (11 held-out slices; 151673 excluded as tuning slice) ===")
-    for method in ("ours", "graphst"):
+    for method in ("ours", "ours_consensus", "graphst", "graphst_consensus"):
         stats = summary["held_out_11_slices"][method]
         if stats["mean"] is not None:
-            print(f"  {method:8s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
+            print(f"  {method:18s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
     print("\n=== all 12 slices (for comparability with published tables) ===")
-    for method in ("ours", "graphst"):
+    for method in ("ours", "ours_consensus", "graphst", "graphst_consensus"):
         stats = summary["all_12_slices"][method]
         if stats["mean"] is not None:
-            print(f"  {method:8s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
+            print(f"  {method:18s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps({"per_slice": all_results, "summary": summary}, indent=2))

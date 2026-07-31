@@ -1,0 +1,76 @@
+{
+  "per_slice": [
+    {
+      "sample": "151507",
+      "n_spots": 4226,
+      "n_layers": 7,
+      "ours": {
+        "per_seed": [
+          0.5342884307729817,
+          0.5438675459285535,
+          0.5081710723564355
+        ],
+        "mean": 0.5287756830193237,
+        "std": 0.015085364810920225,
+        "consensus": 0.5252855126178375
+      },
+      "graphst": {
+        "per_seed": [
+          0.55201738756314,
+          0.4365405438994431,
+          0.4372904369488924
+        ],
+        "mean": 0.47528278947049185,
+        "std": 0.05426041831284008,
+        "consensus": 0.43723922959753797
+      }
+    }
+  ],
+  "summary": {
+    "held_out_11_slices": {
+      "ours": {
+        "n_slices": 1,
+        "mean": 0.5287756830193237,
+        "std": 0.0
+      },
+      "ours_consensus": {
+        "n_slices": 1,
+        "mean": 0.5252855126178375,
+        "std": 0.0
+      },
+      "graphst": {
+        "n_slices": 1,
+        "mean": 0.47528278947049185,
+        "std": 0.0
+      },
+      "graphst_consensus": {
+        "n_slices": 1,
+        "mean": 0.43723922959753797,
+        "std": 0.0
+      }
+    },
+    "all_12_slices": {
+      "ours": {
+        "n_slices": 1,
+        "mean": 0.5287756830193237,
+        "std": 0.0
+      },
+      "ours_consensus": {
+        "n_slices": 1,
+        "mean": 0.5252855126178375,
+        "std": 0.0
+      },
+      "graphst": {
+        "n_slices": 1,
+        "mean": 0.47528278947049185,
+        "std": 0.0
+      },
+      "graphst_consensus": {
+        "n_slices": 1,
+        "mean": 0.43723922959753797,
+        "std": 0.0
+      }
+    },
+    "tuning_slice_excluded_from_headline": "151673"
+  }
+}
