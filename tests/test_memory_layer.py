@@ -9,6 +9,7 @@ from src.models.memory_layer import (
     SpatialAddressMemoryLayer,
     attention_entropy,
     connectivities_to_edge_index,
+    expression_weighted_adjacency,
     normalized_adjacency,
     spatial_smoothness_loss,
 )
@@ -144,6 +145,56 @@ def test_normalized_adjacency_rows_sum_to_one():
     row_sums = torch.sparse.sum(adjacency, dim=1).to_dense()
 
     assert torch.allclose(row_sums, torch.ones(10), atol=1e-5)
+
+
+def test_expression_weighted_adjacency_rows_sum_to_one():
+    import numpy as np
+
+    n = 10
+    conn = _ring_connectivities(n)
+    rng = np.random.default_rng(0)
+    features = rng.normal(size=(n, 5)).astype(np.float32)
+
+    adjacency = expression_weighted_adjacency(conn, features)
+    row_sums = torch.sparse.sum(adjacency, dim=1).to_dense()
+
+    assert torch.allclose(row_sums, torch.ones(n), atol=1e-5)
+
+
+def test_expression_weighted_adjacency_downweights_dissimilar_neighbors():
+    """A spot with one transcriptionally-similar neighbor and one very
+    dissimilar one should end up propagating more weight to the similar one,
+    unlike normalized_adjacency which treats both edges identically."""
+    import numpy as np
+    import scipy.sparse as sp
+
+    conn = sp.csr_matrix(
+        [[0, 1, 1], [1, 0, 0], [1, 0, 0]]
+    )  # spot 0 connected to both 1 and 2
+    features = np.array(
+        [[0.0, 0.0], [0.1, 0.0], [10.0, 10.0]], dtype=np.float32
+    )  # spot 1 close to spot 0; spot 2 far from spot 0
+
+    uniform = normalized_adjacency(conn).to_dense()
+    weighted = expression_weighted_adjacency(conn, features).to_dense()
+
+    assert uniform[0, 1] == uniform[0, 2]  # uniform treats both neighbors alike
+    assert weighted[0, 1] > weighted[0, 2]  # expression-weighted favors the similar one
+
+
+def test_expression_weighted_adjacency_identical_features_matches_uniform():
+    """If every spot has identical features, expression similarity is uniform
+    everywhere, so the result should reduce to plain normalized_adjacency."""
+    import numpy as np
+
+    n = 8
+    conn = _ring_connectivities(n)
+    features = np.zeros((n, 4), dtype=np.float32)
+
+    uniform = normalized_adjacency(conn).to_dense()
+    weighted = expression_weighted_adjacency(conn, features).to_dense()
+
+    assert torch.allclose(uniform, weighted, atol=1e-5)
 
 
 def test_address_propagation_keeps_valid_simplex():

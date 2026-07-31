@@ -126,6 +126,53 @@ def normalized_adjacency(connectivities, device=None):
     return sparse.to(device) if device is not None else sparse
 
 
+def expression_weighted_adjacency(connectivities, features, device=None):
+    """Same row-normalized D^-1(A+I) adjacency as normalized_adjacency, but each
+    structural edge (i, j) is additionally reweighted by expression similarity:
+    exp(-||x_i - x_j||^2 / (2 * sigma^2)), sigma set by the median heuristic
+    (median squared edge distance) so no dataset-specific constant is needed.
+
+    Motivation: pure spatial propagation blurs the address distribution across
+    a boundary even when a neighbor is transcriptionally a different domain --
+    exactly the failure mode on DLPFC's ambiguous subject-3 layer borders.
+    Weighting edges down when the neighbor's expression is dissimilar lets
+    propagation respect transcriptional boundaries, not just spatial adjacency.
+    Self-loops are added at full weight 1 (a spot is maximally similar to
+    itself) before row-normalizing, same as normalized_adjacency.
+
+    features must be a numpy array (n_spots, n_features), e.g. from
+    get_hvg_features(adata) -- computed once, not a learned/differentiable
+    weighting.
+    """
+    import scipy.sparse as sp
+
+    adjacency = sp.csr_matrix(connectivities)
+    n = adjacency.shape[0]
+    coo = adjacency.tocoo()
+    row, col, data = coo.row, coo.col, coo.data
+
+    diffs = features[row] - features[col]
+    dists_sq = np.sum(diffs**2, axis=1)
+    positive = dists_sq[dists_sq > 0]
+    sigma_sq = np.median(positive) if positive.size > 0 else 1.0
+    if sigma_sq <= 0:
+        sigma_sq = 1.0
+    expr_weight = np.exp(-dists_sq / (2 * sigma_sq))
+    weighted_data = data * expr_weight
+
+    weighted = sp.coo_matrix((weighted_data, (row, col)), shape=adjacency.shape).tocsr()
+    weighted = weighted + sp.eye(n, format="csr")
+    degree = np.asarray(weighted.sum(axis=1)).ravel()
+    degree[degree == 0] = 1.0
+    normalized = sp.diags(1.0 / degree) @ weighted
+
+    result = normalized.tocoo()
+    indices = torch.tensor(np.stack([result.row, result.col]), dtype=torch.long)
+    values = torch.tensor(result.data, dtype=torch.float32)
+    sparse = torch.sparse_coo_tensor(indices, values, result.shape).coalesce()
+    return sparse.to(device) if device is not None else sparse
+
+
 class SpatialAddressMemoryLayer(nn.Module):
     """Memory addressing where the ADDRESS -- not the feature -- is spatially propagated.
 

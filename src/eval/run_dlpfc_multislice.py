@@ -31,6 +31,9 @@ OUTPUT_PATH = Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_
 KMEANS_INIT_OUTPUT_PATH = (
     Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_kmeans_init.json"
 )
+UNIFORM_ADJACENCY_OUTPUT_PATH = (
+    Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_uniform_adjacency.json"
+)
 TUNING_SLICE = "151673"
 
 
@@ -38,13 +41,17 @@ def _ari(truth, labels, mask):
     return float(adjusted_rand_score(truth[mask], np.asarray(labels)[mask]))
 
 
-def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kmeans_init=False):
+def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kmeans_init=False,
+                    expression_weighted=True):
     """model="mse" is the tuned, winning configuration (pure address propagation,
     memory_slots=32 -- see train_spatial_address_model's defaults). model="count"
     is the rejected NB/ZINB ablation, kept available for reproducing that negative
     result on demand, never as the default for a real evaluation. kmeans_init=True
     replaces the random memory_keys init with k-means centers of the initial
-    per-spot queries -- an ablation, not evaluated at this scale before."""
+    per-spot queries -- an ablation, not evaluated at this scale before.
+    expression_weighted=True (matches train_spatial_address_model's default,
+    Stage 13) reweights spatial edges by expression similarity; pass False for
+    the plain-adjacency ablation."""
     raw = load_dlpfc_slice(sample)
     adata = preprocess_hvg(raw.copy())
 
@@ -68,7 +75,7 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kme
         else:
             _, trained, _ = train_spatial_address_model(
                 adata.copy(), seed=seed, device=device, verbose=False,
-                kmeans_init=kmeans_init,
+                kmeans_init=kmeans_init, expression_weighted=expression_weighted,
             )
             embedding = trained.obsm["X_spatial_address"]
         labels = cluster_embedding(embedding, n_layers, coords=coords, refine=True)
@@ -121,6 +128,10 @@ def main():
     parser.add_argument("--kmeans-init", action="store_true",
                          help="Ablation: k-means codebook init instead of random. "
                               "Writes to a separate output file, not the main results.")
+    parser.add_argument("--uniform-adjacency", action="store_true",
+                         help="Ablation: plain spatial adjacency instead of the current "
+                              "default (expression-weighted, Stage 13). Writes to a "
+                              "separate output file, not the main results.")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -131,7 +142,7 @@ def main():
         result = evaluate_slice(
             sample, seeds, device,
             run_graphst_too=not args.skip_graphst, model=args.model,
-            kmeans_init=args.kmeans_init,
+            kmeans_init=args.kmeans_init, expression_weighted=not args.uniform_adjacency,
         )
         if result is None:
             continue
@@ -179,7 +190,12 @@ def main():
         if stats["mean"] is not None:
             print(f"  {method:18s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
 
-    output_path = KMEANS_INIT_OUTPUT_PATH if args.kmeans_init else OUTPUT_PATH
+    if args.kmeans_init:
+        output_path = KMEANS_INIT_OUTPUT_PATH
+    elif args.uniform_adjacency:
+        output_path = UNIFORM_ADJACENCY_OUTPUT_PATH
+    else:
+        output_path = OUTPUT_PATH
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps({"per_slice": all_results, "summary": summary}, indent=2))
     print(f"\nSaved {output_path}")

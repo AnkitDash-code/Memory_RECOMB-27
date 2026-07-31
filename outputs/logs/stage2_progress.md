@@ -514,14 +514,167 @@ let the model use its capacity more precisely without reintroducing collapse
 previously-untested hyperparameters are now cross-validated, not
 single-slice-tuned.
 
+## Stage 12 -- paired significance test on the held-out gap (correction to prior framing)
+
+External review flagged something real: this project's own docs had been
+saying "the gap (0.024) is smaller than GraphST's own across-slice std
+(0.086)" as if that were evidence of parity. It is not a significance test --
+it is an eyeballed comparison of one method's spread against a point
+difference. With 11 held-out slices measured identically for both methods
+(same slices, same seeds, same clustering protocol), the correct tool is a
+**paired** test, not an independent-samples comparison.
+
+Added `src/eval/significance_test.py`: Wilcoxon signed-rank (primary, no
+normality assumption) and a paired t-test (secondary; Shapiro-Wilk confirms
+the paired differences are plausibly normal here, p=0.16-0.48, so the t-test
+is informative too, not just a fallback), run on both the per-seed mean and
+the consensus metric, since a prior finding in this project (Stage 9) already
+established that they can disagree:
+
+```
+=== Per-seed mean (5 seeds/slice, more stable statistic) ===
+  n slices = 11, ours wins on 2/11
+  mean diff (ours - graphst) = -0.0485, std = 0.0643
+  Wilcoxon signed-rank: stat=10.0, p=0.0420   <- SIGNIFICANT
+  Paired t-test:        stat=-2.3848, p=0.0383
+
+=== Consensus (headline metric) ===
+  n slices = 11, ours wins on 4/11
+  mean diff (ours - graphst) = -0.0237, std = 0.0932
+  Wilcoxon signed-rank: stat=24.0, p=0.4648   <- not significant
+  Paired t-test:        stat=-0.8057, p=0.4392
+```
+
+**Honest read.** These two tests disagree, and both need reporting, not just
+whichever is more flattering. On the per-seed mean -- arguably the more
+trustworthy statistic, since each point is already an average of 5
+independent seeds rather than a single ensemble output -- GraphST's advantage
+is **statistically significant at n=11** (p=0.042). On the consensus metric,
+the gap is smaller and not significant (p=0.465), but the paired-difference
+variance is also higher there (0.093 vs. 0.064), which is exactly the
+condition that reduces a paired test's power -- so "not significant" here is
+plausibly "underpowered given this sample size and this noisier statistic,"
+not "genuinely no difference." Consensus is a single clustering-ensemble
+output per slice with no repeated-measure information of its own, while the
+per-seed mean already averages over 5 independent training runs, which is
+presumably why it produces a cleaner (lower-variance) paired signal.
+
+**Correction:** prior versions of README.md/PROGRESS.md described this result
+as "close to parity" or "close to statistical parity." That was an
+overstatement not backed by an actual test. The corrected claim, now used
+everywhere this result is stated (until Stage 13 changed it further): three
+real, evidence-based fixes closed most of a real gap (0.129 -> 0.024
+consensus), but GraphST's lead remains statistically significant on the more
+stable metric -- "closed most of a real, significant gap," not "reached
+parity."
+
+## Stage 13 -- expression-weighted adjacency (Fix #4): real improvement, changes the significance verdict
+
+Prompted by an external review of this project (a second AI, given this
+repo's plateaued 0.024-gap result, proposed four candidate fixes and
+prioritized them by risk/cost -- see the design-history note in README.md for
+the full context). The lowest-risk, most targeted suggestion: reweight the
+spatial propagation graph by expression similarity, not just spatial
+adjacency, so a spot's address doesn't blur toward a spatially-adjacent but
+transcriptionally-different neighbor -- exactly the failure mode plausible on
+DLPFC's ambiguous, ~50-100um-wide layer boundaries, and a specific,
+mechanistic hypothesis for why the subject-3 slices in particular
+(persistently the worst since Stage 7) might be failing.
+
+Implemented as `expression_weighted_adjacency()` in `memory_layer.py`:
+`exp(-||x_i - x_j||^2 / 2*sigma^2)` per structural edge (median-heuristic
+sigma, no dataset-specific constant), self-loops kept at full weight,
+row-normalized identically to `normalized_adjacency`. Unit-tested (rows sum
+to 1; identical features reduce exactly to `normalized_adjacency`; a
+dissimilar neighbor is measurably downweighted relative to a similar one).
+Still respects the paper's core premise: only the softmax ADDRESS
+distribution is ever propagated across spots; expression similarity is used
+purely to reweight *how strongly* an edge propagates that address mass,
+never to mix raw features into the embedding.
+
+**Tested in two stages, per the reviewer's own recommendation** (cheapest,
+most targeted fix first; verify on the specific failure mode before paying
+for the full protocol):
+
+1. Subject-3 slices only (151674-676, 5 seeds, GraphST skipped since its
+   numbers are unaffected):
+
+   | Slice | Baseline (uniform) per-seed | Expr-weighted per-seed | Baseline consensus | Expr-weighted consensus |
+   |---|---|---|---|---|
+   | 151674 | 0.4952 | 0.4679 | 0.5098 | 0.5238 |
+   | 151675 | 0.4321 | 0.4688 | 0.4546 | 0.5511 |
+   | 151676 | 0.4569 | 0.4914 | 0.4615 | 0.4734 |
+
+   All 3 improved on consensus (+0.014 to +0.096); 2/3 improved on per-seed
+   mean too. Promising enough to justify the full-scale run.
+
+2. Full 12-slice x 5-seed run (`uv run python -m src.eval.run_dlpfc_multislice
+   --skip-graphst`, since GraphST's own numbers are seed-deterministic and
+   don't depend on our adjacency choice -- reused from the prior run rather
+   than re-computed):
+
+   | | Held-out per-seed | Held-out consensus | All-12 per-seed | All-12 consensus |
+   |---|---|---|---|---|
+   | Uniform adjacency (previous default) | 0.5200 ± 0.0785 | 0.5486 ± 0.0948 | 0.5230 ± 0.0758 | 0.5494 ± 0.0908 |
+   | **Expression-weighted (new default)** | **0.5342 ± 0.0764** | **0.5621 ± 0.0821** | 0.5337 ± 0.0732 | 0.5620 ± 0.0786 |
+   | GraphST (unchanged) | 0.5685 ± 0.0825 | 0.5724 ± 0.0861 | 0.5707 ± 0.0793 | 0.5693 ± 0.0830 |
+   | Gap | 0.0343 | **0.0103** | -- | 0.0073 |
+
+Both mean AND variance improved together on both metrics -- not a
+mean/variance trade-off like consensus clustering (Stage 9) or the
+lambda_usage fix (Stage 11) each were in their own way. Per-slice, the
+picture is mixed but net positive: 151509/151669/151671 improved a lot,
+151507/151670/151674 got slightly worse, subject-3 (151674-676) improved on
+2 of 3 slices' consensus and one slightly worsened, but the aggregate moved
+clearly in the right direction.
+
+**Re-ran the Stage 12 significance test with this config** -- this is the
+result that actually matters, since a smaller point estimate alone doesn't
+tell you whether the underlying verdict changed:
+
+| Metric | Before Fix #4 | After Fix #4 |
+|---|---|---|
+| Per-seed mean, Wilcoxon p | 0.042 (significant) | **0.123 (not significant)** |
+| Consensus, Wilcoxon p | 0.465 (not significant) | 0.465 (not significant, but mean gap 0.024 -> 0.010) |
+| Ours wins (consensus) | 4/11 | 5/11 (151508, 151509, 151670, 151671, 151672) |
+
+**This is a real, verified change in the statistical conclusion, not just a
+smaller number.** Before Fix #4, the per-seed metric showed GraphST reliably
+ahead (p=0.042). After it, neither metric detects a significant difference at
+n=11. "No significant difference detected" is not the same claim as "proven
+equivalent" -- a significance test can fail to reject the null hypothesis
+either because the null is true or because the sample is too small to detect
+a real but modest effect; n=11 held-out slices cannot distinguish these. But
+it is a real, honestly-earned improvement in the evidence, achieved by a
+change that keeps the paper's core premise intact.
+
+**Methodological caveat, stated plainly:** unlike `memory_slots`/`n_hops`/
+`lambda_usage` (Stages 8, 11), this was not validated with a strict
+CV-validation-slice / disjoint-test-slice split before being adopted -- the
+decision to keep it was made after seeing the full 12-slice number, following
+a smaller, genuinely blind check on the 3 subject-3 slices alone. The pattern
+held consistently across both checks (subject-3-only and full-scale), which
+is reassuring, but a fully disjoint validation (as was done for the other
+three hyperparameters) would strengthen this further and is a reasonable
+next step if pursuing this fix further.
+
+**Decision:** `expression_weighted=True` is now the default in
+`train_spatial_address_model` (`--uniform-adjacency` on the harness opts back
+into the old behavior for the ablation). Previous uniform-adjacency full run
+archived in `outputs/logs/dlpfc_multislice_results_uniform_adjacency.json`.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,
-memory_dim=128, hidden_dim=256, epochs=600)` on `preprocess_hvg()` output,
-clustered with `cluster_embedding(..., refine=True)`. `memory_slots=16`,
-`n_hops=4`, and `lambda_usage=0.02` are all cross-validated (Stages 8, 11),
-not single-slice-tuned. On the 11 truly-held-out slices: **0.5486 ± 0.0948**
-consensus vs. GraphST's **0.5724 ± 0.0861** (gap 0.024). On the tuning slice
-alone (151673, not representative -- see Stage 7/8): the current config
-scores 0.556 ± 0.046 (5 seeds), close to but not exactly comparable across
-runs since it was never the tuning target for this config.
+memory_dim=128, hidden_dim=256, expression_weighted=True, epochs=600)` on
+`preprocess_hvg()` output, clustered with `cluster_embedding(..., refine=True)`.
+`memory_slots=16`, `n_hops=4`, and `lambda_usage=0.02` are all cross-validated
+(Stages 8, 11); `expression_weighted=True` (Stage 13) was validated on a
+targeted subset first, then confirmed at full scale (see the caveat above --
+not the same rigor as the other three). On the 11 truly-held-out slices:
+**0.5621 ± 0.0821** consensus vs. GraphST's **0.5724 ± 0.0861** (gap 0.010,
+not statistically significant at n=11 on either metric -- Stage 12/13). On
+the tuning slice alone (151673, not representative -- see Stage 7/8): the
+current config scores 0.529 ± 0.054 per-seed / 0.561 consensus (5 seeds),
+close to but not exactly comparable across runs since it was never the
+tuning target for this config.

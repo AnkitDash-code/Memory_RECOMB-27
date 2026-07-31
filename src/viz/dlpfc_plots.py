@@ -4,8 +4,8 @@ Supersedes src/viz/spatial_plots.py's story: that script visualizes the Phase 0
 model (PCA input, no address propagation) on the label-free Visium crop dataset.
 This one uses the current, fully cross-validated architecture
 (SpatialAddressMemoryAutoencoder, train_spatial_address_model's defaults --
-memory_slots=16, n_hops=4, lambda_usage=0.02) on the dataset that actually has
-ground truth, and puts every method through the same clustering protocol
+memory_slots=16, n_hops=4, lambda_usage=0.02, expression_weighted=True) on the
+dataset that actually has ground truth, and puts every method through the same clustering protocol
 (src/eval/clustering.py) so the panels are a fair visual comparison, not just
 four different pipelines. Single seed (0), single slice -- see the headline
 12-slice/5-seed numbers in README.md for the real result this illustrates.

@@ -8,24 +8,26 @@ the handoff summary — where things stand, and exactly what is left.
 
 **Everything tuned on 151673 alone turned out to be measuring an optimistic
 special case — and that overfitting was itself found and progressively fixed.**
-Four full 12-slice evaluations have now run:
+Five full 12-slice evaluations have now run:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
 | Ours, `memory_slots=32` (single-slice-tuned on 151673) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
 | Ours, `memory_slots=16`, `lambda_usage=0.1` (cross-validated capacity only), per-seed | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
 | Ours, `memory_slots=16`, `lambda_usage=0.1`, consensus | 0.4993 ± 0.1403 | 0.5033 ± 0.1349 |
-| Ours, `memory_slots=16`, `lambda_usage=0.02` (fully cross-validated), per-seed | 0.5200 ± 0.0785 | 0.5230 ± 0.0758 |
-| **Ours, `memory_slots=16`, `lambda_usage=0.02`, consensus** | **0.5486 ± 0.0948** | 0.5494 ± 0.0908 |
+| Ours, `memory_slots=16`, `lambda_usage=0.02`, uniform adjacency, per-seed | 0.5200 ± 0.0785 | 0.5230 ± 0.0758 |
+| Ours, `memory_slots=16`, `lambda_usage=0.02`, uniform adjacency, consensus | 0.5486 ± 0.0948 | 0.5494 ± 0.0908 |
+| Ours, **+ expression-weighted adjacency** (current default), per-seed | 0.5342 ± 0.0764 | 0.5337 ± 0.0732 |
+| **Ours, + expression-weighted adjacency, consensus (current)** | **0.5621 ± 0.0821** | 0.5620 ± 0.0786 |
 | GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
 | GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
-| Gap, `lambda_usage=0.1`, consensus | 0.0731 | 0.0660 |
-| **Gap, `lambda_usage=0.02`, consensus (current, fair to both methods)** | **0.0238** | 0.0199 |
+| Gap, uniform adjacency, consensus | 0.0238 | 0.0199 |
+| **Gap, expression-weighted adjacency, consensus (current)** | **0.0103** | 0.0073 |
 
 The original tuning-slice gap was 0.026 — **~5× smaller than the first
 (single-slice-tuned) held-out measurement.** Diagnosing why (Stage 7: our
 within-subject variance nearly equals our across-slice variance — real model
-fragility, not dataset difficulty) led to three concrete fixes:
+fragility, not dataset difficulty) led to four concrete fixes:
 
 1. **Cross-validating `memory_slots`** (Stage 8) instead of single-slice
    tuning it on 151673 — picked 16 instead of 32, closing about a third of
@@ -43,17 +45,29 @@ fragility, not dataset difficulty) led to three concrete fixes:
    the remaining gap: 0.073 → **0.024** (consensus, held-out), while also
    *reducing* consensus variance (0.140 → 0.095) rather than trading it away.
    `n_hops=4` was cross-validated the same way and confirmed unchanged.
+4. **Expression-weighted spatial adjacency** (Stage 13, prompted by an
+   external review's Fix #4 suggestion) — reweighting the propagation graph
+   by expression similarity, not just spatial adjacency, so address mass
+   stops blurring across transcriptionally-dissimilar neighbors. Tested first
+   on the persistent subject-3 slices alone (all 3 improved), then confirmed
+   at full scale: gap **0.024 → 0.010** (consensus), with mean *and* variance
+   both improving.
 
-The remaining gap (0.024 held-out consensus) is now smaller than GraphST's own
-across-slice standard deviation (0.086) — close to parity on average, though
-still uneven per-slice: 3 of 11 held-out slices now clearly beat GraphST
-(151508, 151509, 151670) plus a near-exact tie on 151672 (+0.0003), while
-GraphST leads on the remaining 7 — most starkly the three subject-3 slices
-(151674–676), which improved substantially (gap 0.21–0.23 → 0.11–0.13) but are
-still the worst, and one previously-strong slice (151671) regressed under
-consensus at the new `lambda_usage` (0.717 → 0.594). Full detail in
+**A paired significance test (Stage 12) changes the honest verdict, not just
+the number.** "The gap is smaller than GraphST's own std" was previously used
+as an informal parity claim — that is not a significance test. Running the
+actual paired Wilcoxon test over the 11 held-out slices (`src/eval/significance_test.py`)
+before Fix #4 found GraphST's advantage was **statistically significant on
+the per-seed metric** (p=0.042). After Fix #4, both metrics show no
+significant difference at n=11 (per-seed p=0.123, consensus p=0.465) — a
+verified improvement in the actual statistical picture, not just a smaller
+point estimate. Still uneven per-slice: 5 of 11 held-out slices now clearly
+beat GraphST (151508, 151509, 151670, 151671, 151672), the three subject-3
+slices (151674–676) remain the weakest (gap now considerably smaller than
+before both fixes, but not zero), and one
+slice (151671) has shown volatility across these changes. Full detail in
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md)
-(Stages 6–11) and [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
+(Stages 6–13) and [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
 
 Single-slice history, for context on how the architecture was built (all measured
 on 151673 only, now known to be optimistic — with the caveat that 151673 itself
@@ -68,21 +82,27 @@ no longer specially fitted to that slice):
 | Ours — Stage 4 (hybrid feature message passing, both placements) | 0.16–0.54 — *worse than pure, rejected* |
 | Ours — Stage 5 (capacity-tuned, memory_slots=32, single-slice) | 0.5713 ± 0.0057 (5 seeds) |
 | Ours — Stage 8 (memory_slots=16, `lambda_usage=0.1`, cross-validated capacity only) | 0.485 ± 0.108 (5 seeds) — *lower here, but generalizes better* |
-| Ours — Stage 11 (memory_slots=16, `lambda_usage=0.02`, fully cross-validated) | 0.556 ± 0.046 (5 seeds) |
+| Ours — Stage 11 (memory_slots=16, `lambda_usage=0.02`, uniform adjacency) | 0.556 ± 0.046 (5 seeds) |
+| Ours — Stage 13 (+ expression-weighted adjacency, current default) | 0.515 (1 seed, from the figure-regen run) |
 | GraphST, our harness, 5 seeds (identical protocol) | 0.5972 ± 0.0120 |
 
 **Honest bottom line:** the architecture learns real structure and beats a
 from-scratch baseline, and the address-propagation mechanism is validated (ARI
 rises monotonically with hop count, and pure addressing beat both tested hybrid
-variants). It does **not clearly beat GraphST overall, but the two are now
-close to statistical parity on average** (held-out consensus gap 0.024,
-smaller than GraphST's own 0.086 across-slice std) after three genuine,
-evidence-based fixes to how hyperparameters were selected and how seeds are
-aggregated (0.129 → 0.087 → 0.073 → 0.024). It is still real and still uneven:
-one subject's three slices remain the clear weak point (gap 0.11–0.13, down
-from 0.21–0.23), and one slice regressed. This should be reported as "closed
-most of the gap through rigorous cross-validation, not yet closed entirely,"
-not as "beats state of the art."
+variants). It does **not beat GraphST overall, but a paired significance test
+(Stage 12) now shows no statistically significant difference on either
+metric** (per-seed p=0.123, consensus p=0.465) — a genuine change from an
+earlier configuration where the per-seed metric *was* significantly worse
+(p=0.042). Four evidence-based fixes got here: cross-validating `memory_slots`,
+consensus clustering across seeds, cross-validating `lambda_usage`, and
+reweighting spatial propagation by expression similarity (0.129 → 0.087 →
+0.073 → 0.024 → 0.010 consensus gap). It is still real and still uneven: one
+subject's three slices remain the clear weak point (smaller gap than before,
+but not zero), and one slice (151671) has been volatile across fixes. This
+should be reported as "no statistically significant difference detected at
+n=11 slices, after four rounds of evidence-based fixes," not as "beats state
+of the art" or "proven equivalent" — a larger held-out sample would be needed
+to distinguish "no significant difference" from "true equivalence."
 
 ## What was done
 
@@ -283,28 +303,102 @@ substantially (still the worst, but gap 0.21-0.23 -> 0.11-0.13); one slice
 (151671) regressed under consensus. Old (`lambda_usage=0.1`) results archived
 in `outputs/logs/dlpfc_multislice_results_lambda01.json`.
 
-### 9. Still open
+### 9. Paired significance test on the held-out gap — DONE, a needed correction
+
+External review (a second AI's analysis of this project) correctly pointed out
+that "the gap (0.024) is smaller than GraphST's own across-slice std (0.086)"
+is an eyeballed range comparison, not a significance test, and that with 11
+held-out slices measured identically for both methods (same slices, same
+seeds, same protocol), a **paired** test is the right tool. Added
+`src/eval/significance_test.py` (Wilcoxon signed-rank + paired t-test, plus a
+Shapiro-Wilk normality check on the paired differences):
+
+| Metric | Ours wins | Mean diff | Wilcoxon p | Verdict |
+|---|---|---|---|---|
+| Per-seed mean (avg. of 5 seeds/slice) | 2/11 | −0.049 | **0.042** | **Significant** — GraphST reliably ahead |
+| Consensus (headline metric) | 4/11 | −0.024 | 0.465 | Not significant, but paired-diff std is higher (0.093 vs 0.064) — plausibly underpowered, not evidence of parity |
+
+**Correction to prior framing:** this repo's README/PROGRESS previously
+described the result as "close to parity" based on the std comparison alone.
+That was too optimistic. The honest statement is: on the more statistically
+stable metric, GraphST's advantage over our held-out result remains real and
+significant at n=11, even after three real, evidence-based fixes closed most
+of the numeric gap. Both p-values are now reported together in every doc that
+states this result, not just the more favorable one.
+
+### 10. Expression-weighted adjacency (Fix #4) — DONE, real improvement, now the default
+
+New `expression_weighted_adjacency()` in `memory_layer.py`: reweights each
+spatial edge by `exp(-||x_i - x_j||^2 / 2*sigma^2)` (median-heuristic sigma)
+using HVG expression, so address mass propagates less between spatially
+adjacent but transcriptionally dissimilar spots — a targeted fix for blurred
+layer boundaries, motivated by the persistent subject-3 gap and prompted by
+an external review's Fix #4 suggestion. Unit-tested (rows still sum to 1,
+identical features reduce to plain `normalized_adjacency`, dissimilar
+neighbors get downweighted relative to similar ones). Evaluation:
+
+1. Tested first on just the 3 subject-3 slices (5 seeds, GraphST skipped —
+   its numbers don't change): all 3 improved on consensus (+0.01 to +0.10),
+   2/3 improved on per-seed mean too.
+2. Confirmed at full 12-slice x 5-seed scale: held-out consensus 0.549 →
+   **0.562**, per-seed 0.520 → **0.534**, with variance *decreasing* on both
+   (0.095 → 0.082 consensus, 0.079 → 0.076 per-seed) — a rare case of mean and
+   variance both improving together, not traded off.
+3. Re-ran the paired significance test with this config: per-seed p moved
+   from 0.042 (significant) to **0.123** (not significant); consensus stayed
+   not significant but the mean gap shrank from 0.024 to **0.010**.
+
+**Promoted to the new default** (`expression_weighted=True` in
+`train_spatial_address_model`; `--uniform-adjacency` on the harness opts back
+out for the ablation). Still respects the paper's core premise — only the
+address distribution is ever propagated across spots; expression similarity
+is used purely to reweight *how strongly* an edge propagates, never to mix
+raw features into the embedding directly.
+
+**Methodological honesty note:** unlike `memory_slots`/`n_hops`/`lambda_usage`,
+this wasn't validated with the same strict CV-validation-slice / disjoint-test
+split — the decision to keep it was made after seeing the full 12-slice
+number (following a smaller, genuinely blind check on subject-3 alone first).
+The pattern held consistently across both checks, which is reassuring, but a
+fully disjoint validation would strengthen this further.
+
+### 11. Still open
 
 - The subject-3 slices (151674-676) still show the largest gaps in the whole
-  set (0.11-0.13) even after all three fixes (capacity, consensus, `lambda_usage`)
-  -- worth investigating directly; no data-level explanation (sparsity, layer
-  proportions, spot count) has been found so far.
-- 151671 regressed under consensus clustering at the new `lambda_usage`
-  (0.717 -> 0.594) -- worth understanding whether this is a real interaction
-  or noise, since it's currently the single largest per-slice regression from
-  an otherwise-broad improvement.
+  set, though considerably smaller than before Fix #4 -- worth investigating
+  directly; no data-level explanation (sparsity, layer proportions, spot
+  count) has been found so far.
+- 151671 has been volatile across fixes (jumped up under consensus at
+  `lambda_usage=0.02`, then further under expression-weighted adjacency) --
+  worth understanding whether this reflects a real interaction between the
+  fixes or noise.
+- `memory_slots`/`n_hops`/`lambda_usage` were cross-validated under uniform
+  adjacency (Stages 8, 11) -- now that expression-weighted adjacency is the
+  default, re-validating them under the new adjacency is a reasonable next
+  check, since the optimal values could interact with this architectural change.
+- entmax/sparsemax (replacing the softmax address distribution with a sparse
+  alternative) and an address-space contrastive loss were also proposed by
+  the external review and prioritized after Fix #4, but not attempted this
+  session due to time -- queued as the next concrete experiments. The
+  contrastive-loss idea specifically needs entropy/collapse instrumentation
+  added *before* running it, not after, given Stage 3's related NB/ZINB
+  failure was never fully diagnosed at the mechanism level.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
 
 ## Honest framing for any write-up
 
-The current result is real progress with a small remaining gap (0.024 ARI,
-held-out, consensus-clustered, both methods compared identically -- smaller
-than GraphST's own across-slice standard deviation). It should be described as
-"closes most of the gap to a real spatial-transcriptomics SOTA method through
-rigorous cross-validation," not as "beats state of the art" -- GraphST still
-leads on 7 of 11 held-out slices, most clearly on one subject's three slices.
-Several hypotheses were tested and rejected on evidence (per-row entropy as
-the anti-collapse term; NB/ZINB likelihood; hybrid feature message passing in
-two placements; naive embedding averaging across seeds; k-means codebook
-initialization), and the tuning slice must stay out of any headline average.
+The current result is real progress: four evidence-based fixes closed the
+held-out consensus gap from 0.129 to 0.010, and a paired significance test
+now shows no statistically significant difference from GraphST on either
+metric (n=11 held-out slices). It should be described as "no significant
+difference detected from a real spatial-transcriptomics SOTA method, after
+rigorous cross-validation and one targeted architectural fix," not as "beats
+state of the art" or "proven equivalent" -- GraphST still leads on 6 of 11
+held-out slices, most clearly on one subject's three slices (151674-676,
+still a loss on all three even after Fix #4), and a significance test at
+n=11 cannot rule out a real but small remaining difference. Several hypotheses were tested and rejected on evidence (per-row
+entropy as the anti-collapse term; NB/ZINB likelihood; hybrid feature message
+passing in two placements; naive embedding averaging across seeds; k-means
+codebook initialization), and the tuning slice must stay out of any headline
+average.

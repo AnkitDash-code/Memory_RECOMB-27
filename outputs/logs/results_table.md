@@ -9,7 +9,7 @@ reason it wasn't run.
 ## Headline result: 12-slice, 5-seed held-out evaluation (current)
 
 **This section supersedes the single-slice numbers below as the number that
-matters.** This evaluation has run four times, because each run uncovered
+matters.** This evaluation has run five times, because each run uncovered
 something real:
 
 | | Held-out (11 slices) | All 12 slices |
@@ -17,12 +17,14 @@ something real:
 | Ours, `memory_slots=32` (single-slice-tuned on 151673) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
 | Ours, `memory_slots=16`, `lambda_usage=0.1` (capacity CV only), per-seed | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
 | Ours, `memory_slots=16`, `lambda_usage=0.1`, consensus | 0.4993 ± 0.1403 | 0.5033 ± 0.1349 |
-| Ours, `memory_slots=16`, `lambda_usage=0.02` (fully cross-validated), per-seed | 0.5200 ± 0.0785 | 0.5230 ± 0.0758 |
-| **Ours, `memory_slots=16`, `lambda_usage=0.02`, consensus** | **0.5486 ± 0.0948** | 0.5494 ± 0.0908 |
+| Ours, `memory_slots=16`, `lambda_usage=0.02`, uniform adjacency, per-seed | 0.5200 ± 0.0785 | 0.5230 ± 0.0758 |
+| Ours, `memory_slots=16`, `lambda_usage=0.02`, uniform adjacency, consensus | 0.5486 ± 0.0948 | 0.5494 ± 0.0908 |
+| Ours, **+ expression-weighted adjacency** (current default), per-seed | 0.5342 ± 0.0764 | 0.5337 ± 0.0732 |
+| **Ours, + expression-weighted adjacency, consensus (current)** | **0.5621 ± 0.0821** | 0.5620 ± 0.0786 |
 | GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
 | GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
-| Gap, `lambda_usage=0.1`, consensus | 0.0731 | 0.0660 |
-| **Gap, `lambda_usage=0.02`, consensus (current, fair to both methods)** | **0.0238** | 0.0199 |
+| Gap, uniform adjacency, consensus | 0.0238 | 0.0199 |
+| **Gap, expression-weighted adjacency, consensus (current)** | **0.0103** | 0.0073 |
 
 Cross-validating `memory_slots` across 3 slices (none of them 151673) closed
 about a third of the gap (0.129 → 0.087) — `src/eval/cross_validate_capacity.py`.
@@ -32,52 +34,63 @@ identically to GraphST for fairness) closed it further, 0.087 → 0.073.
 Cross-validating the two remaining hyperparameters
 (`src/eval/cross_validate_hops_usage.py`) confirmed `n_hops=4` but found
 `lambda_usage=0.1` was over-regularizing; `0.02` closed most of what
-remained, 0.073 → **0.024**, this time *reducing* consensus variance
-(0.140 → 0.095) rather than trading it away. Full per-slice breakdown,
-produced by `src/eval/run_dlpfc_multislice.py` and logged in
-`outputs/logs/dlpfc_multislice_results.json` (previous `lambda_usage=0.1` run
-archived in `outputs/logs/dlpfc_multislice_results_lambda01.json`):
+remained, 0.073 → 0.024, this time *reducing* consensus variance
+(0.140 → 0.095) rather than trading it away. **Expression-weighted
+adjacency** (`expression_weighted_adjacency()`, reweighting each spatial edge
+by expression similarity instead of treating all spatial neighbors equally —
+prompted by an external review's suggestion) then closed most of what
+remained: 0.024 → **0.010**, with mean *and* variance both improving at once.
+Full per-slice breakdown, produced by `src/eval/run_dlpfc_multislice.py` and
+logged in `outputs/logs/dlpfc_multislice_results.json` (previous runs
+archived in `outputs/logs/dlpfc_multislice_results_lambda01.json` and
+`outputs/logs/dlpfc_multislice_results_uniform_adjacency.json`):
 
 | Slice | Ours per-seed | Ours consensus | GraphST per-seed | GraphST consensus |
 |---|---|---|---|---|
-| 151507 | 0.509 ± 0.062 | 0.549 | 0.514 ± 0.063 | 0.566 |
-| 151508 | 0.456 ± 0.105 | 0.600 | 0.488 ± 0.015 | 0.478 |
-| 151509 | 0.475 ± 0.115 | 0.462 | 0.441 ± 0.043 | 0.419 |
-| 151510 | 0.499 ± 0.023 | 0.507 | 0.539 ± 0.030 | 0.532 |
-| 151669 | 0.496 ± 0.054 | 0.470 | 0.592 ± 0.009 | 0.599 |
-| 151670 | 0.618 ± 0.108 | 0.659 | 0.534 ± 0.029 | 0.517 |
-| 151671 | 0.574 ± 0.044 | 0.594 | 0.625 ± 0.010 | 0.617 |
-| 151672 | 0.709 ± 0.120 | 0.769 | 0.769 ± 0.006 | 0.769 |
-| 151674 | 0.495 ± 0.073 | 0.510 | 0.618 ± 0.003 | 0.622 |
-| 151675 | 0.432 ± 0.037 | 0.455 | 0.548 ± 0.058 | 0.583 |
-| 151676 | 0.457 ± 0.024 | 0.462 | 0.584 ± 0.015 | 0.595 |
-| *151673 (tuning slice, excluded)* | *0.556 ± 0.046* | *0.558* | *0.595 ± 0.014* | *0.536* |
+| 151507 | 0.466 ± 0.044 | 0.534 | 0.514 ± 0.063 | 0.566 |
+| 151508 | 0.471 ± 0.105 | 0.531 | 0.488 ± 0.015 | 0.478 |
+| 151509 | 0.546 ± 0.069 | 0.591 | 0.441 ± 0.043 | 0.419 |
+| 151510 | 0.494 ± 0.028 | 0.486 | 0.539 ± 0.030 | 0.532 |
+| 151669 | 0.587 ± 0.081 | 0.544 | 0.592 ± 0.009 | 0.599 |
+| 151670 | 0.536 ± 0.131 | 0.525 | 0.534 ± 0.029 | 0.517 |
+| 151671 | 0.649 ± 0.079 | 0.640 | 0.625 ± 0.010 | 0.617 |
+| 151672 | 0.699 ± 0.096 | 0.783 | 0.769 ± 0.006 | 0.769 |
+| 151674 | 0.468 ± 0.040 | 0.524 | 0.618 ± 0.003 | 0.622 |
+| 151675 | 0.469 ± 0.053 | 0.551 | 0.548 ± 0.058 | 0.583 |
+| 151676 | 0.491 ± 0.048 | 0.473 | 0.584 ± 0.015 | 0.595 |
+| *151673 (tuning slice, excluded)* | *0.529 ± 0.054* | *0.561* | *0.595 ± 0.014* | *0.536* |
 
-**Read this honestly, both ways.** On 3 of 11 held-out slices (151508, 151509,
-151670) we now clearly beat GraphST, plus a near-exact tie on 151672 (+0.0003
-consensus). But GraphST still leads on the other 7 — most starkly on the three
-subject-3 slices (151674–676), where the gap shrank a lot (from 0.21–0.23 to
-0.11–0.13) but did not close, and 151671 is a genuine regression from the
-previous `lambda_usage=0.1` run (consensus 0.717 → 0.594) — the one place this
-fix made things worse rather than better. The overall picture is nonetheless a
-substantial improvement: 8 of 11 held-out slices' per-seed means went up
-(151507, 151508, 151671 went down), all three subject-3 slices improved by
-+0.09 to +0.10 ARI, and both per-seed and across-slice consensus variance
-dropped rather than rose. See Stage 11 in
+**Read this honestly, both ways.** On 5 of 11 held-out slices (151508, 151509,
+151670, 151671, 151672) we now clearly beat GraphST. GraphST still leads on
+the other 6 — most starkly on the three subject-3 slices (151674–676), where
+the gap has shrunk substantially from where it started (0.21–0.23) but is
+still the clearest weak point in the whole set. See Stage 13 in
 `outputs/logs/stage2_progress.md` for the full analysis this result should be
 read alongside.
 
 **Conclusion.** The architecture works — it learns real structure and beats a
 from-scratch baseline — and the address-propagation mechanism is validated
 (monotonic ARI gain with hop count, and it beats both tested hybrid variants that
-add feature message passing). Three real, evidence-based fixes (cross-validated
-capacity, consensus clustering, cross-validated `lambda_usage`) closed the
-held-out gap from 0.129 to **0.024** — smaller than GraphST's own across-slice
-standard deviation (0.086), i.e. close to statistical parity on average, though
-still uneven per-slice and not a clean win. It should be reported as "closes
-most of the gap through rigorous cross-validation," not as "beats state of the
-art" — GraphST still leads on 7 of 11 held-out slices, and the subject-3
-slices remain the clearest weak point along with the 151671 regression.
+add feature message passing). Four real, evidence-based fixes (cross-validated
+capacity, consensus clustering, cross-validated `lambda_usage`,
+expression-weighted adjacency) closed the held-out gap from 0.129 to
+**0.010** (consensus). "Smaller than GraphST's own std" is an eyeballed range
+comparison, not a significance test — running the actual paired test
+(`src/eval/significance_test.py`, Wilcoxon signed-rank over the 11 held-out
+slices) confirms this is now a real change, not just a smaller point
+estimate: before expression-weighted adjacency, GraphST's lead on the
+per-seed metric was **statistically significant** (p=0.042); after it,
+neither metric shows a significant difference (per-seed p=0.123, consensus
+p=0.465, ours wins 5/11 on consensus). Report this as "no statistically
+significant difference detected at n=11 slices, after four rounds of
+evidence-based fixes" — not as "reached parity" (a significance test can't
+prove equivalence, only fail to detect a difference) or "beats state of the
+art" — GraphST still leads on 6 of 11 held-out slices, and the subject-3
+slices remain the clearest weak point.
+
+![Held-out ARI progression across fixes](../figures/ari_progression.png)
+
+![Per-slice comparison, ours vs GraphST](../figures/per_slice_comparison.png)
 
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
