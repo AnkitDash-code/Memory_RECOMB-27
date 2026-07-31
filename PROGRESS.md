@@ -492,11 +492,15 @@ that would justify it.
 
 ### 14. Still open
 
-- The subject-3 slices (151674-676) still show the largest gaps in the whole
-  set, though considerably smaller than before Fix #4 -- worth investigating
-  directly; no data-level explanation (sparsity, layer proportions, spot
-  count) has been found so far, and neither Fix #2, Fix #1, nor the
-  image-modality diagnostic (section 13) explained them.
+- The subject-3 slices remain our weak point -- but see section 15, which
+  reframes this substantially. **Correction to earlier versions of this
+  file:** this bullet used to assert that "no data-level explanation
+  (sparsity, layer proportions, spot count) has been found so far". That
+  overstated what had actually been measured -- `data_stats.py` only ever
+  covered the mouse Visium and Slide-seq datasets, never DLPFC and never
+  per-subject, so no read-depth/dropout QC had been run at all. It has now
+  been (section 15), and it falsifies the data-quality-ceiling hypothesis
+  rather than supporting it.
 - 151671 has been volatile across fixes (jumped up under consensus at
   `lambda_usage=0.02`, then further under expression-weighted adjacency) --
   worth understanding whether this reflects a real interaction between the
@@ -511,6 +515,96 @@ that would justify it.
   further tuning of this same set of mechanisms.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
+
+### 15. Topologically-Ordered Memory (TOM) — FAILED at its gate, all variants rejected
+
+Plan: give the memory bank a 1D geometry (SOM-VAE's differentiable SOM +
+an ordinal-smoothness loss), on the premise that an *unordered* slot space
+cannot prefer "adjacent layer" over "completely different layer" for an
+ambiguous spot. Literature check done first as the plan required: SOM-VAE is
+real and citable, SOMs in spatial transcriptomics exist (SOMDE) but for a
+different task, and no surveyed DLPFC method uses an ordered cluster space.
+
+Three findings, in order of importance:
+
+1. **A latent bug in the plan's code sketch, caught before wasting a run.**
+   `linspace(0,1)` slot positions with `som_sigma` in 0.5–2.5 makes every
+   kernel entry ≥0.80 — a nearly flat neighborhood kernel that would have
+   silently reduced the mechanism to a no-op while appearing to run. Fixed
+   (integer slot indices, the standard SOM convention) and pinned by a
+   regression test.
+
+2. **The SOM term is structurally unusable here — root cause identified.**
+   Catastrophic collapse (`slots_used=1`, `key_cos=0.995`, ARI **0.0000**)
+   across the *entire* sigma sweep and two orders of magnitude of
+   `lambda_som`. Why: SOM-VAE reconstructs *through* its codebook, forcing
+   entries apart; here addressing (`memory_keys`) and reconstruction
+   (`memory_values`) are deliberately separate — which is what makes
+   "addressing replaces message passing" coherent — so keys get no spreading
+   pressure at all. And `usage_entropy` is blind to it: identical keys give a
+   *uniform* softmax, its **maximum**. The plan transplanted SOM-VAE's loss
+   without SOM-VAE's structural constraint; both designs are individually
+   sound and mutually incompatible.
+
+3. **The premise is inverted exactly where it was aimed.** Measuring whether
+   the *existing* model already encodes layer order (|Spearman| of embedding
+   PC1 vs. true depth, 12 slices × 3 seeds): subject1 0.237, subject2 0.420,
+   **subject3 0.824** — strongest and most stable (std 0.016–0.039). Subject 3,
+   the target of the whole plan, is where the current model *already* recovers
+   laminar ordering best. Its clustering is worst precisely where its ordering
+   is best, so an ordinal prior addresses a deficit it does not have.
+
+The one configuration that looked promising (`ordinal-only`, 0.5696 vs 0.5150
+on one slice/seed) was escalated properly and did not survive: full 12-slice ×
+5-seed gives 0.5206 vs 0.5342 per-seed and 0.5417 vs 0.5621 consensus — worse,
+4/11 wins, and it *regresses* the headline claim (vs GraphST p=0.042,
+significant, versus p=0.123 for the current model). Also note that with
+`lambda_som=0` the slot ordering is arbitrary, so even a win would not have
+been the TOM hypothesis.
+
+Code kept as opt-in and unit-tested (13 tests), consistent with how every
+prior negative result was handled. No default changed.
+
+### 16. Per-subject QC — the data-quality-ceiling hypothesis is falsified too
+
+With four architecture hypotheses now specifically falsified on subject 3, the
+remaining natural explanation was a data ceiling. **It had never been measured**
+— `data_stats.py` only ever covered mouse Visium and Slide-seq, never DLPFC and
+never per-subject (see the correction in section 14). Now measured
+(`src/eval/per_subject_qc.py`, raw counts):
+
+| subject | median library | median genes | dropout | n_layers | ARI |
+|---|---|---|---|---|---|
+| subject1 | 2304 | 1324 | 0.9597 | 7 | 0.536 |
+| subject2 | 3452 | 1734 | 0.9471 | **5** | 0.623 |
+| **subject3** | **4003** | **2058** | **0.9356** | 7 | **0.527** |
+
+Subject 3 has the **best** depth, **best** complexity, and **lowest** dropout —
+and the worst ARI. Ceiling hypothesis falsified. Two things this also settles:
+subject 2's lead is largely a task-difficulty artifact (5 layers vs 7), so the
+confound-free comparison is subject1 vs subject3, both 7-layer, where subject 3
+has strictly better data and worse results.
+
+And critically — **subject 3 is not intrinsically hard, it is hard for *us***:
+
+| subject | ours | GraphST | gap |
+|---|---|---|---|
+| subject1 | 0.536 | 0.499 | **−0.037 (we win)** |
+| subject2 | 0.623 | 0.625 | +0.002 (tie) |
+| subject3 | 0.527 | 0.584 | **+0.057 (we lose)** |
+
+GraphST handles subject 3 fine (0.584, its second-best subject). This reframes
+"subject 3 is hard" into "our architecture specifically underperforms, on the
+cleanest data in the set, a method that handles that data well" — a targeted
+defect, not a ceiling. It also rules out the paper framing "both approaches
+degrade together on a low-quality subject", which the data contradicts on both
+halves.
+
+Concrete untested suspect for the next cheap experiment: subject 3 has by far
+the richest per-spot signal (2058 genes/spot vs 1324), and `n_hops=4` address
+propagation may over-smooth genuinely separable layers precisely where signal
+is strongest, while GraphST's contrastive term resists that. `n_hops` was
+cross-validated globally (Stage 11), never per-subject.
 
 ## Honest framing for any write-up
 

@@ -1,0 +1,174 @@
+{
+  "per_slice": [
+    {
+      "sample": "151507",
+      "n_spots": 4226,
+      "n_genes": 33538,
+      "median_library_size": 2463.5,
+      "median_genes_detected": 1384.0,
+      "dropout_rate": 0.957953057013656,
+      "spot_density_per_1e6px": 52.23916002199632,
+      "unannotated_fraction": 0.001183151916706105,
+      "n_layers": 7,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151508",
+      "n_spots": 4384,
+      "n_genes": 33538,
+      "median_library_size": 2019.0,
+      "median_genes_detected": 1159.5,
+      "dropout_rate": 0.9644772565426384,
+      "spot_density_per_1e6px": 54.162617030911086,
+      "unannotated_fraction": 0.0006843065693430657,
+      "n_layers": 7,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151509",
+      "n_spots": 4789,
+      "n_genes": 33538,
+      "median_library_size": 2416.0,
+      "median_genes_detected": 1407.0,
+      "dropout_rate": 0.9572421323883633,
+      "spot_density_per_1e6px": 58.288172880602964,
+      "unannotated_fraction": 0.00020881186051367718,
+      "n_layers": 7,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151510",
+      "n_spots": 4634,
+      "n_genes": 33538,
+      "median_library_size": 2319.0,
+      "median_genes_detected": 1344.5,
+      "dropout_rate": 0.9591938793177177,
+      "spot_density_per_1e6px": 56.27700938191424,
+      "unannotated_fraction": 0.008416055243849805,
+      "n_layers": 7,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151669",
+      "n_spots": 3661,
+      "n_genes": 33538,
+      "median_library_size": 3470.0,
+      "median_genes_detected": 1737.0,
+      "dropout_rate": 0.9463187777931238,
+      "spot_density_per_1e6px": 46.994697442335735,
+      "unannotated_fraction": 0.0068287353182190655,
+      "n_layers": 5,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151670",
+      "n_spots": 3498,
+      "n_genes": 33538,
+      "median_library_size": 3113.0,
+      "median_genes_detected": 1607.0,
+      "dropout_rate": 0.9500567373956839,
+      "spot_density_per_1e6px": 47.098094910335895,
+      "unannotated_fraction": 0.004002287021154946,
+      "n_layers": 5,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151671",
+      "n_spots": 4110,
+      "n_genes": 33538,
+      "median_library_size": 3743.0,
+      "median_genes_detected": 1853.5,
+      "dropout_rate": 0.9445863638137747,
+      "spot_density_per_1e6px": 51.61627965403932,
+      "unannotated_fraction": 0.00413625304136253,
+      "n_layers": 5,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151672",
+      "n_spots": 4015,
+      "n_genes": 33538,
+      "median_library_size": 3482.0,
+      "median_genes_detected": 1740.0,
+      "dropout_rate": 0.9475722897028682,
+      "spot_density_per_1e6px": 51.81299810164401,
+      "unannotated_fraction": 0.03163138231631382,
+      "n_layers": 5,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151673",
+      "n_spots": 3639,
+      "n_genes": 33538,
+      "median_library_size": 4120.0,
+      "median_genes_detected": 2113.0,
+      "dropout_rate": 0.9342740765434773,
+      "spot_density_per_1e6px": 49.94167158603797,
+      "unannotated_fraction": 0.007694421544380325,
+      "n_layers": 7,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151674",
+      "n_spots": 3673,
+      "n_genes": 33538,
+      "median_library_size": 5334.0,
+      "median_genes_detected": 2610.0,
+      "dropout_rate": 0.9195961598399495,
+      "spot_density_per_1e6px": 49.76540752191737,
+      "unannotated_fraction": 0.010345766403484889,
+      "n_layers": 7,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151675",
+      "n_spots": 3592,
+      "n_genes": 33538,
+      "median_library_size": 3139.5,
+      "median_genes_detected": 1695.0,
+      "dropout_rate": 0.9461062251495196,
+      "spot_density_per_1e6px": 45.704113604343455,
+      "unannotated_fraction": 0.007238307349665924,
+      "n_layers": 7,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151676",
+      "n_spots": 3460,
+      "n_genes": 33538,
+      "median_library_size": 3419.0,
+      "median_genes_detected": 1813.0,
+      "dropout_rate": 0.9422571997530538,
+      "spot_density_per_1e6px": 49.36565137976995,
+      "unannotated_fraction": 0.00838150289017341,
+      "n_layers": 7,
+      "subject": "subject3"
+    }
+  ],
+  "per_subject": {
+    "subject1": {
+      "n_spots": 4508.25,
+      "median_library_size": 2304.375,
+      "median_genes_detected": 1323.75,
+      "dropout_rate": 0.9597165813155938,
+      "spot_density_per_1e6px": 55.241739828856154,
+      "unannotated_fraction": 0.0026230813976031633
+    },
+    "subject2": {
+      "n_spots": 3821.0,
+      "median_library_size": 3452.0,
+      "median_genes_detected": 1734.375,
+      "dropout_rate": 0.9471335421763627,
+      "spot_density_per_1e6px": 49.38051752708874,
+      "unannotated_fraction": 0.011649664424262591
+    },
+    "subject3": {
+      "n_spots": 3591.0,
+      "median_library_size": 4003.125,
+      "median_genes_detected": 2057.75,
+      "dropout_rate": 0.9355584153215,
+      "spot_density_per_1e6px": 48.69421102301719,
+      "unannotated_fraction": 0.008414999546926136
+    }
+  }
+}

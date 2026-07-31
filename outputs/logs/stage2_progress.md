@@ -943,6 +943,189 @@ architecture to test them.
 
 `DualModalityMemoryLayer` remains **not built**.
 
+## Stage 18 -- Topologically-Ordered Memory (TOM): FAILED at the gate, all variants rejected
+
+Premise of the plan: every mechanism tried so far treats memory slots as an
+*unordered* bag of prototypes, while the ground truth (cortical layers) is
+strictly ordered -- so give the memory bank a 1D geometry via the
+differentiable SOM mechanism from SOM-VAE (Fortuin et al., ICLR 2019), plus an
+ordinal-smoothness loss on the resulting per-spot position.
+
+**Section 0 literature check (done first, as the plan required).** SOM-VAE is
+real and citable. SOMDE (Bioinformatics 2021) applies SOMs to spatial
+transcriptomics but for spatially-variable-*gene* identification, a different
+task. Every DLPFC domain method surveyed (GraphST, STAGATE, DeepST,
+SemanticST, SpaBatch, SEDR, SpaGCN, BayesSpace, stLearn) uses an unordered
+cluster space, so the mechanism was not preempted. Cortical depth IS used as
+an ordering axis in the field (Science 2023, Nature 2025) but for
+annotation/cell assignment, not as an architectural prior -- so the biological
+premise is well-supported and any novelty claim is about the mechanism only.
+
+**A latent bug in the plan's code sketch, caught before it could waste a run.**
+The sketch set `slot_pos = linspace(0, 1, memory_slots)` while sweeping
+`som_sigma` over 0.5-2.5. With a maximum slot distance of 1.0, that makes
+`exp(-d^2 / 2*sigma^2) >= 0.80` for EVERY slot pair -- an almost perfectly flat
+neighborhood kernel that pulls every slot toward every input, silently
+reducing the whole mechanism to a no-op while still appearing to run. Fixed by
+using integer slot indices (the standard SOM convention, under which the
+plan's sigma values are meaningful) and reporting position on a normalized
+[0,1] scale so `lambda_ordinal` stays independent of `memory_slots`. Pinned by
+a regression test (`test_som_kernel_is_not_degenerately_flat_at_default_sigma`).
+
+**GATE RESULT: catastrophic SOM collapse, across the entire hyperparameter
+range.** The instrumentation the plan mandated caught it in the first run:
+`slots_used=1`, `key_cosine_similarity=0.995`, `expected_pos_std=0.0000`.
+Sigma sweep + loss ablation on 151673 (seed 0):
+
+| config | ARI | abs rho pos-vs-depth | pos_std | slots | key_cos |
+|---|---|---|---|---|---|
+| ordinal-only | 0.5696 | 0.151 | 0.104 | 16 | -0.03 |
+| som-only | 0.0000 | 0.029 | 0.000 | 1 | 0.995 |
+| both (plan default) | 0.0000 | 0.029 | 0.000 | 1 | 0.995 |
+| both, sigma=0.5 | 0.0000 | 0.011 | 0.000 | 1 | 0.442 |
+| both, sigma=1.0 | 0.0000 | 0.021 | 0.000 | 1 | 0.674 |
+| both, sigma=2.5 | 0.0000 | 0.071 | 0.000 | 1 | 1.000 |
+| both, lambda_som=0.002 | 0.0000 | 0.165 | 0.000 | 1 | 0.490 |
+| both, lambda_som=2e-4 | 0.4865 | 0.162 | 0.006 | 11 | 0.035 |
+| neither (= Stage 13) | 0.5150 | 0.175 | 0.118 | 16 | -0.03 |
+
+Correctness check passed: "neither" reproduces 0.5150, exactly the Stage 13
+model's known single-seed 151673 result -- TOM is a strictly additive change
+and the comparison is apples-to-apples.
+
+**Root cause identified, not merely observed.** This is not mistuning: collapse
+persists across the full sigma range AND two orders of magnitude of
+lambda_som, disappearing only at 2e-4 where the term has effectively been
+switched off (and still underperforms baseline). The mechanism:
+
+  * In SOM-VAE, reconstruction flows THROUGH the quantized codebook entry, so
+    codebook entries must stay spread out to reconstruct well. That is what
+    keeps the map from collapsing.
+  * In this architecture, addressing (`memory_keys`) and reconstruction
+    (`memory_values`) are deliberately separate -- which is what makes
+    "addressing replaces message passing" coherent. But it means `memory_keys`
+    receive NO spreading pressure from the reconstruction objective at all,
+    so the SOM neighborhood term can freely collapse every key onto the query
+    centroid, unopposed.
+  * The existing anti-collapse guard is structurally blind to this failure:
+    when all keys are identical the softmax over identical scores is UNIFORM,
+    which is the MAXIMUM of `usage_entropy`. The guard reads as perfectly
+    satisfied while the model is degenerate. `usage_entropy` prevents "every
+    spot routes to one slot"; it cannot prevent "every spot routes uniformly
+    to all slots", which is equally uninformative.
+
+The plan transplanted SOM-VAE's loss without SOM-VAE's structural constraint.
+Both designs are individually sound and mutually incompatible.
+
+**The surviving piece also fails at scale.** `ordinal-only` (lambda_som=0) was
+the one configuration that looked better than baseline (0.5696 vs 0.5150 on
+151673 seed 0). Escalated per this project's own discipline -- 4 slices x 5
+seeds gave +0.025 mean, better on 3/4, but with one -0.061 regression. Full
+12-slice x 5-seed protocol settled it:
+
+| | ordinal-only | current (Stage 13) | delta | Wilcoxon p |
+|---|---|---|---|---|
+| held-out per-seed | 0.5206 | 0.5342 | -0.0136 | 0.41 |
+| held-out consensus | 0.5417 | 0.5621 | -0.0204 | 0.37 |
+
+Slightly worse, wins only 4/11, not significantly different. And it actively
+REGRESSES the headline claim: ordinal-only vs GraphST on the per-seed metric
+is p=0.042 (significant, GraphST ahead), losing the "no significant
+difference" standing the current model holds at p=0.123. Rejected.
+
+Note also that with lambda_som=0 the slot ordering is arbitrary by
+construction, so even a positive result here would NOT have been the TOM
+hypothesis -- it would have been a generic smoothness regularizer overlapping
+with the n_hops propagation already in the model.
+
+**The premise itself is inverted where it was aimed.** The gate's control
+condition asked whether the EXISTING model already encodes layer order
+implicitly (abs Spearman of embedding PC1 vs. true cortical depth), measured
+over 12 slices x 3 seeds (`src/eval/baseline_ordinal_axis.py`):
+
+| subject | mean abs rho | note |
+|---|---|---|
+| subject1 | 0.2372 | |
+| subject2 | 0.4204 | |
+| **subject3** | **0.8240** | strongest AND most stable (per-slice std 0.016-0.039) |
+
+Subject 3 -- the persistent weak point this entire plan was designed to fix --
+is precisely where the current model ALREADY recovers cortical depth ordering
+most strongly and most reliably. Its clustering is worst exactly where its
+laminar ordering is best. So subject 3's failure is not "the model cannot tell
+where a spot sits along the depth axis"; it can, better there than anywhere
+else. An explicit ordinal prior targets a deficit subject 3 does not have.
+
+(Across all 12 slices the trend between ordinal-axis strength and ARI is
+negative -- Spearman -0.44 -- but p=0.15 at n=12, so that is reported as
+suggestive only, not established. The per-subject statement above is the solid
+one, backed by tight per-slice variance.)
+
+**Decision:** `TopologicalMemoryLayer` / `TopologicalMemoryAutoencoder` and
+`train_topological_model` are kept as opt-in, unit-tested code (13 tests) for
+reproducibility, exactly as `kmeans_init`, `attention_fn`, and
+`lambda_contrastive` were kept after their own negative results.
+`--lambda-ordinal` is wired into the harness. No default changed; the Stage 13
+configuration stands.
+
+## Stage 19 -- per-subject QC: the data-quality-ceiling hypothesis is falsified too
+
+With four architecture-level hypotheses now specifically falsified on subject 3
+(image/expression disagreement, address-space contrastive, missing laminar
+order, and now this), the natural remaining explanation was a data-quality
+ceiling: subject 3 is simply worse tissue, and no architecture will lift it.
+
+**This had never actually been measured, despite the docs implying otherwise.**
+PROGRESS.md had been asserting "no data-level explanation (sparsity, layer
+proportions, spot count) has been found so far" -- but `data_stats.py` only
+ever covered the mouse Visium and Slide-seq datasets, never DLPFC and never
+per-subject. No read-depth or dropout QC existed. Corrected, and the claim in
+PROGRESS.md has been amended.
+
+`src/eval/per_subject_qc.py`, raw counts, pre-normalization:
+
+| subject | median library | median genes | dropout | spot density | n_layers | ARI |
+|---|---|---|---|---|---|---|
+| subject1 | 2304 | 1324 | 0.9597 | 55.2 | 7 | 0.536 |
+| subject2 | 3452 | 1734 | 0.9471 | 49.4 | **5** | 0.623 |
+| **subject3** | **4003** | **2058** | **0.9356** | 48.7 | 7 | **0.527** |
+
+Subject 3 has the BEST sequencing depth, the BEST library complexity, and the
+LOWEST dropout of the three subjects -- and the worst ARI. The
+data-quality-ceiling hypothesis is falsified, not supported.
+
+Two further points this table settles:
+
+  * **Subject 2's advantage is largely a task-difficulty artifact**: it has 5
+    annotated layers where subjects 1 and 3 have 7. The confound-free
+    comparison is subject1 vs subject3, both 7-layer -- and there subject 3
+    has strictly better data and worse performance.
+  * **Subject 3 is not intrinsically hard; it is hard FOR US.** Per-subject,
+    ours vs. GraphST (consensus, identical protocol):
+
+    | subject | ours | GraphST | gap |
+    |---|---|---|---|
+    | subject1 | 0.536 | 0.499 | **-0.037 (we win)** |
+    | subject2 | 0.623 | 0.625 | +0.002 (tie) |
+    | subject3 | 0.527 | 0.584 | **+0.057 (we lose)** |
+
+    GraphST handles subject 3 fine -- 0.584, its second-best subject. We are
+    the only method that degrades there.
+
+**This is the most actionable finding of the session.** "Subject 3 is hard"
+becomes "our architecture specifically underperforms, on the cleanest data in
+the set, a method that handles that data well." That is a targeted
+architectural defect, not a ceiling -- and it rules out the paper framing of
+"both approaches degrade together on a low-quality subject", which the data
+does not support on either half.
+
+A concrete, untested suspect worth the next cheap experiment: subject 3 has by
+far the richest per-spot signal (2058 genes/spot vs. 1324 for subject 1), and
+our `n_hops=4` address propagation may be over-smoothing genuinely separable
+layers precisely where signal is strongest, while GraphST's contrastive term
+actively resists that. `n_hops` was cross-validated globally (Stage 11), never
+per-subject. Not yet run.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

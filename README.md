@@ -306,6 +306,49 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   A capacity sweep (codebook size 8–256) found a genuine further improvement: 32
   slots suits ~7 true domains far better than the initial 64 (inverted-U, later
   found itself to be single-slice overfit — see above).
+- **A topologically-ordered memory (TOM) architecture was falsified at its own
+  gate, and the premise turned out to be inverted.** The plan: give the memory
+  bank a 1D geometry (SOM-VAE's differentiable SOM plus an ordinal-smoothness
+  loss), since cortical layers are strictly ordered while the slot space is
+  not. Three results. (a) A latent bug in the plan's own code sketch was caught
+  before it could waste a run — `linspace(0,1)` slot positions with
+  `som_sigma` ∈ [0.5, 2.5] makes every neighborhood-kernel entry ≥0.80, a
+  nearly flat kernel that would have silently made the mechanism a no-op while
+  appearing to run; now pinned by a regression test. (b) The SOM term is
+  *structurally* unusable in this architecture, not mistuned: catastrophic
+  codebook collapse (ARI **0.0000**, 1 slot used, key cosine similarity 0.995)
+  across the entire σ sweep and two orders of magnitude of `lambda_som`. Root
+  cause: SOM-VAE reconstructs *through* its codebook, which forces entries
+  apart; here addressing (`memory_keys`) and reconstruction (`memory_values`)
+  are deliberately separate — the very thing that makes "addressing replaces
+  message passing" coherent — so keys get no spreading pressure, and the
+  existing anti-collapse guard is blind to it (identical keys give a *uniform*
+  softmax, which is `usage_entropy`'s **maximum**). (c) Most importantly, the
+  premise is inverted where it was aimed: measuring whether the *existing*
+  model already encodes layer order (|Spearman| of embedding PC1 vs. true
+  cortical depth, 12 slices × 3 seeds) gives subject1 0.237, subject2 0.420,
+  **subject3 0.824** — the persistent weak point is precisely where the current
+  model *already* recovers laminar ordering most strongly and most stably. The
+  one variant that looked promising on a single slice/seed (`ordinal-only`)
+  was escalated properly and did not survive the full 12-slice × 5-seed
+  protocol (0.542 vs 0.562 consensus, 4/11 wins). See Stage 18 in
+  [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md).
+- **The "subject 3 is just low-quality tissue" explanation is also falsified —
+  and this one reframes the remaining gap.** Per-subject QC on raw counts
+  (`src/eval/per_subject_qc.py`) had never actually been run despite earlier
+  drafts of `PROGRESS.md` implying it had (`data_stats.py` only ever covered
+  the mouse Visium and Slide-seq datasets). Measured: subject 3 has the
+  **best** median library size (4003 vs 2304/3452), the **best** library
+  complexity (2058 genes/spot vs 1324/1734), and the **lowest** dropout
+  (0.9356) of the three subjects — while having the worst ARI. Subject 2's
+  apparent advantage is largely a task-difficulty artifact (5 annotated layers
+  vs 7 for subjects 1 and 3). And per-subject against GraphST under the
+  identical protocol: we *win* on subject 1 (0.536 vs 0.499), *tie* on subject
+  2 (0.623 vs 0.625), and *lose* on subject 3 (0.527 vs 0.584) — where GraphST
+  scores its second-best result. So subject 3 is not intrinsically hard; it is
+  hard **for this architecture specifically**, on the cleanest data in the set.
+  That is a targeted defect rather than a ceiling, and it rules out framing the
+  result as "both methods degrade together on a difficult subject."
 - **A dual-modality (expression + morphology) architecture plan was falsified
   at its own diagnostic gate — twice, including after switching to a
   stronger, histology-appropriate backbone — and not built.** The plan

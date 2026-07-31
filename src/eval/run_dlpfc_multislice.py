@@ -40,6 +40,9 @@ ATTENTION_FN_OUTPUT_PATH = (
 CONTRASTIVE_OUTPUT_PATH = (
     Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_contrastive.json"
 )
+ORDINAL_OUTPUT_PATH = (
+    Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_ordinal.json"
+)
 TUNING_SLICE = "151673"
 
 
@@ -48,7 +51,8 @@ def _ari(truth, labels, mask):
 
 
 def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kmeans_init=False,
-                    expression_weighted=True, attention_fn="softmax", lambda_contrastive=0.0):
+                    expression_weighted=True, attention_fn="softmax", lambda_contrastive=0.0,
+                    lambda_ordinal=0.0):
     """model="mse" is the tuned, winning configuration (pure address propagation,
     memory_slots=32 -- see train_spatial_address_model's defaults). model="count"
     is the rejected NB/ZINB ablation, kept available for reproducing that negative
@@ -82,6 +86,20 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kme
                 adata.copy(), seed=seed, device=device, verbose=False
             )
             embedding = trained.obsm["X_count_address"]
+        elif lambda_ordinal:
+            # TOM's ordinal-smoothness term WITHOUT the SOM term, which
+            # collapses the codebook (Stage 18). With lambda_som=0 the slot
+            # ordering is arbitrary, so this is a generic smoothness
+            # regularizer, NOT the topological hypothesis -- see
+            # src/eval/ordinal_only_check.py for why that distinction matters.
+            from src.models.train_topological import train_topological_model
+
+            _, trained, _ = train_topological_model(
+                adata.copy(), seed=seed, device=device, verbose=False,
+                lambda_som=0.0, lambda_ordinal=lambda_ordinal,
+                expression_weighted=expression_weighted, attention_fn=attention_fn,
+            )
+            embedding = trained.obsm["X_topological_address"]
         else:
             _, trained, _ = train_spatial_address_model(
                 adata.copy(), seed=seed, device=device, verbose=False,
@@ -147,6 +165,10 @@ def main():
                          default="softmax",
                          help="Ablation: address-distribution normalization. Non-default "
                               "choices write to a separate output file, not the main results.")
+    parser.add_argument("--lambda-ordinal", type=float, default=0.0,
+                         help="Ablation: TOM ordinal-smoothness term without the SOM term "
+                              "(which collapses -- Stage 18). Nonzero writes to a separate "
+                              "output file, not the main results.")
     parser.add_argument("--lambda-contrastive", type=float, default=0.0,
                          help="Ablation: address-space contrastive regularization weight "
                               "(Stage 3's term, isolated from NB/ZINB). Nonzero writes to a "
@@ -163,6 +185,7 @@ def main():
             run_graphst_too=not args.skip_graphst, model=args.model,
             kmeans_init=args.kmeans_init, expression_weighted=not args.uniform_adjacency,
             attention_fn=args.attention_fn, lambda_contrastive=args.lambda_contrastive,
+            lambda_ordinal=args.lambda_ordinal,
         )
         if result is None:
             continue
@@ -218,6 +241,8 @@ def main():
         output_path = Path(str(ATTENTION_FN_OUTPUT_PATH).format(fn=args.attention_fn))
     elif args.lambda_contrastive:
         output_path = CONTRASTIVE_OUTPUT_PATH
+    elif args.lambda_ordinal:
+        output_path = ORDINAL_OUTPUT_PATH
     else:
         output_path = OUTPUT_PATH
     output_path.parent.mkdir(parents=True, exist_ok=True)
