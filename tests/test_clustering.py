@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.metrics import adjusted_rand_score
 
-from src.eval.clustering import cluster_embedding, mclust_equivalent, refine_labels_spatial
+from src.eval.clustering import cluster_embedding, consensus_cluster, mclust_equivalent, refine_labels_spatial
 
 
 def test_mclust_equivalent_recovers_known_blobs():
@@ -49,3 +49,34 @@ def test_cluster_embedding_end_to_end_shape():
 
     assert len(labels) == embedding.shape[0]
     assert 1 <= len(np.unique(labels)) <= 4
+
+
+def test_consensus_cluster_recovers_true_structure_from_noisy_labels():
+    """Several noisy label sets that agree on the majority structure should
+    combine into something closer to the truth than any single noisy copy."""
+    rng = np.random.default_rng(0)
+    truth = np.repeat([0, 1, 2], 20)
+    n = len(truth)
+
+    noisy_label_sets = []
+    for i in range(5):
+        noisy = truth.copy()
+        flip_idx = rng.choice(n, size=8, replace=False)
+        noisy[flip_idx] = rng.integers(0, 3, size=8)
+        noisy_label_sets.append(noisy.astype(str))
+
+    consensus = consensus_cluster(noisy_label_sets, n_clusters=3)
+
+    from sklearn.metrics import adjusted_rand_score
+    consensus_ari = adjusted_rand_score(truth, consensus)
+    single_run_aris = [adjusted_rand_score(truth, ls) for ls in noisy_label_sets]
+
+    assert consensus_ari >= np.mean(single_run_aris)
+
+
+def test_consensus_cluster_agrees_when_all_inputs_identical():
+    labels = np.array(["0"] * 10 + ["1"] * 10)
+    consensus = consensus_cluster([labels, labels, labels], n_clusters=2)
+
+    from sklearn.metrics import adjusted_rand_score
+    assert adjusted_rand_score(labels, consensus) == 1.0

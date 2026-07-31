@@ -267,3 +267,28 @@ def test_feature_hops_changes_representation():
     _, attn_hybrid = layer(x, adjacency)
 
     assert not torch.allclose(attn_pure, attn_hybrid, atol=1e-4)
+
+
+def test_kmeans_init_sets_keys_to_cluster_centers():
+    """initialize_keys_kmeans must move memory_keys away from their random
+    init to the actual cluster centers of the given queries."""
+    torch.manual_seed(0)
+    n_slots, dim = 4, 6
+    layer = SpatialAddressMemoryLayer(feature_dim=dim, memory_slots=n_slots, memory_dim=dim)
+    random_keys = layer.memory_keys.data.clone()
+
+    import numpy as np
+    rng = np.random.default_rng(0)
+    blobs = np.vstack([rng.normal(loc=i * 20.0, scale=0.1, size=(20, dim)) for i in range(n_slots)])
+    queries = torch.tensor(blobs, dtype=torch.float32)
+
+    layer.initialize_keys_kmeans(queries, seed=0)
+
+    assert not torch.allclose(layer.memory_keys.data, random_keys)
+    # Each true cluster center should be well-matched by some memory key.
+    centers = torch.tensor(
+        np.stack([blobs[i * 20:(i + 1) * 20].mean(axis=0) for i in range(n_slots)]), dtype=torch.float32
+    )
+    for center in centers:
+        closest = (layer.memory_keys.data - center).norm(dim=-1).min()
+        assert closest < 1.0

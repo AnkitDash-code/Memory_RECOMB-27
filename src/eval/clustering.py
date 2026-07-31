@@ -11,6 +11,8 @@ repo can be scored the same way.
 """
 
 import numpy as np
+from scipy.cluster.hierarchy import fcluster, linkage
+from scipy.spatial.distance import squareform
 from sklearn.decomposition import PCA
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
@@ -75,3 +77,33 @@ def cluster_embedding(embedding, n_clusters, coords=None, refine=True, random_se
     if refine and coords is not None:
         labels = refine_labels_spatial(labels, coords)
     return labels
+
+
+def consensus_cluster(label_sets, n_clusters):
+    """Combine several independent label assignments of the SAME spots into
+    one consensus labeling, via a co-association matrix.
+
+    Motivated by documented high per-seed ARI variance in the address-
+    propagation model: each training run randomly initializes its own
+    memory_keys/memory_values, so different seeds' embeddings live in
+    unrelated coordinate systems -- averaging the raw embeddings across seeds
+    was tested and gave a mixed, unreliable result (helped on some slices,
+    hurt on others). Combining at the LABEL level instead is coordinate-
+    system-independent: co_association[i, j] is simply the fraction of runs
+    that placed spots i and j in the same cluster, regardless of what each
+    run privately called that cluster or how its embedding was oriented.
+
+    label_sets: list of label arrays, one per run, all for the same n spots.
+    """
+    n_spots = len(label_sets[0])
+    co_association = np.zeros((n_spots, n_spots))
+    for labels in label_sets:
+        labels = np.asarray(labels)
+        co_association += (labels[:, None] == labels[None, :]).astype(float)
+    co_association /= len(label_sets)
+
+    distance = 1 - co_association
+    np.fill_diagonal(distance, 0)
+    condensed = squareform(distance, checks=False)
+    linkage_matrix = linkage(condensed, method="average")
+    return fcluster(linkage_matrix, t=n_clusters, criterion="maxclust").astype(str)

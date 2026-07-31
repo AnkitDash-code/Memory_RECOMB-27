@@ -192,6 +192,31 @@ class SpatialAddressMemoryLayer(nn.Module):
         self.feature_hops = feature_hops
         self.latent_hops = latent_hops
 
+    def initialize_keys_kmeans(self, queries, seed=0):
+        """Replace the random memory_keys init with k-means centroids of the
+        encoder's own (still-random-weight) queries on the real data.
+
+        Standard practice in VQ-style codebook methods (initializing the
+        codebook from the data manifold rather than small random noise) to
+        avoid a poor starting geometry. Motivated here by two documented
+        problems: total slot collapse was observed before the usage-entropy
+        fix (Stage 2), and per-seed ARI variance has remained high even after
+        that fix and after cross-validating memory_slots (Stage 8) -- both
+        consistent with the optimization being sensitive to where the
+        codebook starts, which this targets directly.
+        """
+        from sklearn.cluster import KMeans
+
+        with torch.no_grad():
+            queries_np = queries.detach().cpu().numpy()
+        n_clusters = self.memory_keys.shape[0]
+        kmeans = KMeans(n_clusters=n_clusters, n_init=10, random_state=seed)
+        kmeans.fit(queries_np)
+        centers = torch.tensor(
+            kmeans.cluster_centers_, dtype=self.memory_keys.dtype, device=self.memory_keys.device
+        )
+        self.memory_keys.data.copy_(centers)
+
     def forward(self, x, adjacency=None):
         if adjacency is not None and self.feature_hops:
             for _ in range(self.feature_hops):

@@ -43,6 +43,7 @@ def train_spatial_address_model(
     latent_hops=0,
     lambda_usage=0.1,
     lambda_sharpen=0.0,
+    kmeans_init=False,
     seed=0,
     device=None,
     log_every=100,
@@ -51,14 +52,21 @@ def train_spatial_address_model(
     """Train the address-propagation model on a preprocessed (HVG) AnnData.
 
     lambda_usage > 0 maximizes the entropy of MARGINAL slot usage, which is what
-    stops slot collapse. With it at 0 the model reliably collapses to a single
-    slot decoding the dataset mean (measured: slots_used=1, ARI=0.0), so it
-    defaults on rather than off.
+    stops slot collapse (see usage_entropy). With it at 0 the model reliably
+    collapses to a single slot decoding the dataset mean (measured:
+    slots_used=1, ARI=0.0), so it defaults on rather than off.
 
     lambda_sharpen > 0 additionally *minimizes* per-row entropy, pushing each
-    individual spot to commit to a slot. The two terms pull in complementary
-    directions: spread usage across the codebook, but keep each spot's own
-    assignment confident.
+    individual spot to commit to a slot -- pulls in a complementary direction
+    to lambda_usage (spread usage across the codebook, but keep each spot's
+    own assignment confident).
+
+    kmeans_init=True replaces the random memory_keys init with k-means
+    centroids of the (still-randomly-weighted) encoder's queries on the real
+    data -- standard practice in VQ-style codebook methods, tested here as a
+    candidate fix for the documented high per-seed ARI variance (see
+    SpatialAddressMemoryLayer.initialize_keys_kmeans). Off by default so its
+    effect is an explicit, measured ablation, not an assumed improvement.
 
     memory_slots=16 is a CROSS-VALIDATED choice (3 held-out slices, none of them
     151673), not a single-slice-tuned one. An earlier sweep on 151673 alone picked
@@ -72,15 +80,6 @@ def train_spatial_address_model(
     n_hops=4 and lambda_usage=0.1 remain from the original (single-slice)
     Stage 2/5 sweeps and were not re-validated by cross-validation -- a
     reasonable next step if pursuing this further.
-
-      lambda_usage > 0 maximizes the entropy of MARGINAL slot usage, which is
-      what stops slot collapse (see usage_entropy). With it at 0 the model
-      reliably collapses to a single slot decoding the dataset mean (measured:
-      slots_used=1, ARI=0.0), so it defaults on rather than off.
-      lambda_sharpen > 0 additionally *minimizes* per-row entropy, pushing each
-      spot to commit to a slot -- pulls in a complementary direction to
-      lambda_usage (spread usage across the codebook, but keep each spot's own
-      assignment confident).
 
     feature_hops/latent_hops default to 0, the pure formulation. Both hybrid
     variants were tested and lost to it -- see outputs/logs/stage2_progress.md.
@@ -101,6 +100,12 @@ def train_spatial_address_model(
         feature_hops=feature_hops,
         latent_hops=latent_hops,
     ).to(device)
+
+    if kmeans_init:
+        with torch.no_grad():
+            initial_queries = model.memory.encoder(x)
+        model.memory.initialize_keys_kmeans(initial_queries, seed=seed)
+
     optimizer = Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
 
     max_entropy = math.log(memory_slots)
