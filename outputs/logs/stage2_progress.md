@@ -399,6 +399,41 @@ random noise) was implemented and unit-tested as a further candidate fix for
 seed variance, but not yet evaluated at the full 12-slice scale -- a natural
 next step.
 
+## Stage 10 -- k-means codebook init at scale: REJECTED
+
+Evaluated the k-means init from Stage 9 at the full 12-slice x 5-seed scale
+(`uv run python -m src.eval.run_dlpfc_multislice --kmeans-init --skip-graphst`,
+saved to `outputs/logs/dlpfc_multislice_results_kmeans_init.json`; GraphST
+skipped since its numbers don't change and re-running it wastes GPU time).
+The hypothesis was that seeding `memory_keys` from k-means centers of the
+initial (mostly untrained) per-spot queries would reduce seed-to-seed
+variance, complementing consensus clustering.
+
+It did not. It made both the per-seed mean and the consensus result *worse*,
+consistently, not just noisier:
+
+| | Held-out per-seed | Held-out consensus | All-12 per-seed | All-12 consensus |
+|---|---|---|---|---|
+| Random init (current default) | 0.4815 ± 0.0979 | 0.4993 ± 0.1403 | 0.4818 ± 0.0937 | 0.5033 ± 0.1349 |
+| k-means init | 0.4413 ± 0.0842 | 0.4625 ± 0.1291 | 0.4406 ± 0.0807 | 0.4619 ± 0.1236 |
+
+A ~0.04 ARI drop on every one of the four numbers -- this is a directionally
+consistent regression, not sampling noise. Per-slice variance (std) is
+actually *slightly lower* with k-means init on some slices, so the original
+premise (less seed-to-seed spread) has some truth to it, but the achieved
+representations are worse on average. Plausible explanation: the k-means
+centers are computed from the *initial* per-spot queries, before any training
+signal has shaped the encoder -- these queries mostly reflect noise/PCA-like
+structure rather than the layers we actually want, so k-means locks every
+seed's codebook into similar, premature clusters. This removes exactly the
+seed-diversity that consensus clustering depends on to average out individual
+runs' idiosyncratic errors, without buying a better single run in exchange.
+
+**Decision:** `kmeans_init` stays implemented and unit-tested
+(`initialize_keys_kmeans`, `train_spatial_address_model(..., kmeans_init=True)`,
+`--kmeans-init` on the harness) for reproducibility, but the default remains
+`False`, and no headline number uses it.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=16,

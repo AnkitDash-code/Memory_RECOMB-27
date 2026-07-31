@@ -191,7 +191,7 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   held-out slices are now competitive, 3 from one subject are not. `n_hops`/
   `lambda_usage` remain single-slice-tuned and were not re-validated the same
   way as `memory_slots`.
-- **Four hypotheses were tested and rejected on evidence**, and are documented
+- **Five hypotheses were tested and rejected on evidence**, and are documented
   rather than hidden: (a) per-row attention entropy as the anti-collapse term —
   wrong quantity, marginal *usage* entropy was the actual fix, without which the
   model collapsed to a single memory slot at ARI 0.000; (b) an NB/ZINB count
@@ -202,9 +202,14 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   propagation beat both; (d) naive embedding averaging across seeds — a mixed,
   unreliable result (2/4 slices better, 2/4 worse), because each seed's
   memory_keys/values are independently initialized into unrelated coordinate
-  spaces, so averaging blurs structure rather than reinforcing it. A capacity
-  sweep (codebook size 8–256) found a genuine further improvement: 32 slots
-  suits ~7 true domains far better than the initial 64 (inverted-U, later
+  spaces, so averaging blurs structure rather than reinforcing it; (e) k-means
+  codebook initialization (seeding `memory_keys` from k-means centers of the
+  initial per-spot queries instead of random init) — evaluated at the full
+  12-slice × 5-seed scale and made things consistently worse, not better
+  (held-out per-seed 0.481 → 0.441, consensus 0.499 → 0.463), plausibly because
+  it collapses the seed-to-seed diversity that consensus clustering relies on.
+  A capacity sweep (codebook size 8–256) found a genuine further improvement: 32
+  slots suits ~7 true domains far better than the initial 64 (inverted-U, later
   found itself to be single-slice overfit — see above).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)

@@ -212,17 +212,35 @@ not a uniformly safer one. A real crash in the first implementation
 (`scipy.cluster.hierarchy.fcluster` on GraphST's near-identical low-variance
 labels) was found and fixed (switched to `sklearn.cluster.AgglomerativeClustering`).
 
-### 7. Still open
+### 7. k-means codebook initialization — DONE, REJECTED
+
+Evaluated `initialize_keys_kmeans` at the full 12-slice × 5-seed scale
+(`uv run python -m src.eval.run_dlpfc_multislice --kmeans-init --skip-graphst`,
+logged in `outputs/logs/dlpfc_multislice_results_kmeans_init.json`). It made
+things worse across the board, not better:
+
+| | held-out per-seed | held-out consensus |
+|---|---|---|
+| Random init (current default) | 0.4815 ± 0.0979 | 0.4993 ± 0.1403 |
+| k-means init | 0.4413 ± 0.0842 | 0.4625 ± 0.1291 |
+
+A ~0.04 ARI drop, consistent on both the per-seed mean and the consensus
+number — not noise. Plausible reason: k-means centers of the *initial* (mostly
+untrained) per-spot queries reflect early, noisy structure and start every
+seed from a similar basin, which reduces exactly the useful seed diversity
+that consensus clustering exploits, while not measurably improving any single
+run. `kmeans_init` stays implemented as an opt-in flag (`train_spatial_address_model(...,
+kmeans_init=True)`, `--kmeans-init` on the harness) for reproducibility, but
+`False` remains the default and the one used for all headline numbers.
+
+### 8. Still open
 
 - Cross-validate `n_hops` and `lambda_usage` the same way `memory_slots` was —
   not done; both could be subject to the same single-slice overfitting.
-- **k-means codebook initialization** (`initialize_keys_kmeans`) is implemented
-  and unit-tested but not yet evaluated at the 12-slice scale — the natural
-  next experiment, targeting the same seed-variance problem consensus
-  clustering partially addressed.
 - The subject-3 slices (151674–676) still show the largest gaps in the whole
-  set (0.21–0.23) even after both fixes — worth investigating directly rather
-  than assuming further tuning alone will address it.
+  set (0.21–0.23) even after the capacity fix, consensus clustering, and now
+  k-means init (which didn't touch them either) — worth investigating directly
+  rather than assuming further tuning alone will address it.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
 
@@ -233,5 +251,5 @@ held-out, consensus-clustered, both methods compared identically). It should
 not be described as beating state of the art. Several hypotheses were tested
 and rejected on evidence (per-row entropy as the anti-collapse term; NB/ZINB
 likelihood; hybrid feature message passing in two placements; naive embedding
-averaging across seeds), and the tuning slice must stay out of any headline
-average.
+averaging across seeds; k-means codebook initialization), and the tuning slice
+must stay out of any headline average.

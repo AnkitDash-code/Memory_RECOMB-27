@@ -28,6 +28,9 @@ from src.models.train_count_model import train_count_model
 from src.models.train_spatial_address import train_spatial_address_model
 
 OUTPUT_PATH = Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results.json"
+KMEANS_INIT_OUTPUT_PATH = (
+    Path(__file__).resolve().parents[2] / "outputs" / "logs" / "dlpfc_multislice_results_kmeans_init.json"
+)
 TUNING_SLICE = "151673"
 
 
@@ -35,11 +38,13 @@ def _ari(truth, labels, mask):
     return float(adjusted_rand_score(truth[mask], np.asarray(labels)[mask]))
 
 
-def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
+def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse", kmeans_init=False):
     """model="mse" is the tuned, winning configuration (pure address propagation,
     memory_slots=32 -- see train_spatial_address_model's defaults). model="count"
     is the rejected NB/ZINB ablation, kept available for reproducing that negative
-    result on demand, never as the default for a real evaluation."""
+    result on demand, never as the default for a real evaluation. kmeans_init=True
+    replaces the random memory_keys init with k-means centers of the initial
+    per-spot queries -- an ablation, not evaluated at this scale before."""
     raw = load_dlpfc_slice(sample)
     adata = preprocess_hvg(raw.copy())
 
@@ -63,6 +68,7 @@ def evaluate_slice(sample, seeds, device, run_graphst_too=True, model="mse"):
         else:
             _, trained, _ = train_spatial_address_model(
                 adata.copy(), seed=seed, device=device, verbose=False,
+                kmeans_init=kmeans_init,
             )
             embedding = trained.obsm["X_spatial_address"]
         labels = cluster_embedding(embedding, n_layers, coords=coords, refine=True)
@@ -112,6 +118,9 @@ def main():
     parser.add_argument("--samples", nargs="*", default=ALL_DLPFC_SAMPLES)
     parser.add_argument("--model", choices=["count", "mse"], default="mse")
     parser.add_argument("--skip-graphst", action="store_true")
+    parser.add_argument("--kmeans-init", action="store_true",
+                         help="Ablation: k-means codebook init instead of random. "
+                              "Writes to a separate output file, not the main results.")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -122,6 +131,7 @@ def main():
         result = evaluate_slice(
             sample, seeds, device,
             run_graphst_too=not args.skip_graphst, model=args.model,
+            kmeans_init=args.kmeans_init,
         )
         if result is None:
             continue
@@ -169,9 +179,10 @@ def main():
         if stats["mean"] is not None:
             print(f"  {method:18s} ARI = {stats['mean']:.4f} +/- {stats['std']:.4f}  (n={stats['n_slices']})")
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps({"per_slice": all_results, "summary": summary}, indent=2))
-    print(f"\nSaved {OUTPUT_PATH}")
+    output_path = KMEANS_INIT_OUTPUT_PATH if args.kmeans_init else OUTPUT_PATH
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps({"per_slice": all_results, "summary": summary}, indent=2))
+    print(f"\nSaved {output_path}")
 
 
 if __name__ == "__main__":
