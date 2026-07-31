@@ -6,65 +6,64 @@ Python 3.11 / torch 2.11.0+cu128). Nothing here is fabricated or assumed —
 anything not actually run is marked `TODO: not yet benchmarked` with the real
 reason it wasn't run.
 
-## Headline result: 12-slice, 5-seed held-out evaluation (cross-validated config)
+## Headline result: 12-slice, 5-seed held-out evaluation (current)
 
 **This section supersedes the single-slice numbers below as the number that
-matters.** This is the *second* version of this evaluation. The first (see
-`outputs/logs/dlpfc_multislice_results_memslots32.json`) used `memory_slots=32`,
-chosen by tuning on 151673 alone; that slice turned out to be the most
-favorable slice in the whole set for that config, and the resulting held-out
-gap was 0.129. Cross-validating `memory_slots` across 3 *different* slices
-(`src/eval/cross_validate_capacity.py`, none of them 151673) selected
-`memory_slots=16` instead — a real, measured improvement, not a new
-architecture:
+matters.** This evaluation has run three times, because each run uncovered
+something real:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
-| Ours, `memory_slots=32` (single-slice-tuned) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
-| **Ours, `memory_slots=16` (cross-validated)** | **0.4815 ± 0.0979** | **0.4818 ± 0.0937** |
-| GraphST (matched protocol) | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
-| **Gap (cross-validated config)** | **0.0870** | 0.0889 |
+| Ours, `memory_slots=32` (single-slice-tuned on 151673) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
+| Ours, `memory_slots=16` (cross-validated), per-seed mean | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
+| **Ours, `memory_slots=16`, consensus across seeds** | **0.4993 ± 0.1403** | 0.5033 ± 0.1349 |
+| GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
+| GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
+| **Gap, current (consensus, fair to both methods)** | **0.0731** | 0.0660 |
 
-Fixing the tuning methodology alone closed about a third of the gap (0.129 →
-0.087). It does not close the remaining gap. Full per-slice breakdown, produced
-by `src/eval/run_dlpfc_multislice.py` and logged in
-`outputs/logs/dlpfc_multislice_results.json`:
+Cross-validating `memory_slots` across 3 slices (none of them 151673) closed
+about a third of the gap (0.129 → 0.087) — `src/eval/cross_validate_capacity.py`.
+Consensus clustering across the 5 seeds (`src/eval/clustering.py::consensus_cluster`,
+combining independent cluster *labels* via a co-association matrix, applied
+identically to GraphST for fairness) closed it further, 0.087 → 0.073. Full
+per-slice breakdown, produced by `src/eval/run_dlpfc_multislice.py` and logged
+in `outputs/logs/dlpfc_multislice_results.json`:
 
-| Slice | Ours (mean ± std, 5 seeds) | GraphST (mean ± std, 5 seeds) | Gap |
-|---|---|---|---|
-| 151507 | 0.516 ± 0.027 | 0.514 ± 0.063 | **−0.002** (ours ahead) |
-| 151508 | 0.494 ± 0.043 | 0.488 ± 0.015 | **−0.006** (ours ahead) |
-| 151509 | 0.440 ± 0.053 | 0.441 ± 0.043 | 0.001 (tied) |
-| 151510 | 0.487 ± 0.032 | 0.539 ± 0.030 | 0.052 |
-| 151669 | 0.467 ± 0.031 | 0.592 ± 0.009 | 0.125 |
-| 151670 | 0.506 ± 0.122 | 0.534 ± 0.029 | 0.028 |
-| 151671 | 0.598 ± 0.131 | 0.625 ± 0.010 | 0.027 |
-| 151672 | 0.694 ± 0.074 | 0.769 ± 0.006 | 0.075 |
-| 151674 | 0.398 ± 0.067 | 0.618 ± 0.003 | 0.221 |
-| 151675 | 0.339 ± 0.057 | 0.548 ± 0.058 | 0.209 |
-| 151676 | 0.356 ± 0.095 | 0.584 ± 0.015 | 0.228 |
-| *151673 (tuning slice, excluded from headline)* | *0.485 ± 0.108* | *0.595 ± 0.014* | *0.110* |
+| Slice | Ours per-seed | Ours consensus | GraphST per-seed | GraphST consensus |
+|---|---|---|---|---|
+| 151507 | 0.516 ± 0.027 | 0.561 | 0.514 ± 0.063 | 0.566 |
+| 151508 | 0.494 ± 0.043 | 0.541 | 0.488 ± 0.015 | 0.478 |
+| 151509 | 0.440 ± 0.053 | 0.466 | 0.441 ± 0.043 | 0.419 |
+| 151510 | 0.487 ± 0.032 | 0.453 | 0.539 ± 0.030 | 0.532 |
+| 151669 | 0.467 ± 0.031 | 0.454 | 0.592 ± 0.009 | 0.599 |
+| 151670 | 0.506 ± 0.122 | 0.613 | 0.534 ± 0.029 | 0.517 |
+| 151671 | 0.598 ± 0.131 | 0.717 | 0.625 ± 0.010 | 0.617 |
+| 151672 | 0.694 ± 0.074 | 0.705 | 0.769 ± 0.006 | 0.769 |
+| 151674 | 0.398 ± 0.067 | 0.417 | 0.618 ± 0.003 | 0.622 |
+| 151675 | 0.339 ± 0.057 | 0.319 | 0.548 ± 0.058 | 0.583 |
+| 151676 | 0.356 ± 0.095 | 0.246 | 0.584 ± 0.015 | 0.595 |
+| *151673 (tuning slice, excluded)* | *0.485 ± 0.108* | *0.547* | *0.595 ± 0.014* | *0.536* |
 
 **Read this honestly, both ways.** On 3 of 11 held-out slices (151507, 151508,
-151509) we now match or slightly beat GraphST — genuinely encouraging. But on
-three others (151674, 151675, 151676 — one full DLPFC subject, coincidentally
-the same subject 151673 belongs to) the gap is 0.21–0.23, as large as before
-cross-validation. The improvement is real and averaged out positively, but it
-is uneven across slices, not a uniform win. Our per-seed variance still exceeds
-GraphST's on most held-out slices (e.g. 151671: ±0.131 vs. ±0.010). See Stage
-7/8 in `outputs/logs/stage2_progress.md` for the within-subject variance
-analysis this result should be read alongside.
+151509) we now match or beat GraphST. But on three others (151674, 151675,
+151676 — one full DLPFC subject) the gap remains 0.21–0.23, untouched by either
+fix. Consensus clustering is not uniformly helpful for either method — it makes
+GraphST *worse* on 151508/151509/151510/151670/151671 (small effect) and
+substantially worse for ours on 151676 (0.356 → 0.246), while helping ours a
+lot on 151670/151671 (+0.11, +0.12). It improves the mean at the cost of higher
+across-slice variance. See Stage 7–9 in `outputs/logs/stage2_progress.md` for
+the full analysis this result should be read alongside.
 
 **Conclusion.** The architecture works — it learns real structure and beats a
 from-scratch baseline — and the address-propagation mechanism is validated
 (monotonic ARI gain with hop count, and it beats both tested hybrid variants that
-add feature message passing). Fixing a real overfitting bug (cross-validating
-hyperparameters instead of single-slice tuning) closed roughly a third of the
-held-out gap (0.129 → 0.087), with the improvement concentrated on some slices
-and absent on others. It does **not** beat GraphST overall. Any further tuning
-should continue to cross-validate across multiple slices, not one — the
-subject-3 slices (151674–676) that still show a large gap are the next
-concrete thing to investigate.
+add feature message passing). Two real, evidence-based fixes (cross-validated
+capacity, consensus clustering) closed the held-out gap from 0.129 to 0.073 —
+genuine progress, concentrated on some slices and absent on others. It does
+**not** beat GraphST overall. `n_hops`/`lambda_usage` were never cross-validated
+the way `memory_slots` was, and the subject-3 slices (151674–676) that still
+show a large gap after two independent fixes are the next concrete thing to
+investigate — capacity and seed-aggregation tuning alone did not touch them.
 
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 

@@ -337,6 +337,68 @@ remain at their single-slice-tuned values (4 and 0.1) — a reasonable next step
 if pursuing this further, now that the methodology for doing so correctly is
 established.
 
+## Stage 9 — consensus clustering across seeds (real, modest, applied fairly)
+
+Motivated directly by Stage 7's finding: our per-seed ARI variance is often
+higher than GraphST's on the same slice. Two aggregation strategies were
+tested, both combining the SAME 5 independently-trained seeds already used
+for the per-seed mean:
+
+- **Naive embedding averaging** (average the 5 raw embeddings, cluster once):
+  tested first, gave a mixed, unreliable result (2/4 test slices better, 2/4
+  worse). Expected in hindsight -- each run randomly initializes its own
+  `memory_keys`/`memory_values`, so different seeds' embeddings live in
+  unrelated coordinate systems; averaging them blurs structure rather than
+  reinforcing it.
+- **Consensus clustering** (`src/eval/clustering.py::consensus_cluster`):
+  cluster each seed independently as before, then combine the *label*
+  assignments via a co-association matrix (fraction of seeds that agree spot
+  i and j are in the same cluster) and re-cluster on that, via
+  `AgglomerativeClustering(metric="precomputed")`. Coordinate-system-
+  independent, so it doesn't have the alignment problem above.
+
+**A real crash was found and fixed along the way.** The first full-run attempt
+raised `ValueError: Linkage 'Z' contains excessive observations in a cluster`
+from `scipy.cluster.hierarchy.fcluster(criterion="maxclust")` -- triggered by
+GraphST's label sets on 151673, where its very low seed variance (std ~0.014)
+produces near-identical labels across seeds and a co-association matrix full
+of exact ties, a degenerate input scipy's maxclust cut is fragile to. Fixed by
+switching to `sklearn.cluster.AgglomerativeClustering(metric="precomputed")`,
+the standard tool for fixed-K clustering from a precomputed distance matrix;
+verified directly against the real failing case (not just a synthetic repro,
+which didn't reproduce scipy's specific internal fragility).
+
+**Fairness check**: consensus was applied identically to GraphST, not just to
+our method -- if it's a real improvement it must be offered to the baseline
+too, or the comparison silently favors us. It is *not* uniformly better for
+either method (e.g. GraphST: 0.595 → 0.536 on 151673, worse; ours: 0.694 →
+0.705 on 151672, roughly neutral).
+
+Full 12-slice, 5-seed result with consensus computed for both methods:
+
+| | Held-out (11 slices) | All 12 slices |
+|---|---|---|
+| Ours, per-seed mean | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
+| **Ours, consensus** | **0.4993 ± 0.1403** | 0.5033 ± 0.1349 |
+| GraphST, per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
+| GraphST, consensus | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
+| **Gap, per-seed mean** | 0.0870 | 0.0889 |
+| **Gap, consensus (fair, both methods)** | **0.0731** | 0.0660 |
+
+Consensus narrows the held-out gap further: 0.087 → 0.073 (about 0.014 more,
+on top of the 0.042 already gained from cross-validating `memory_slots` in
+Stage 8). **Honest caveat, not smoothed over**: consensus clustering
+*increases* our across-slice variance (0.098 → 0.140) even as it improves the
+mean -- some slices jump substantially (151671: 0.598 → 0.717; 151670: 0.506 →
+0.613) while one drops hard (151676: 0.356 → 0.246). It is a real average
+improvement, not a uniformly safer one.
+
+k-means codebook initialization (`SpatialAddressMemoryLayer.
+initialize_keys_kmeans`, VQ-style init from the data manifold instead of small
+random noise) was implemented and unit-tested as a further candidate fix for
+seed variance, but not yet evaluated at the full 12-slice scale -- a natural
+next step.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.1, memory_slots=16,

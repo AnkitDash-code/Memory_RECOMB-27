@@ -21,28 +21,35 @@ All 12 DLPFC slices (Maynard et al./spatialLIBD, human dorsolateral prefrontal
 cortex, real manually-annotated cortical layers), 5 seeds each, identical
 clustering protocol for every method. Slice 151673 was used to tune every
 hyperparameter, so it is **held out of the headline mean** rather than reported
-as if it were unseen data. This evaluation has been run **twice**, because the
-first run itself uncovered a real bug:
+as if it were unseen data. This evaluation has been run **three times**, because
+each run uncovered something real:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
 | Ours, `memory_slots=32` (tuned on 151673 alone) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
-| **Ours, `memory_slots=16` (cross-validated on 3 other slices)** | **0.4815 ± 0.0979** | **0.4818 ± 0.0937** |
-| GraphST (matched protocol) | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
-| **Gap (current config)** | **0.0870** | 0.0889 |
+| Ours, `memory_slots=16` (cross-validated), per-seed mean | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
+| **Ours, `memory_slots=16`, consensus across seeds** | **0.4993 ± 0.1403** | 0.5033 ± 0.1349 |
+| GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
+| GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
+| **Gap, current config + consensus (fair, both methods)** | **0.0731** | 0.0660 |
 
-**What happened**: the first run showed the held-out gap was ~5× the 0.026
-measured on the tuning slice alone. Diagnosing why found that 151673 was not
-merely a convenient tuning slice — it was an outlier even within its own DLPFC
-subject (its three sibling sections score 0.35–0.40, close to the worst slices
-in the whole set), meaning our own within-subject variance was nearly as large
-as our across-slice variance. One concrete, fixable cause: `memory_slots=32`
-had itself been selected using 151673 alone. Cross-validating it across 3
-*different* slices showed 32 is the **worst** of 5 candidates tested, and
-selected 16 instead — a real, measured **+0.043 ARI improvement**, closing
-about a third of the gap. It is uneven: 3 of 11 held-out slices now match or
-slightly beat GraphST, while 3 slices from one subject still show a 0.21–0.23
-gap. Full detail and both raw JSON results:
+**What happened, in order**: (1) the first run showed the held-out gap was ~5×
+the 0.026 measured on the tuning slice alone. Diagnosing why found 151673 was
+an outlier even within its own DLPFC subject (its three sibling sections score
+0.35–0.40), meaning our own within-subject variance was nearly as large as our
+across-slice variance. (2) One concrete cause: `memory_slots=32` had been
+selected using 151673 alone. Cross-validating it across 3 *different* slices
+showed 32 is the **worst** of 5 candidates tested; 16 won instead — closing
+about a third of the gap (0.129 → 0.087). (3) Since a documented symptom was
+high per-seed variance, consensus clustering (combining 5 seeds' cluster
+*labels*, not their raw embeddings — averaging embeddings was tried first and
+gave a mixed, unreliable result, since each seed's memory space is
+independently initialized and unaligned with the others) was tested and
+applied **identically to GraphST**, closing the gap further to 0.073 — a real
+improvement, though it increases our across-slice variance even as it improves
+the mean. It remains uneven: 3 of 11 held-out slices now match or slightly beat
+GraphST, while 3 slices from one subject still show a 0.21–0.23 gap that
+neither fix touched. Full detail and all raw JSON results:
 [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
 
 ### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
@@ -167,21 +174,24 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** Held-out, multi-slice, current
-  cross-validated config: 0.482 ± 0.098 vs. GraphST's 0.569 ± 0.083 (gap 0.087).
-  Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
+- **Not currently state of the art.** Held-out, multi-slice, current config +
+  consensus clustering (applied fairly to both methods): 0.499 ± 0.140 vs.
+  GraphST's 0.572 ± 0.086 (gap 0.073). Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
 - **The tuning slice did not represent the held-out result — a real, measured
   finding, not a caveat added defensively.** Every hyperparameter was originally
   chosen on DLPFC 151673 alone, which turned out to be the single most favorable
   slice in the 12-slice set for that configuration (gap there: 0.026, ~5×
   smaller than the first held-out measurement of 0.129). This is exactly the
   failure mode holding out a tuning slice exists to catch, and diagnosing it
-  found a concrete, fixable cause: `memory_slots` had been chosen the same
-  single-slice way. Cross-validating it across different slices closed about a
-  third of the gap (0.129 → 0.087) — real, but uneven: 3 of 11 held-out slices
-  are now competitive, 3 from one subject are not. `n_hops`/`lambda_usage`
-  remain single-slice-tuned and were not re-validated the same way.
-- **Three hypotheses were tested and rejected on evidence**, and are documented
+  found two concrete, fixable causes: (a) `memory_slots` had been chosen the
+  same single-slice way — cross-validating it closed about a third of the gap
+  (0.129 → 0.087); (b) high per-seed variance was partly addressable via
+  consensus clustering across seeds, closing the gap further to 0.073, though
+  at the cost of higher across-slice variance. Both real, both uneven: 3 of 11
+  held-out slices are now competitive, 3 from one subject are not. `n_hops`/
+  `lambda_usage` remain single-slice-tuned and were not re-validated the same
+  way as `memory_slots`.
+- **Four hypotheses were tested and rejected on evidence**, and are documented
   rather than hidden: (a) per-row attention entropy as the anti-collapse term —
   wrong quantity, marginal *usage* entropy was the actual fix, without which the
   model collapsed to a single memory slot at ARI 0.000; (b) an NB/ZINB count
@@ -189,9 +199,13 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   made results clearly worse (0.18–0.35); (c) hybrid feature message passing
   (aggregating neighbour features, not just addresses) — tested in both a naive
   placement and GraphST's actual placement (post-encoder), and pure address
-  propagation beat both. A capacity sweep (codebook size 8–256) then found a
-  genuine further improvement: 32 slots suits ~7 true domains far better than
-  the initial 64 (inverted-U, 0.571 vs. 0.542, with 256 collapsing to 0.408).
+  propagation beat both; (d) naive embedding averaging across seeds — a mixed,
+  unreliable result (2/4 slices better, 2/4 worse), because each seed's
+  memory_keys/values are independently initialized into unrelated coordinate
+  spaces, so averaging blurs structure rather than reinforcing it. A capacity
+  sweep (codebook size 8–256) found a genuine further improvement: 32 slots
+  suits ~7 true domains far better than the initial 64 (inverted-U, later
+  found itself to be single-slice overfit — see above).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
   until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the

@@ -1,7 +1,6 @@
 # Progress & Pending Work
 
-Status as of the last working session. Paused mid-effort at the user's request.
-Detailed experimental numbers live in
+Continuing work, in progress. Detailed experimental numbers live in
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md); this file is
 the handoff summary — where things stand, and exactly what is left.
 
@@ -9,25 +8,37 @@ the handoff summary — where things stand, and exactly what is left.
 
 **Everything tuned on 151673 alone turned out to be measuring an optimistic
 special case — and that overfitting was itself found and partially fixed.**
-Two full 12-slice evaluations have now run:
+Three full 12-slice evaluations have now run:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
 | Ours, `memory_slots=32` (single-slice-tuned on 151673) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
-| **Ours, `memory_slots=16` (cross-validated on 3 other slices)** | **0.4815 ± 0.0979** | **0.4818 ± 0.0937** |
-| GraphST (matched protocol) | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
-| **Gap (current, cross-validated config)** | **0.0870** | 0.0889 |
+| Ours, `memory_slots=16` (cross-validated), per-seed mean | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
+| **Ours, `memory_slots=16`, consensus across seeds** | **0.4993 ± 0.1403** | 0.5033 ± 0.1349 |
+| GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
+| GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
+| **Gap, cross-validated config, per-seed mean** | 0.0870 | 0.0889 |
+| **Gap, cross-validated config, consensus (fair, both methods)** | **0.0731** | 0.0660 |
 
 The original tuning-slice gap was 0.026 — **~5× smaller than the first
 (single-slice-tuned) held-out measurement.** Diagnosing why (Stage 7: our
 within-subject variance nearly equals our across-slice variance — real model
-fragility, not dataset difficulty) led to a concrete fix: `memory_slots` had
-itself been chosen on 151673 alone. Cross-validating it across 3 different
-slices (Stage 8) picked `memory_slots=16` instead of 32, and this **closed
-about a third of the held-out gap** (0.129 → 0.087) — a real improvement from
-fixing the tuning methodology, not a new architecture. It is uneven, though: 3
-of 11 held-out slices now match or slightly beat GraphST, while three slices
-from subject 3 (151674–676) still show a 0.21–0.23 gap. Full detail in
+fragility, not dataset difficulty) led to two concrete fixes:
+
+1. **Cross-validating `memory_slots`** (Stage 8) instead of single-slice
+   tuning it on 151673 — picked 16 instead of 32, closing about a third of
+   the held-out gap (0.129 → 0.087).
+2. **Consensus clustering across seeds** (Stage 9) — combining the 5
+   independently-trained seeds' cluster *labels* (not their raw embeddings,
+   which live in unrelated coordinate spaces per seed and gave a mixed,
+   unreliable result when averaged) via a co-association matrix. Applied
+   identically to GraphST for fairness. Narrows the gap further, 0.087 →
+   0.073, though it also *increases* our across-slice variance (0.098 →
+   0.140) — a real average improvement, not a uniformly safer one.
+
+It remains uneven: 3 of 11 held-out slices now match or slightly beat GraphST,
+while three slices from subject 3 (151674–676) still show a 0.21–0.23 gap that
+neither fix touched. Full detail in
 [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md) (Stages
 6–8) and [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
 
@@ -50,11 +61,13 @@ no longer specially fitted to that slice):
 from-scratch baseline, and the address-propagation mechanism is validated (ARI
 rises monotonically with hop count, and pure addressing beat both tested hybrid
 variants). It does **not** beat GraphST overall. The properly-measured,
-held-out, multi-slice gap is real — smaller than first measured (0.087, not
-0.129) once a genuine overfitting bug in hyperparameter selection was fixed,
-but still real, still larger than any single-slice number in this project ever
-suggested, and uneven: some slices are now competitive, three from one subject
-are not.
+held-out, multi-slice gap is real — smaller than first measured (0.073 with
+consensus clustering applied fairly to both methods, down from 0.129 at the
+start of this effort) once a genuine overfitting bug in hyperparameter
+selection was fixed and a real improvement in how seeds are aggregated was
+found, but still real, still larger than any single-slice number in this
+project ever suggested, and uneven: some slices are now competitive, three
+from one subject are not.
 
 ## What was done
 
@@ -123,10 +136,28 @@ are not.
     default: held-out gap narrows from 0.129 → **0.087**, about a third closed,
     unevenly (3 slices now competitive, 3 from one subject still show
     0.21–0.23 gap).
+13. **Stage 9 — consensus clustering across seeds, tested fairly for both
+    methods.** Naive embedding averaging across seeds was tried first and
+    rejected (mixed, unreliable — averaging raw embeddings doesn't work when
+    each seed's memory_keys/values are independently initialized into
+    unrelated coordinate spaces). Combining at the *label* level instead
+    (`consensus_cluster`, co-association matrix + `AgglomerativeClustering`)
+    is coordinate-independent and gave a real average improvement — but only
+    once applied to GraphST too, for fairness, since offering ourselves an
+    ensembling technique the baseline doesn't get would be a rigged
+    comparison. Held-out gap narrows further: 0.087 → **0.073**. Also found
+    and fixed a real crash (`scipy.cluster.hierarchy.fcluster` failed on
+    GraphST's near-identical low-variance label sets on 151673) by switching
+    to `sklearn.cluster.AgglomerativeClustering`.
+14. Implemented (and unit-tested) `SpatialAddressMemoryLayer.
+    initialize_keys_kmeans` — VQ-style k-means codebook initialization from
+    the data manifold, as a further candidate fix for seed variance. Not yet
+    evaluated at the 12-slice scale.
 
-41/41 tests pass across these stages, including a `scipy.stats.nbinom`
-reference test that caught a real sign error in the NB likelihood, and two tests
-pinning the hybrid's `feature_hops=0`/`latent_hops=0` semantics as true no-ops.
+45/45 tests pass across these stages, including a `scipy.stats.nbinom`
+reference test that caught a real sign error in the NB likelihood, two tests
+pinning the hybrid's `feature_hops=0`/`latent_hops=0` semantics as true no-ops,
+and a regression test for the consensus-clustering crash.
 
 ## Current tuned configuration (defaults updated in code)
 
@@ -171,19 +202,36 @@ config; `outputs/figures/dlpfc_ground_truth_vs_methods.png` reflects the current
 model. `src/viz/spatial_plots.py` (old Phase 0 model, Visium crop) is unrelated
 and still stale/unused for this story.
 
-### 6. Still open
+### 6. Consensus clustering across seeds — DONE, real improvement, gap not closed
+
+`src/eval/clustering.py::consensus_cluster`: combines 5 seeds' independent
+label assignments via a co-association matrix, applied fairly to both methods.
+Held-out gap: 0.087 → 0.073. Real, but increases our across-slice variance
+(0.098 → 0.140) even as it improves the mean — a genuine average improvement,
+not a uniformly safer one. A real crash in the first implementation
+(`scipy.cluster.hierarchy.fcluster` on GraphST's near-identical low-variance
+labels) was found and fixed (switched to `sklearn.cluster.AgglomerativeClustering`).
+
+### 7. Still open
 
 - Cross-validate `n_hops` and `lambda_usage` the same way `memory_slots` was —
   not done; both could be subject to the same single-slice overfitting.
+- **k-means codebook initialization** (`initialize_keys_kmeans`) is implemented
+  and unit-tested but not yet evaluated at the 12-slice scale — the natural
+  next experiment, targeting the same seed-variance problem consensus
+  clustering partially addressed.
 - The subject-3 slices (151674–676) still show the largest gaps in the whole
-  set (0.21–0.23) even after the capacity fix — worth investigating directly
-  rather than assuming further capacity tuning alone will address it.
+  set (0.21–0.23) even after both fixes — worth investigating directly rather
+  than assuming further tuning alone will address it.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
 
 ## Honest framing for any write-up
 
-The current result is real progress with a real remaining gap. It should not be
-described as beating state of the art. Two hypotheses were tested and rejected on
-evidence (per-row entropy as the anti-collapse term; NB/ZINB likelihood), and the
-tuning slice must stay out of any headline average.
+The current result is real progress with a real remaining gap (0.073 ARI,
+held-out, consensus-clustered, both methods compared identically). It should
+not be described as beating state of the art. Several hypotheses were tested
+and rejected on evidence (per-row entropy as the anti-collapse term; NB/ZINB
+likelihood; hybrid feature message passing in two placements; naive embedding
+averaging across seeds), and the tuning slice must stay out of any headline
+average.
