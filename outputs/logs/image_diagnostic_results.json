@@ -1,0 +1,129 @@
+{
+  "per_slice": [
+    {
+      "sample": "151507",
+      "n_spots": 4226,
+      "mean_disagreement": 1.0842532303647316,
+      "mean_error": 0.3117744610281924,
+      "ari": 0.5153718349366686,
+      "per_spot_correlation": -0.06536508893008947,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151508",
+      "n_spots": 4384,
+      "mean_disagreement": 1.0257371450138306,
+      "mean_error": 0.2647797306551016,
+      "ari": 0.584339511368896,
+      "per_spot_correlation": -0.062285056308623535,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151509",
+      "n_spots": 4789,
+      "mean_disagreement": 1.1808616718042189,
+      "mean_error": 0.233500417710944,
+      "ari": 0.5952280534536856,
+      "per_spot_correlation": -0.06166012993597934,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151510",
+      "n_spots": 4634,
+      "mean_disagreement": 1.183700389977726,
+      "mean_error": 0.25810663764961916,
+      "ari": 0.45386230297519126,
+      "per_spot_correlation": -0.1435621677042774,
+      "subject": "subject1"
+    },
+    {
+      "sample": "151669",
+      "n_spots": 3661,
+      "mean_disagreement": 1.2171031933865177,
+      "mean_error": 0.1496149614961496,
+      "ari": 0.691466614445424,
+      "per_spot_correlation": -0.017239220901187752,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151670",
+      "n_spots": 3498,
+      "mean_disagreement": 1.1747846584313961,
+      "mean_error": 0.2057979334098737,
+      "ari": 0.5413135207164994,
+      "per_spot_correlation": 0.07236824273340949,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151671",
+      "n_spots": 4110,
+      "mean_disagreement": 1.089204220073142,
+      "mean_error": 0.10163694111898364,
+      "ari": 0.611387363000612,
+      "per_spot_correlation": 0.027494103100133636,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151672",
+      "n_spots": 4015,
+      "mean_disagreement": 1.0789391623083724,
+      "mean_error": 0.19958847736625515,
+      "ari": 0.72789372919325,
+      "per_spot_correlation": -0.019557013493694844,
+      "subject": "subject2"
+    },
+    {
+      "sample": "151673",
+      "n_spots": 3639,
+      "mean_disagreement": 1.073894910738369,
+      "mean_error": 0.3165328163943506,
+      "ari": 0.5149505398674092,
+      "per_spot_correlation": 0.007285945042110239,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151674",
+      "n_spots": 3673,
+      "mean_disagreement": 1.0648497155774745,
+      "mean_error": 0.3048143053645117,
+      "ari": 0.48519727861228007,
+      "per_spot_correlation": -0.09590969204957854,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151675",
+      "n_spots": 3592,
+      "mean_disagreement": 1.0952408561906253,
+      "mean_error": 0.28911946158160406,
+      "ari": 0.4872425427323066,
+      "per_spot_correlation": -0.05133398041102736,
+      "subject": "subject3"
+    },
+    {
+      "sample": "151676",
+      "n_spots": 3460,
+      "mean_disagreement": 1.1019734607970544,
+      "mean_error": 0.32148061789565724,
+      "ari": 0.46186612152826545,
+      "per_spot_correlation": 0.0024562400891481465,
+      "subject": "subject3"
+    }
+  ],
+  "per_subject": {
+    "subject1": {
+      "mean_disagreement": 1.118638109290127,
+      "mean_error": 0.26704031176096427,
+      "mean_ari": 0.5372004256836104
+    },
+    "subject2": {
+      "mean_disagreement": 1.140007808549857,
+      "mean_error": 0.16415957834781553,
+      "mean_ari": 0.6430153068389464
+    },
+    "subject3": {
+      "mean_disagreement": 1.083989735825881,
+      "mean_error": 0.3079868003090309,
+      "mean_ari": 0.4873141206850653
+    }
+  }
+}

@@ -410,12 +410,60 @@ and not adopted. Fix #3 (temperature annealing) was never tested standalone,
 per the reviewer's own reasoning that it only matters paired with a sparse
 projection -- moot since neither sparse variant showed promise.
 
-### 13. Still open
+### 13. Dual-modality (expression + morphology) memory addressing — FALSIFIED at the diagnostic gate, architecture NOT built
+
+A new plan proposed bringing histology back in as a second, morphology-addressed
+memory bank fused with expression via a learned per-spot gate — explicitly not
+a feature-concatenation bolt-on, to stay distinct from contrastive-fusion
+multimodal methods in the literature. The plan itself mandated a falsification
+test *before* writing any dual-memory code: if subject-3 (the persistent weak
+point since Stage 7) doesn't show elevated expression/morphology disagreement
+*and* elevated model error relative to subjects 1/2, stop rather than spend a
+week on an architecture the data doesn't support.
+
+Built and verified first: `src/data/extract_patches.py` (64×64 H&E patches per
+spot, correctly rescaled from full-res pixel coordinates, edge-padded,
+spot-count-asserted, visually spot-checked against the full tissue image) and
+`src/models/image_encoder.py` (frozen ImageNet ResNet18, 512-dim, no
+fine-tuning). 9 new unit tests. Confirmed real, non-empty H&E images exist for
+all 12 DLPFC slices and the squidpy mouse crop dataset.
+
+**The diagnostic (`src/eval/image_diagnostic.py`), run across all 12 slices:**
+
+| Subject | Mean disagreement | Mean error | Mean ARI |
+|---|---|---|---|
+| subject1 | 1.1186 | 0.2670 | 0.5372 |
+| subject2 | 1.1400 | 0.1642 | 0.6430 |
+| **subject3** | **1.0840 (lowest)** | **0.3080 (highest)** | **0.4873 (lowest)** |
+
+Subject 3 does show the highest error (consistent with every prior stage) but
+the **lowest** expression/morphology disagreement of the three subjects — the
+opposite of what the hypothesis needed. Subject 2 shows the highest
+disagreement alongside the *lowest* error. Per-spot correlations within each
+subject are all near zero with inconsistent signs (-0.144 to +0.072) — no
+within-subject signal either. This is a clean falsification, not just an
+inconclusive result — see `outputs/figures/image_diagnostic_scatter.png` and
+Stage 16 in `outputs/logs/stage2_progress.md` for the full analysis.
+
+**Decision:** per the plan's own stopping rule, the `DualModalityMemoryLayer`
+architecture was **not built**. Whatever drives subject-3's gap, this
+diagnostic gives no evidence it's expression/morphology disagreement
+resolvable by frozen ImageNet features. Left genuinely open for a future
+attempt: this doesn't distinguish between (a) the biological hypothesis being
+wrong for this tissue, (b) frozen ImageNet features being the wrong
+morphology representation for H&E (DINO/DINOv2 was the plan's own named
+fallback, not tried), or (c) the neighbor-similarity operationalization
+missing a real effect. The data pipeline (patch extraction, frozen encoder,
+per-slice caching) is reusable if a future attempt wants to test (b) or (c)
+directly rather than re-deriving it.
+
+### 14. Still open
 
 - The subject-3 slices (151674-676) still show the largest gaps in the whole
   set, though considerably smaller than before Fix #4 -- worth investigating
   directly; no data-level explanation (sparsity, layer proportions, spot
-  count) has been found so far, and neither Fix #2 nor Fix #1 moved them.
+  count) has been found so far, and neither Fix #2, Fix #1, nor the
+  image-modality diagnostic (section 13) explained them.
 - 151671 has been volatile across fixes (jumped up under consensus at
   `lambda_usage=0.02`, then further under expression-weighted adjacency) --
   worth understanding whether this reflects a real interaction between the
@@ -424,9 +472,10 @@ projection -- moot since neither sparse variant showed promise.
   adjacency (Stages 8, 11) -- now that expression-weighted adjacency is the
   default, re-validating them under the new adjacency is a reasonable next
   check, since the optimal values could interact with this architectural change.
-- All four of the external review's suggestions have now been tested; the
-  next genuinely new direction would need a fresh source of ideas rather
-  than further tuning of this same set of mechanisms.
+- All four of the external review's suggestions and the dual-modality plan
+  have now been tested; the next genuinely new direction would need a fresh
+  source of ideas or a different morphology encoder (DINO/DINOv2) rather than
+  further tuning of this same set of mechanisms.
 - Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
   session; STAGATE and Garfield remain blocked on Windows as documented.
 

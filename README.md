@@ -306,6 +306,20 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   A capacity sweep (codebook size 8–256) found a genuine further improvement: 32
   slots suits ~7 true domains far better than the initial 64 (inverted-U, later
   found itself to be single-slice overfit — see above).
+- **A dual-modality (expression + morphology) architecture plan was falsified
+  at its own diagnostic gate, and not built.** The plan required a pre-check
+  before writing any dual-memory code: subject-3 (the persistent weak point)
+  should show elevated expression/image disagreement *and* elevated model
+  error relative to subjects 1/2, or the architecture isn't worth a week of
+  work. It didn't — subject-3 showed the highest error but the *lowest*
+  disagreement of the three subjects (1.084 vs. 1.119/1.140), the opposite of
+  the needed pattern, with near-zero, sign-inconsistent per-spot correlations
+  within every subject. The data pipeline (H&E patch extraction, frozen
+  ResNet18 encoder, per-slice feature caching, all unit-tested) was built and
+  verified first and is reusable if a future attempt wants to test a
+  different morphology encoder (DINO/DINOv2, the plan's own named fallback)
+  rather than re-deriving the pipeline. See `outputs/figures/image_diagnostic_scatter.png`
+  and Stage 16 in [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
   until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the

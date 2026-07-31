@@ -782,6 +782,84 @@ reviewer's own reasoning that it only matters paired with a sparse
 projection -- since neither sparse variant showed promise, that pairing was
 moot.
 
+## Stage 16 -- dual-modality (expression + morphology) memory addressing: FALSIFIED at the diagnostic gate
+
+A new architecture plan proposed bringing histology back into the model as a
+second, morphology-addressed memory bank fused with the expression bank via a
+learned per-spot gate -- explicitly NOT a feature-concatenation or
+contrastive-fusion bolt-on, to keep the addressing-based novelty claim
+distinct from SpaGIC/stMMC/SpatialDG/MultiST-style multimodal methods. The
+plan itself specified a mandatory falsification test to run *before* writing
+any of the dual-memory code: if subject-3 (the persistent weak point since
+Stage 7, untouched by every fix tried since) doesn't show elevated
+expression/morphology disagreement AND elevated model error relative to
+subjects 1/2, stop and reconsider rather than spending a week building an
+architecture the data doesn't support.
+
+**Data pipeline built first, verified working:**
+- `src/data/extract_patches.py`: extracts a 64x64 H&E patch per spot from
+  `adata.uns['spatial'][lib]['images']['hires']`, correctly rescaling
+  `adata.obsm['spatial']` (full-resolution pixel coordinates) by
+  `tissue_hires_scalef` before indexing -- verified all 12 DLPFC slices and
+  the squidpy mouse crop dataset carry real, non-empty H&E images with
+  consistent scalefactors. Edge-padded (not clipped) so every patch has
+  identical shape regardless of spot position. Spot-count assertion plus a
+  visual spot-check (`outputs/figures/patch_alignment_spotcheck.png`) against
+  the full tissue image confirmed correct alignment (a patch centered
+  directly on the hippocampal band shows that dark band cutting through it;
+  patches away from it show uniform lighter tissue) before trusting the cache.
+- `src/models/image_encoder.py`: frozen (no gradient) ImageNet-pretrained
+  ResNet18, `fc` replaced with `Identity()` -> 512-dim features. ResNet18 over
+  DINO/DINOv2 to start, per the plan's own reasoning (fewer moving parts to
+  debug before reaching for a fancier encoder). 9 new unit tests across both
+  modules (shape, determinism, no-trainable-params, boundary padding, distinct
+  patches for distinct spots).
+
+**The Section 2 diagnostic (`src/eval/image_diagnostic.py`), run across all 12
+slices before any dual-memory code was written:** for each spot, mean cosine
+similarity to its spatial neighbors was computed separately in expression
+space and in frozen-ResNet18 image-feature space, z-scored within-slice, and
+compared (`disagreement = |z(img_sim) - z(expr_sim)|`). Model error was the
+current best (Stage 13) model's cluster-purity mismatch rate per spot
+(majority-vote cluster-to-label mapping, then flag disagreements).
+
+| Subject | Mean disagreement | Mean error | Mean ARI |
+|---|---|---|---|
+| subject1 (151507-510) | 1.1186 | 0.2670 | 0.5372 |
+| subject2 (151669-672) | 1.1400 | 0.1642 | 0.6430 |
+| **subject3 (151673-676)** | **1.0840 (lowest)** | **0.3080 (highest)** | **0.4873 (lowest)** |
+
+**This falsifies the hypothesis, not just fails to confirm it.** Subject 3
+does show the highest error and lowest ARI, consistent with every prior
+stage -- but it shows the *lowest* expression/morphology disagreement of the
+three subjects, not the highest. Subject 2 shows the *highest* disagreement
+alongside the *lowest* error -- the opposite of what the plan needed. Per-spot
+correlations between disagreement and error within each subject are all near
+zero with inconsistent signs across slices (range -0.144 to +0.072,
+`outputs/logs/image_diagnostic_results.json`), showing no within-subject
+signal either. The scatter plot
+(`outputs/figures/image_diagnostic_scatter.png`) makes this visually obvious:
+subject3's cluster sits at low-disagreement/high-error, subject2's at
+high-disagreement/low-error, subject1's in between -- if anything, an inverse
+relationship across subjects, not the predicted positive one.
+
+**Decision, per the plan's own explicit stopping rule:** the
+`DualModalityMemoryLayer` architecture (Section 3 of the plan) was **not
+built**. Whatever is driving subject-3's persistent gap (unexplained across
+Stages 7, 9, 11, 13, 14, and 15 too), this diagnostic gives no evidence it is
+expression/morphology disagreement the frozen ImageNet features can resolve.
+Possible reasons the diagnostic came back negative, worth separating for any
+future attempt: (a) the underlying biological hypothesis (image can
+disambiguate expression-ambiguous boundaries) is simply wrong for this
+tissue/resolution; (b) it's right but frozen ImageNet features are the wrong
+morphology representation for H&E specifically (the plan itself flagged this
+domain-gap risk and named DINO/DINOv2 as a fallback, not yet tried); (c) the
+neighbor-similarity-agreement operationalization used here doesn't capture
+the real effect even if it exists. This result doesn't distinguish between
+those -- it only says the cheapest, fastest version of the test didn't
+support spending a week on the full architecture, which is exactly what the
+diagnostic step was for.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,
