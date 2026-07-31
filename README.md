@@ -307,19 +307,33 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   slots suits ~7 true domains far better than the initial 64 (inverted-U, later
   found itself to be single-slice overfit — see above).
 - **A dual-modality (expression + morphology) architecture plan was falsified
-  at its own diagnostic gate, and not built.** The plan required a pre-check
-  before writing any dual-memory code: subject-3 (the persistent weak point)
-  should show elevated expression/image disagreement *and* elevated model
-  error relative to subjects 1/2, or the architecture isn't worth a week of
-  work. It didn't — subject-3 showed the highest error but the *lowest*
-  disagreement of the three subjects (1.084 vs. 1.119/1.140), the opposite of
-  the needed pattern, with near-zero, sign-inconsistent per-spot correlations
-  within every subject. The data pipeline (H&E patch extraction, frozen
-  ResNet18 encoder, per-slice feature caching, all unit-tested) was built and
-  verified first and is reusable if a future attempt wants to test a
-  different morphology encoder (DINO/DINOv2, the plan's own named fallback)
-  rather than re-deriving the pipeline. See `outputs/figures/image_diagnostic_scatter.png`
-  and Stage 16 in [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md).
+  at its own diagnostic gate — twice, including after switching to a
+  stronger, histology-appropriate backbone — and not built.** The plan
+  required a pre-check before writing any dual-memory code: subject-3 (the
+  persistent weak point) should show elevated expression/image disagreement
+  *and* elevated model error relative to subjects 1/2. It didn't — subject-3
+  showed the highest error but the *lowest* disagreement of the three
+  subjects, the opposite of the needed pattern. A follow-up critique argued
+  this was a diagnostic-design problem (wrong backbone: ImageNet ResNet18
+  vs. histology-appropriate DINOv2; wrong metric: spot-by-spot "disagreement"
+  vs. the real mechanism needed, "signal rescue" — histology staying
+  spatially coherent where transcriptomic signal has degraded). Both points
+  were re-tested directly with a sharper diagnostic (Global Moran's I spatial
+  autocorrelation per modality, no model training required) using **both**
+  ResNet18 and DINOv2 ViT-S/14: subject-3 had the *highest* expression
+  Moran's I of the three subjects under both backbones (the opposite of
+  "degraded signal" — and this half of the result never touches an image
+  encoder, so it's backbone-independent by construction) and the *smallest*
+  image-rescue gap under both backbones (0.543 ResNet18 / 0.722 DINOv2, vs.
+  0.553/0.748 for subject 2). DINOv2 raised every image-coherence number
+  substantially without changing which subject the architecture would need
+  to help. The full data pipeline (H&E patch extraction, both frozen
+  encoders, per-slice feature caching, all unit-tested) is reusable if a
+  future attempt wants to build on the two remaining un-testable-without-a-model
+  critique points (spatial smoothing of image features, cross-modal
+  contrastive alignment) directly. See `outputs/figures/image_diagnostic_scatter.png`,
+  `outputs/figures/morans_i_diagnostic_scatter*.png`, and Stages 16–17 in
+  [`outputs/logs/stage2_progress.md`](outputs/logs/stage2_progress.md).
 - **Hyperparameters were tuned on mouse Visium, not DLPFC.** Applied out of the box to
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
   until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the

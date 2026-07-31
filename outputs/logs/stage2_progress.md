@@ -860,6 +860,89 @@ those -- it only says the cheapest, fastest version of the test didn't
 support spending a week on the full architecture, which is exactly what the
 diagnostic step was for.
 
+## Stage 17 -- revised diagnostic (Moran's I "signal rescue" reframing + DINOv2): falsified again, more decisively
+
+A follow-up review of Stage 16's result made a specific, credible case that the
+original diagnostic was the wrong test, not that the hypothesis was wrong: (1)
+frozen ImageNet ResNet18 is domain-mismatched for H&E histology (trained to
+classify macro-objects, not read cellular texture); (2) the original metric
+assumed histology helps by *resolving conflicts* with expression, but the
+mechanism this architecture actually needs is *signal rescue* -- histology
+staying spatially coherent where transcriptomic signal has degraded (dropout,
+low depth), which a spot-by-spot disagreement score can't distinguish from
+genuine conflict; (3) single-spot patch embeddings are noisy and should be
+spatially smoothed before comparison; (4) expression and image features live
+in unaligned manifolds, so a naive gate can't fairly weigh them.
+
+Point (2)'s reframing led to a sharper, cheaper, and more directly testable
+metric: **Global Moran's I** (spatial autocorrelation), computed separately
+per modality, per slice -- no model training required at all, since it's a
+pure statistic of the feature matrices and the spatial graph.
+`src/eval/morans_i_diagnostic.py`, `morans_i()` vectorized across all feature
+columns via one sparse-dense matmul, unit-tested against synthetic ring-graph
+signals (smooth sinusoid -> I > 0.8, random noise -> |I| < 0.2, checkerboard
+-> I < -0.8, confirming the standard Moran's I sign/magnitude conventions
+before trusting it on real data).
+
+**The hypothesis this needs to hold:** on subject-3 slices, expression
+Moran's I should be LOW (spatially incoherent, consistent with degraded
+signal) while image Moran's I stays HIGH (tissue anatomy intact regardless of
+transcriptomic quality) -- a bigger img-minus-expr gap on subject 3
+specifically than on subjects 1/2.
+
+**Result, ResNet18 features (reusing the already-cached Stage 16 features, no
+retraining):**
+
+| Subject | Mean expr Moran's I | Mean img Moran's I | Gap |
+|---|---|---|---|
+| subject1 | 0.0188 | 0.5550 | 0.5362 |
+| subject2 | 0.0184 | 0.5713 | 0.5530 |
+| **subject3** | **0.0362 (highest)** | 0.5796 | **0.5434 (smallest of the three)** |
+
+This is the opposite of the needed pattern on both counts: subject 3 has the
+*highest* expression spatial coherence of the three subjects (not the
+lowest), and the *smallest* image-rescue gap (not the largest). Point (1) of
+the critique -- that ResNet18 might be too weak a backbone to see the real
+effect -- doesn't apply to the `expr_moran` half of this finding, since that
+computation never touches an image encoder at all; it's a property of the
+expression data and the spatial graph alone.
+
+**Confirmed with DINOv2 anyway, for completeness** (`get_dinov2_encoder()`
+added to `image_encoder.py`, ViT-S/14 via `torch.hub`, patches bilinearly
+resized 64x64 -> 224x224 for ViT input, both new functions unit-tested,
+6/6 passing including a network-unavailable skip guard):
+
+| Subject | Mean expr Moran's I | Mean img Moran's I (DINOv2) | Gap |
+|---|---|---|---|
+| subject1 | 0.0188 | 0.7481 | 0.7293 |
+| subject2 | 0.0184 | 0.7664 | 0.7480 |
+| **subject3** | **0.0362 (highest)** | 0.7580 | **0.7217 (smallest of the three)** |
+
+DINOv2's image Moran's I is uniformly higher than ResNet18's (0.75-0.77 vs.
+0.55-0.58, as expected from a stronger, texture-sensitive backbone) -- but
+the *subject-level ranking is identical*: subject 2 still has the highest
+image coherence, subject 3 still has the smallest gap, and `expr_moran` is
+unchanged (backbone-independent, as it must be). Switching encoders changed
+the absolute numbers, not the qualitative conclusion.
+
+**This is a more decisive falsification than Stage 16's, not merely a repeat.**
+It directly answers the two most substantive points in the critique (wrong
+backbone, wrong metric) with a cheaper, more targeted test, and both come
+back negative: there is no evidence that subject-3's transcriptomic signal is
+uniquely degraded relative to subjects 1/2, and no evidence that image
+information uniquely compensates for it there specifically -- if anything,
+subject 3 is where image information helps *least* on a relative basis.
+Points (3) (spatial smoothing of image features) and (4) (cross-modal
+alignment via contrastive pretraining) are properties of the eventual model
+architecture, not of a pre-architecture data diagnostic -- Moran's I already
+measures spatial coherence directly, without needing a GNN smoothing step
+first, so they don't change what this diagnostic can say. They remain the
+right next things to get right *if* a future attempt is made, but nothing in
+this repo's data has yet shown a signal that would justify building the
+architecture to test them.
+
+`DualModalityMemoryLayer` remains **not built**.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

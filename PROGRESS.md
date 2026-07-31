@@ -448,14 +448,47 @@ Stage 16 in `outputs/logs/stage2_progress.md` for the full analysis.
 **Decision:** per the plan's own stopping rule, the `DualModalityMemoryLayer`
 architecture was **not built**. Whatever drives subject-3's gap, this
 diagnostic gives no evidence it's expression/morphology disagreement
-resolvable by frozen ImageNet features. Left genuinely open for a future
-attempt: this doesn't distinguish between (a) the biological hypothesis being
-wrong for this tissue, (b) frozen ImageNet features being the wrong
-morphology representation for H&E (DINO/DINOv2 was the plan's own named
-fallback, not tried), or (c) the neighbor-similarity operationalization
-missing a real effect. The data pipeline (patch extraction, frozen encoder,
-per-slice caching) is reusable if a future attempt wants to test (b) or (c)
-directly rather than re-deriving it.
+resolvable by frozen ImageNet features.
+
+**Follow-up review, addressed directly and re-tested — the falsification
+held up.** A second critique argued the negative result was a diagnostic
+design problem, not evidence against the hypothesis: wrong backbone
+(ImageNet ResNet18 vs. histology-appropriate DINOv2/pathology foundation
+models) and a flawed metric (spot-by-spot "disagreement" instead of
+"signal rescue" — histology should stay spatially coherent where
+transcriptomic signal has degraded, not literally conflict with it). Both
+points were substantive, so both were re-tested directly rather than argued
+about: a sharper Moran's I (spatial autocorrelation) diagnostic
+(`src/eval/morans_i_diagnostic.py`, unit-tested against synthetic signals)
+comparing per-modality spatial coherence, run with both ResNet18 (reusing
+cached features) and DINOv2 ViT-S/14 (`get_dinov2_encoder()`, added and
+unit-tested, 6/6 passing):
+
+| | ResNet18 gap (img − expr Moran's I) | DINOv2 gap |
+|---|---|---|
+| subject1 | 0.5362 | 0.7293 |
+| subject2 | 0.5530 | 0.7480 |
+| **subject3** | **0.5434 (smallest)** | **0.7217 (smallest)** |
+
+Subject 3 has the *highest* expression Moran's I of the three subjects (not
+the lowest — the opposite of "degraded signal") under both backbones (this
+half of the finding is backbone-independent by construction — it never
+touches an image encoder), and the *smallest* image-rescue gap under both
+backbones too. DINOv2 raised every image-Moran's-I number substantially
+(0.55-0.58 → 0.75-0.77, confirming it's a genuinely better histology
+encoder) without changing the subject-level ranking at all. This is a more
+decisive falsification than the first one, not a repeat of it: it directly
+answers the two most substantive critique points (wrong backbone, wrong
+metric) with sharper tools and gets the same answer.
+
+Left genuinely open for a future attempt: points (3) spatial-smoothing of
+image features and (4) cross-modal contrastive alignment from the critique
+are properties of the eventual *model architecture*, not testable via a
+pre-architecture data diagnostic — Moran's I already measures spatial
+coherence directly. The data pipeline (patch extraction, both frozen
+encoders, per-slice caching) is reusable if a future attempt wants to build
+on (3)/(4) directly, but nothing in this repo's data has yet shown a signal
+that would justify it.
 
 ### 14. Still open
 
