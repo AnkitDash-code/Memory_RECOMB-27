@@ -41,7 +41,7 @@ def train_spatial_address_model(
     temperature=1.0,
     feature_hops=0,
     latent_hops=0,
-    lambda_usage=0.1,
+    lambda_usage=0.02,
     lambda_sharpen=0.0,
     kmeans_init=False,
     seed=0,
@@ -77,9 +77,15 @@ def train_spatial_address_model(
     outputs/logs/stage2_progress.md (Stage 8) for the full CV sweep and both
     held-out comparisons.
 
-    n_hops=4 and lambda_usage=0.1 remain from the original (single-slice)
-    Stage 2/5 sweeps and were not re-validated by cross-validation -- a
-    reasonable next step if pursuing this further.
+    n_hops=4 and lambda_usage=0.02 are now BOTH cross-validated the same way
+    memory_slots was (src/eval/cross_validate_hops_usage.py, coordinate descent
+    over the same 3 CV-validation slices, checked on the same 8 true held-out
+    slices). n_hops=4 confirmed the original single-slice choice -- no change.
+    lambda_usage did not: the original single-slice value was 0.1, but 0.02
+    scored higher on both the CV slices (0.531 vs 0.467) and, more importantly,
+    on the true held-out set (0.520 +/- 0.072 vs 0.503 +/- 0.089) -- a real
+    +0.017 ARI gain with LOWER variance, not just a better mean. See
+    outputs/logs/stage2_progress.md (Stage 11) for the full sweep.
 
     feature_hops/latent_hops default to 0, the pure formulation. Both hybrid
     variants were tested and lost to it -- see outputs/logs/stage2_progress.md.

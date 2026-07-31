@@ -2,15 +2,19 @@
 
 Supersedes src/viz/spatial_plots.py's story: that script visualizes the Phase 0
 model (PCA input, no address propagation) on the label-free Visium crop dataset.
-This one uses the current winning architecture (SpatialAddressMemoryAutoencoder,
-memory_slots=32) on the dataset that actually has ground truth, and puts every
-method through the same clustering protocol (src/eval/clustering.py) so the
-panels are a fair visual comparison, not just four different pipelines.
+This one uses the current, fully cross-validated architecture
+(SpatialAddressMemoryAutoencoder, train_spatial_address_model's defaults --
+memory_slots=16, n_hops=4, lambda_usage=0.02) on the dataset that actually has
+ground truth, and puts every method through the same clustering protocol
+(src/eval/clustering.py) so the panels are a fair visual comparison, not just
+four different pipelines. Single seed (0), single slice -- see the headline
+12-slice/5-seed numbers in README.md for the real result this illustrates.
 """
 
 from pathlib import Path
 
 import matplotlib
+from sklearn.metrics import adjusted_rand_score
 
 matplotlib.use("Agg")
 
@@ -54,6 +58,12 @@ def main():
     adata.obs["ours_cluster"] = cluster_embedding(
         trained.obsm["X_spatial_address"], n_layers, coords=coords, refine=True
     )
+
+    truth = adata.obs["ground_truth_layer"]
+    mask = truth.notna().to_numpy()
+    for column in ("baseline_cluster", "graphst_cluster", "ours_cluster"):
+        ari = adjusted_rand_score(truth[mask], adata.obs[column].to_numpy()[mask])
+        print(f"{column}: ARI = {ari:.4f}")
 
     for column in ("ground_truth_layer", "baseline_cluster", "graphst_cluster", "ours_cluster"):
         adata.obs[column] = adata.obs[column].astype("category")

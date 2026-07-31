@@ -8,7 +8,9 @@ spatial-smoothness loss on the resulting embeddings rather than architectural ag
 
 This is a **Phase 0 prototype with honestly-reported, in-progress results** — see
 [Results](#results) and [Limitations](#limitations--honest-status) below before drawing
-conclusions from it. It does not currently beat the field's state of the art.
+conclusions from it. It does not clearly beat the field's state of the art, but after
+three rounds of cross-validated tuning fixes, it is now close to parity on average
+(held-out gap 0.024 ARI, smaller than the baseline's own across-slice variance).
 
 ## Results
 
@@ -21,17 +23,20 @@ All 12 DLPFC slices (Maynard et al./spatialLIBD, human dorsolateral prefrontal
 cortex, real manually-annotated cortical layers), 5 seeds each, identical
 clustering protocol for every method. Slice 151673 was used to tune every
 hyperparameter, so it is **held out of the headline mean** rather than reported
-as if it were unseen data. This evaluation has been run **three times**, because
+as if it were unseen data. This evaluation has been run **four times**, because
 each run uncovered something real:
 
 | | Held-out (11 slices) | All 12 slices |
 |---|---|---|
 | Ours, `memory_slots=32` (tuned on 151673 alone) | 0.4391 ± 0.0883 | 0.4501 ± 0.0921 |
-| Ours, `memory_slots=16` (cross-validated), per-seed mean | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
-| **Ours, `memory_slots=16`, consensus across seeds** | **0.4993 ± 0.1403** | 0.5033 ± 0.1349 |
+| Ours, `memory_slots=16`, `lambda_usage=0.1` (capacity cross-validated only), per-seed | 0.4815 ± 0.0979 | 0.4818 ± 0.0937 |
+| Ours, `memory_slots=16`, `lambda_usage=0.1`, consensus across seeds | 0.4993 ± 0.1403 | 0.5033 ± 0.1349 |
+| Ours, `memory_slots=16`, `lambda_usage=0.02` (fully cross-validated), per-seed | 0.5200 ± 0.0785 | 0.5230 ± 0.0758 |
+| **Ours, `memory_slots=16`, `lambda_usage=0.02`, consensus across seeds** | **0.5486 ± 0.0948** | 0.5494 ± 0.0908 |
 | GraphST (matched protocol), per-seed mean | 0.5685 ± 0.0825 | 0.5707 ± 0.0793 |
 | GraphST, consensus across seeds | 0.5724 ± 0.0861 | 0.5693 ± 0.0830 |
-| **Gap, current config + consensus (fair, both methods)** | **0.0731** | 0.0660 |
+| Gap, `lambda_usage=0.1`, consensus | 0.0731 | 0.0660 |
+| **Gap, `lambda_usage=0.02`, consensus (current, fair, both methods)** | **0.0238** | 0.0199 |
 
 **What happened, in order**: (1) the first run showed the held-out gap was ~5×
 the 0.026 measured on the tuning slice alone. Diagnosing why found 151673 was
@@ -45,11 +50,20 @@ high per-seed variance, consensus clustering (combining 5 seeds' cluster
 *labels*, not their raw embeddings — averaging embeddings was tried first and
 gave a mixed, unreliable result, since each seed's memory space is
 independently initialized and unaligned with the others) was tested and
-applied **identically to GraphST**, closing the gap further to 0.073 — a real
-improvement, though it increases our across-slice variance even as it improves
-the mean. It remains uneven: 3 of 11 held-out slices now match or slightly beat
-GraphST, while 3 slices from one subject still show a 0.21–0.23 gap that
-neither fix touched. Full detail and all raw JSON results:
+applied **identically to GraphST**, closing the gap further to 0.073. (4)
+`n_hops` and `lambda_usage` — the two remaining single-slice-tuned
+hyperparameters — were cross-validated the same way `memory_slots` was.
+`n_hops=4` was confirmed unchanged, but `lambda_usage=0.1` (originally chosen
+just to prevent slot collapse) turned out to be over-regularizing: 0.02 scored
+higher on the CV-validation slices, on the true held-out set, and — re-run at
+full scale — closed most of the remaining gap: 0.073 → **0.024**, this time
+*reducing* our consensus variance (0.140 → 0.095) rather than trading it away.
+It remains uneven: 3 of 11 held-out slices now clearly beat GraphST (151508,
+151509, 151670) plus a near-exact tie on 151672, while GraphST still leads on
+the rest — most clearly the three subject-3 slices, which improved a lot (gap
+0.21–0.23 → 0.11–0.13) but remain the weakest, and one previously-strong slice
+(151671) regressed under the new default (0.717 → 0.594 consensus). Full
+detail and all raw JSON results:
 [`outputs/logs/results_table.md`](outputs/logs/results_table.md).
 
 ### Single-slice detail (DLPFC 151673, the tuning slice — see above for the real result)
@@ -67,7 +81,7 @@ sweep), not as a generalization claim.
 | **GraphST (our local run, matched protocol)** | **0.590** | Run locally, this repo |
 | STAGATE | 0.589 | Literature |
 | Spatial_MGCN | 0.556 | Literature |
-| **SpatialAddressMemoryAutoencoder (ours, `memory_slots=32`)** | **0.571 ± 0.006** | Run locally, this repo (5 seeds) — this specific config was tuned *on this slice*; it scores 0.485 ± 0.108 under the current, cross-validated default (`memory_slots=16`), which generalizes better overall (see headline above) |
+| **SpatialAddressMemoryAutoencoder (ours, `memory_slots=32`)** | **0.571 ± 0.006** | Run locally, this repo (5 seeds) — this specific config was tuned *on this slice*; it scores 0.485 ± 0.108 with `lambda_usage=0.1` or 0.556 ± 0.046 with the current, fully cross-validated default (`memory_slots=16`, `lambda_usage=0.02`), which generalizes better overall (see headline above) |
 | BayesSpace | 0.550 | Literature |
 | DeepST | 0.538 | Literature |
 | conST | 0.528 | Literature |
@@ -147,11 +161,14 @@ Full table with wall-clock times and ARI-between-methods (agreement, not accurac
 ### Figures
 
 **Ground truth vs. baseline vs. GraphST vs. ours** (DLPFC 151673, shared clustering
-protocol for every panel). This corroborates the quantitative gap rather than
-hiding it: ground truth, the baseline, and GraphST all recover the true horizontal
-laminar banding of cortex; ours captures real spatial structure but with more
-blob-like, vertically-smeared regions that respect the layering less cleanly —
-visually consistent with the measured 0.439 vs. 0.569 held-out ARI:
+protocol for every panel, current cross-validated config, single seed). This
+corroborates the quantitative gap rather than hiding it: ground truth, the
+baseline, and GraphST all recover the true horizontal laminar banding of
+cortex; ours captures real spatial structure but with more blob-like,
+vertically-smeared regions that respect the layering less cleanly — visually
+consistent with this single seed's measured ARI (baseline 0.576, GraphST
+0.590, ours 0.506); the headline, seed-averaged held-out numbers are in the
+table above:
 
 ![DLPFC ground truth vs methods](outputs/figures/dlpfc_ground_truth_vs_methods.png)
 
@@ -174,23 +191,27 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
 
 ## Limitations & honest status
 
-- **Not currently state of the art.** Held-out, multi-slice, current config +
-  consensus clustering (applied fairly to both methods): 0.499 ± 0.140 vs.
-  GraphST's 0.572 ± 0.086 (gap 0.073). Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
+- **Close to parity on average, not clearly state of the art.** Held-out,
+  multi-slice, current config + consensus clustering (applied fairly to both
+  methods): 0.549 ± 0.095 vs. GraphST's 0.572 ± 0.086 (gap 0.024 — smaller than
+  GraphST's own across-slice std). Discussed candidly in [`PROGRESS.md`](PROGRESS.md).
 - **The tuning slice did not represent the held-out result — a real, measured
   finding, not a caveat added defensively.** Every hyperparameter was originally
   chosen on DLPFC 151673 alone, which turned out to be the single most favorable
   slice in the 12-slice set for that configuration (gap there: 0.026, ~5×
   smaller than the first held-out measurement of 0.129). This is exactly the
   failure mode holding out a tuning slice exists to catch, and diagnosing it
-  found two concrete, fixable causes: (a) `memory_slots` had been chosen the
+  found three concrete, fixable causes: (a) `memory_slots` had been chosen the
   same single-slice way — cross-validating it closed about a third of the gap
   (0.129 → 0.087); (b) high per-seed variance was partly addressable via
   consensus clustering across seeds, closing the gap further to 0.073, though
-  at the cost of higher across-slice variance. Both real, both uneven: 3 of 11
-  held-out slices are now competitive, 3 from one subject are not. `n_hops`/
-  `lambda_usage` remain single-slice-tuned and were not re-validated the same
-  way as `memory_slots`.
+  at the cost of higher across-slice variance at that point; (c) `n_hops` and
+  `lambda_usage` — the remaining single-slice-tuned values — were then also
+  cross-validated; `n_hops=4` held up, but `lambda_usage=0.1` turned out to be
+  over-regularizing, and `0.02` closed most of what remained (0.073 → 0.024),
+  this time *reducing* variance rather than trading it away. Still uneven: 4
+  of 11 held-out slices are now competitive with GraphST, 3 from one subject
+  are not (though far less badly than before), and one slice regressed.
 - **Five hypotheses were tested and rejected on evidence**, and are documented
   rather than hidden: (a) per-row attention entropy as the anti-collapse term —
   wrong quantity, marginal *usage* entropy was the actual fix, without which the
