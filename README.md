@@ -11,10 +11,20 @@ This is a **Phase 0 prototype with honestly-reported, in-progress results** — 
 conclusions from it. Four rounds of evidence-based fixes (three hyperparameter
 cross-validations plus one architectural change, expression-weighted spatial
 propagation) cut the held-out gap to GraphST from 0.129 to 0.010 ARI (consensus
-metric). A paired significance test (`src/eval/significance_test.py`) now finds
+metric). A paired significance test (`src/eval/significance_test.py`) finds
 **no statistically significant difference** on either metric (Wilcoxon p=0.123
-per-seed, p=0.465 consensus) — genuine progress, but "no significant difference
-detected at n=11 slices" is a modest, honest claim, not "beats state of the art."
+per-seed, p=0.465 consensus).
+
+**Read that carefully, because effect sizes and bootstrap intervals qualify it.**
+On the per-seed metric the rank-biserial effect size is **−0.545** — "large" by
+conventional thresholds — with a bootstrap 95% CI on the mean gap of
+**[−0.072, +0.005]**, which only barely includes zero. So the data are
+consistent with GraphST being up to 0.072 ahead but at most 0.005 behind. The
+honest reading is **"GraphST is probably still modestly ahead, and n=11 slices
+is too few to establish it"** — *not* that the two methods are equivalent. At
+this sample size "not significant" and "no effect" are different claims, and
+conflating them would overstate the result. More datasets, not more DLPFC
+tuning, is what resolves this.
 
 ## Results
 
@@ -93,10 +103,22 @@ earlier draft of this README did) would have overstated how close things
 were — the more stable per-seed metric showed a real, significant GraphST
 advantage. Fix #4 moved *both* metrics to "no significant difference
 detected at n=11" — a real, verified improvement in the statistical picture,
-not just a smaller point estimate. This should still be read as "no
-significant difference detected at this sample size," not "proven equal to
-GraphST" — a larger held-out sample (e.g. more DLPFC-like datasets) would be
-needed to distinguish those.
+not just a smaller point estimate.
+
+**Effect sizes and bootstrap CIs, because a p-value alone is a thin summary at
+n=11.** A non-significant test can mean "no effect" or "too few samples to
+detect one," and those are very different claims:
+
+| Metric | Mean gap | Bootstrap 95% CI | Rank-biserial | Wilcoxon p |
+|---|---|---|---|---|
+| Consensus | −0.0103 | [−0.053, +0.036] | −0.273 (small–medium) | 0.465 |
+| Per-seed | −0.0343 | [−0.072, +0.005] | **−0.545 (large)** | 0.123 |
+
+The per-seed effect size is *large*, and its CI only barely includes zero — the
+data are consistent with GraphST being up to 0.072 ahead but at most 0.005
+behind. So the correct reading is **"GraphST is probably still modestly ahead
+and n=11 is too few slices to establish it,"** not "the methods are
+equivalent." Resolving this needs more datasets, not more DLPFC tuning.
 
 #### Design history & external review
 

@@ -1126,6 +1126,93 @@ layers precisely where signal is strongest, while GraphST's contrastive term
 actively resists that. `n_hops` was cross-validated globally (Stage 11), never
 per-subject. Not yet run.
 
+## Phase A -- per-subject n_hops sweep on subject 3: NOT SUPPORTED, not adopted
+
+The one open, already-specified experiment from Stage 19: subject 3 has the
+richest per-spot signal (2058 genes/spot vs 1324 for subject 1) yet the worst
+ARI, so `n_hops=4` address propagation may be over-smoothing genuinely
+separable layers there. `n_hops` was cross-validated globally (Stage 11), never
+per-subject.
+
+**Leakage-safe design.** Selection used 151673 ONLY -- already the project's
+global tuning slice, therefore already burned, so reusing it contaminates
+nothing new. Held-out evaluation used 151674/675/676, none of which
+participated in selection. 6 hop counts x 4 slices x 5 seeds = 120 training
+runs.
+
+**The real test was the boundary-vs-interior breakdown, not aggregate ARI.**
+New `src/eval/boundary_mask.py` (7 unit tests) marks a spot as
+boundary-adjacent if any spot within 2 graph hops carries a different
+ground-truth layer label -- graph hops, not pixels, because that is the unit
+the propagation mechanism actually operates in. Unannotated neighbours are
+excluded so tissue edges are not spuriously marked as boundaries. On 151673
+this splits 3611 annotated spots into 1716 boundary / 1895 interior.
+
+Selection on 151673 picked `n_hops=3` (0.5872 vs 0.5288 for the global
+default). Held-out result:
+
+| metric | global n_hops=4 | selected n_hops=3 | delta |
+|---|---|---|---|
+| overall | 0.4760 | 0.4797 | +0.0037 |
+| boundary | 0.3458 | 0.3515 | +0.0056 |
+| interior | 0.6665 | 0.6663 | -0.0002 |
+
+**VERDICT: NOT SUPPORTED. Not adopted.** Three independent reasons:
+
+  * The boundary delta (+0.0056) is an order of magnitude below the typical
+    per-slice seed noise (0.0368).
+  * The per-slice boundary deltas disagree in direction: +0.0204, +0.0006,
+    -0.0042. The aggregate "improvement" is one slice averaged with two nulls.
+  * The global default is ALREADY the best hop count on 2 of the 3 held-out
+    slices. Per-slice optima are 3, 5, 4, 4 -- no consistent per-subject
+    value exists to adopt.
+
+Boundary ARI simply does not respond systematically to hop count on any slice
+(e.g. 151674 across hops 1-6: 0.378, 0.386, 0.370, 0.349, 0.381, 0.332 -- no
+trend). So the over-smoothing-at-boundaries mechanism is not what is
+happening, and per the plan's own stopping rule a hop count that moves only
+aggregate ARI by noise must not be adopted. `n_hops=4` stands.
+
+**A bug in this experiment's own verdict logic, caught and fixed.** The first
+automated verdict printed "SUPPORTED" -- because it tested only the SIGN of
+the deltas (`b_delta > 0 and b_delta > i_delta`), never their magnitude
+against seed variance. With per-slice std of 0.03-0.06, a +0.005 mean delta
+trivially satisfies a sign test while being pure noise. The check now requires
+the effect to exceed typical seed noise AND to be direction-consistent across
+held-out slices, and it reports the per-slice best hop so a spurious
+"improvement" over an already-optimal default is visible. The saved JSON
+carries a `superseded_verdict_note` recording the correction rather than
+silently overwriting it. Worth flagging plainly: an automated verdict is only
+as good as its threshold, and a sign-only test is not a significance test --
+the same class of error this project already corrected once at Stage 12.
+
+## Phase B2 -- effect sizes and bootstrap CIs: the headline claim needed qualifying
+
+The "no significant difference from GraphST" claim rested on two p-values at
+n=11. Added to `src/eval/significance_test.py`: matched-pairs rank-biserial
+correlation (Kerby 2014) as the Wilcoxon effect size, and a percentile
+bootstrap CI on the mean paired difference (10,000 slice resamples).
+
+| metric | mean gap | bootstrap 95% CI | rank-biserial | Wilcoxon p |
+|---|---|---|---|---|
+| consensus | -0.0103 | [-0.053, +0.036] | -0.273 (small-medium) | 0.465 |
+| per-seed | -0.0343 | [-0.072, +0.005] | **-0.545 (large)** | 0.123 |
+
+**This qualifies the headline claim materially.** On the per-seed metric --
+the more stable of the two, since each point already averages 5 seeds -- the
+effect size is *large* by conventional thresholds, ours wins only 3/11, and
+the CI only barely includes zero: the data are consistent with GraphST being
+up to 0.072 ahead but at most 0.005 behind.
+
+So "no statistically significant difference at n=11" was accurate but was
+carrying more weight than it should. The honest reading is **"GraphST is
+probably still modestly ahead, and 11 slices is too few to establish it"** --
+not that the methods are equivalent. At this sample size "not significant" and
+"no effect" are different claims. README.md has been updated accordingly.
+
+Note this also *strengthens* the case for cross-platform work: an underpowered
+comparison is resolved by more datasets, not by more DLPFC tuning.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

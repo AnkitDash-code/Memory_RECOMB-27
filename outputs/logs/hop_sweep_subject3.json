@@ -1,0 +1,343 @@
+{
+  "per_slice_per_hop": [
+    {
+      "sample": "151673",
+      "n_hops": 1,
+      "overall_mean": 0.5568710504333326,
+      "overall_std": 0.034328734757934784,
+      "boundary_mean": 0.4076973518622461,
+      "boundary_std": 0.014418852318707626,
+      "interior_mean": 0.7717557862228694,
+      "interior_std": 0.06832928506676322,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151673",
+      "n_hops": 2,
+      "overall_mean": 0.5561533526030527,
+      "overall_std": 0.06138913013441411,
+      "boundary_mean": 0.4282550506306536,
+      "boundary_std": 0.0074663927276289975,
+      "interior_mean": 0.7359479922383507,
+      "interior_std": 0.11295361104574943,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151673",
+      "n_hops": 3,
+      "overall_mean": 0.587207309534957,
+      "overall_std": 0.06912359120955047,
+      "boundary_mean": 0.41241824190683574,
+      "boundary_std": 0.02366243901460666,
+      "interior_mean": 0.8166513368975001,
+      "interior_std": 0.12701580323244546,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151673",
+      "n_hops": 4,
+      "overall_mean": 0.528773644761329,
+      "overall_std": 0.053521871375008544,
+      "boundary_mean": 0.41811874241673097,
+      "boundary_std": 0.010110668652824785,
+      "interior_mean": 0.7111020548092352,
+      "interior_std": 0.09850201313129803,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151673",
+      "n_hops": 5,
+      "overall_mean": 0.5847367674192643,
+      "overall_std": 0.019757278501793183,
+      "boundary_mean": 0.43212514143386915,
+      "boundary_std": 0.01024611990967037,
+      "interior_mean": 0.8125578888756924,
+      "interior_std": 0.03389671971271938,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151673",
+      "n_hops": 6,
+      "overall_mean": 0.5633832020302195,
+      "overall_std": 0.05601777581990964,
+      "boundary_mean": 0.42561047463415536,
+      "boundary_std": 0.01552559543433194,
+      "interior_mean": 0.775990017665485,
+      "interior_std": 0.09617705012082026,
+      "n_boundary_spots": 1716,
+      "n_interior_spots": 1895
+    },
+    {
+      "sample": "151674",
+      "n_hops": 1,
+      "overall_mean": 0.49052417055399095,
+      "overall_std": 0.05092793991825386,
+      "boundary_mean": 0.37785760321288075,
+      "boundary_std": 0.025581820940187194,
+      "interior_mean": 0.6589697629519888,
+      "interior_std": 0.07902043442653348,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151674",
+      "n_hops": 2,
+      "overall_mean": 0.48425081429445765,
+      "overall_std": 0.03286491521808849,
+      "boundary_mean": 0.3860513243488954,
+      "boundary_std": 0.017008314581598124,
+      "interior_mean": 0.6321949601495599,
+      "interior_std": 0.04246023517437784,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151674",
+      "n_hops": 3,
+      "overall_mean": 0.5000558639782569,
+      "overall_std": 0.04029471893387795,
+      "boundary_mean": 0.3694886269668706,
+      "boundary_std": 0.03162160348254059,
+      "interior_mean": 0.6820027034130448,
+      "interior_std": 0.048490123676742165,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151674",
+      "n_hops": 4,
+      "overall_mean": 0.46786744338309205,
+      "overall_std": 0.03977910127653774,
+      "boundary_mean": 0.3490692039768096,
+      "boundary_std": 0.03933446760222384,
+      "interior_mean": 0.641146543818311,
+      "interior_std": 0.04299247402229273,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151674",
+      "n_hops": 5,
+      "overall_mean": 0.522042102635828,
+      "overall_std": 0.061189748582848466,
+      "boundary_mean": 0.3810605538606259,
+      "boundary_std": 0.03862565438918574,
+      "interior_mean": 0.720371452334905,
+      "interior_std": 0.08318322340741797,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151674",
+      "n_hops": 6,
+      "overall_mean": 0.4364374432314147,
+      "overall_std": 0.04873845304781849,
+      "boundary_mean": 0.3318543631699994,
+      "boundary_std": 0.03282159422719275,
+      "interior_mean": 0.6045966756059712,
+      "interior_std": 0.06087119644359839,
+      "n_boundary_spots": 1754,
+      "n_interior_spots": 1881
+    },
+    {
+      "sample": "151675",
+      "n_hops": 1,
+      "overall_mean": 0.4329905686815089,
+      "overall_std": 0.04201951983262641,
+      "boundary_mean": 0.31930767522362913,
+      "boundary_std": 0.030835528065424785,
+      "interior_mean": 0.5954743111803514,
+      "interior_std": 0.058692207028596254,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151675",
+      "n_hops": 2,
+      "overall_mean": 0.44586724337938266,
+      "overall_std": 0.05121143560709654,
+      "boundary_mean": 0.3116878314231298,
+      "boundary_std": 0.04426213624397438,
+      "interior_mean": 0.6413794435887363,
+      "interior_std": 0.05808774550607609,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151675",
+      "n_hops": 3,
+      "overall_mean": 0.45394209745435943,
+      "overall_std": 0.06267906436093018,
+      "boundary_mean": 0.32319069777823767,
+      "boundary_std": 0.0459598460740389,
+      "interior_mean": 0.6527586083710168,
+      "interior_std": 0.08058456322380401,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151675",
+      "n_hops": 4,
+      "overall_mean": 0.46877027349844214,
+      "overall_std": 0.053351183440574684,
+      "boundary_mean": 0.32256218603997955,
+      "boundary_std": 0.04174059553119891,
+      "interior_mean": 0.6748269846069765,
+      "interior_std": 0.08808808670958275,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151675",
+      "n_hops": 5,
+      "overall_mean": 0.41748656123118233,
+      "overall_std": 0.02381013506348192,
+      "boundary_mean": 0.2890400716005586,
+      "boundary_std": 0.046151561283768634,
+      "interior_mean": 0.5922230104541659,
+      "interior_std": 0.022504598274662536,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151675",
+      "n_hops": 6,
+      "overall_mean": 0.46692243508448755,
+      "overall_std": 0.08717291352348258,
+      "boundary_mean": 0.3213177803608188,
+      "boundary_std": 0.07262662271931017,
+      "interior_mean": 0.6678046713769167,
+      "interior_std": 0.12369386553312421,
+      "n_boundary_spots": 1797,
+      "n_interior_spots": 1769
+    },
+    {
+      "sample": "151676",
+      "n_hops": 1,
+      "overall_mean": 0.4674221392415328,
+      "overall_std": 0.03307962496281726,
+      "boundary_mean": 0.3648376590404367,
+      "boundary_std": 0.03480867498738867,
+      "interior_mean": 0.6383648348694116,
+      "interior_std": 0.03745826371331489,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    },
+    {
+      "sample": "151676",
+      "n_hops": 2,
+      "overall_mean": 0.4824190232991034,
+      "overall_std": 0.03201165696391403,
+      "boundary_mean": 0.3846457626055033,
+      "boundary_std": 0.017120287936192545,
+      "interior_mean": 0.638088998769629,
+      "interior_std": 0.056391634859174866,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    },
+    {
+      "sample": "151676",
+      "n_hops": 3,
+      "overall_mean": 0.4850868691593626,
+      "overall_std": 0.03283855535611204,
+      "boundary_mean": 0.36172349222205835,
+      "boundary_std": 0.02521062882334111,
+      "interior_mean": 0.6642009631240537,
+      "interior_std": 0.04808644158549515,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    },
+    {
+      "sample": "151676",
+      "n_hops": 4,
+      "overall_mean": 0.4913509085237961,
+      "overall_std": 0.04840064542761801,
+      "boundary_mean": 0.3658772376556801,
+      "boundary_std": 0.01910807491120807,
+      "interior_mean": 0.6835455866605546,
+      "interior_std": 0.08228070201225583,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    },
+    {
+      "sample": "151676",
+      "n_hops": 5,
+      "overall_mean": 0.4544798130748001,
+      "overall_std": 0.033531439968233566,
+      "boundary_mean": 0.3336593496854017,
+      "boundary_std": 0.021681509138309924,
+      "interior_mean": 0.6498285830973921,
+      "interior_std": 0.04237875041742852,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    },
+    {
+      "sample": "151676",
+      "n_hops": 6,
+      "overall_mean": 0.4625496657251439,
+      "overall_std": 0.0779580123329241,
+      "boundary_mean": 0.33668378572580204,
+      "boundary_std": 0.04977205086067844,
+      "interior_mean": 0.6719404987728225,
+      "interior_std": 0.10206376307281441,
+      "n_boundary_spots": 1730,
+      "n_interior_spots": 1701
+    }
+  ],
+  "selection_slice": "151673",
+  "held_out_slices": [
+    "151674",
+    "151675",
+    "151676"
+  ],
+  "selection_scores": {
+    "1": 0.5568710504333326,
+    "2": 0.5561533526030527,
+    "3": 0.587207309534957,
+    "4": 0.528773644761329,
+    "5": 0.5847367674192643,
+    "6": 0.5633832020302195
+  },
+  "selected_n_hops": 3,
+  "global_default_n_hops": 4,
+  "held_out_summary": {
+    "overall": {
+      "global_n_hops_4": 0.4759962084684434,
+      "selected_n_hops_3": 0.47969494353065967,
+      "delta": 0.0036987350622162407
+    },
+    "boundary": {
+      "global_n_hops_4": 0.3458362092241564,
+      "selected_n_hops_3": 0.3514676056557222,
+      "delta": 0.005631396431565794
+    },
+    "interior": {
+      "global_n_hops_4": 0.6665063716952807,
+      "selected_n_hops_3": 0.6663207583027051,
+      "delta": -0.00018561339257561205
+    },
+    "_mechanistic": {
+      "per_slice_boundary_deltas": [
+        0.020419422990060998,
+        0.0006285117382581196,
+        -0.004153745433621736
+      ],
+      "typical_seed_noise": 0.03683498083320128,
+      "exceeds_noise": false,
+      "direction_consistent": false,
+      "per_slice_best_hop": {
+        "151674": 5,
+        "151675": 4,
+        "151676": 4
+      },
+      "default_already_best_on": 2
+    }
+  },
+  "verdict": "NOT SUPPORTED: boundary delta (+0.0056) is within seed noise (0.0368); per-slice boundary deltas disagree in direction; the global default is already optimal on 2/3 held-out slices. Do not adopt per-subject hop tuning on this evidence.",
+  "superseded_verdict_note": "An earlier automated verdict read SUPPORTED. That check tested only the SIGN of the deltas, not their magnitude against seed noise, and was wrong. Corrected here and in the script."
+}
