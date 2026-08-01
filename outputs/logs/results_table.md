@@ -92,6 +92,31 @@ slices remain the clearest weak point.
 
 ![Per-slice comparison, ours vs GraphST](../figures/per_slice_comparison.png)
 
+### A second real comparator: STAGATE
+
+STAGATE had been recorded in this project as blocked on Windows
+(`torch_sparse` supposedly lacking a wheel for torch 2.11.0+cu128). That claim
+was stale -- PyG's wheel index now covers this build -- and STAGATE now runs
+locally as a second real comparator, same 12-slice x 5-seed x shared-clustering
+protocol as everything else (`src/eval/run_stagate_dlpfc.py`):
+
+| | Ours | GraphST | STAGATE |
+|---|---|---|---|
+| Held-out per-seed | 0.5342 ± 0.076 | 0.5685 ± 0.083 | 0.5432 ± 0.082 |
+| Held-out consensus | 0.5621 ± 0.082 | 0.5724 ± 0.086 | 0.5500 ± 0.087 |
+
+All three pairwise Wilcoxon tests (`src/eval/significance_test_stagate.py`,
+reusing the rank-biserial + bootstrap-CI machinery above) are **not
+significant at n=11**: ours-vs-GraphST p=0.123, ours-vs-STAGATE p=0.700,
+GraphST-vs-STAGATE p=0.123 (per-seed; consensus is similarly non-significant
+throughout). On consensus, ours edges STAGATE (6/11 slices, rank-biserial
++0.152); GraphST edges both of us on both metrics, consistent with the
+effect-size analysis above -- though that edge is itself not statistically
+established at this sample size. Adding a second comparator does not change
+the picture: broadly competitive with the field on DLPFC, not proven ahead or
+behind, with n=11 slices remaining the binding constraint rather than any one
+method's number.
+
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
 The numbers below were measured entirely on the tuning slice, before the 12-slice
@@ -279,7 +304,14 @@ checked for, not assumed away).
 | Method | Status | Reason |
 |---|---|---|
 | SpaCeNet | Not ARI-comparable | It infers a gene-gene conditional-independence graphical model, not a spot clustering -- there is no cluster-label output to compute ARI/silhouette/coherence against. Keeping it out of this table is correct, not an omission. |
-| STAGATE (STAGATE_pyG) | `TODO: infeasible locally` | Hard-imports `torch_sparse.SparseTensor`. PyG's official wheel index (data.pyg.org) has no prebuilt binary past torch 2.9.1; this project's torch is 2.11.0+cu128. `uv add torch-sparse` was attempted and fails during source build (no prebuilt wheel, build isolation can't see torch). Candidate for Colab, where an older PyG-compatible torch/CUDA combo can be selected. |
-| Garfield | `TODO: infeasible on native Windows` | Depends on `pysam`, which has never shipped a Windows wheel (only manylinux/macOS on PyPI) -- confirmed by checking PyPI's file list directly. This is a permanent platform limitation, not a version mismatch. Needs Colab (Linux) or WSL. |
+| Garfield | `TODO: infeasible on native Windows` | Depends on `pybedtools` -> `pysam`, which has never shipped a Windows wheel (only manylinux/macOS on PyPI) -- confirmed by attempting the install directly (`pysam`'s build fails: `FileNotFoundError: [WinError 2]` during its Cython/htslib configure step). This is a permanent platform limitation, not a version mismatch. Needs Colab (Linux) or WSL; see `notebooks/05_comparators_and_generalization.ipynb`. |
 | SpatialDG | `TODO: not yet benchmarked` | No confirmed public pip-installable implementation as of this writing. |
-| EmbeddedMemoryLayer / GraphST | `TODO: not yet benchmarked` | Slide-seqV2 (41,786 spots) -- deferred to `notebooks/04_colab_scaleup.ipynb` per the original Phase 0 scope split (local = fast iteration on Visium, Colab = larger-scale + additional baselines). |
+| stGRL / MAEST / SpaBatch | `TODO: not yet benchmarked` | Not available on PyPI; deprioritized per the generalization plan's own "check installability before committing time" instruction rather than left silently unattempted. |
+| Ours / GraphST on Slide-seqV2, breast cancer, Stereo-seq OB | `TODO: not yet benchmarked` | Scaffolded in `notebooks/05_comparators_and_generalization.ipynb` (Phase C); not yet run. A literature check found GraphST reports no ARI on Stereo-seq OB or Slide-seqV2 (qualitative only) -- human breast cancer (10x Visium, pathologist-annotated) is the only one of the three with a published, directly comparable GraphST ARI (0.54-0.57) and should be run first. |
+
+**STAGATE was in this table until now, marked infeasible locally** (claimed
+PyG's wheel index had no prebuilt binary past torch 2.9.1 for this project's
+torch 2.11.0+cu128). **That claim was stale, re-tested rather than left
+unquestioned, and is now removed from this table** -- see the headline
+STAGATE comparison above and `outputs/logs/stage2_progress.md` (Phase B3) for
+the full 12-slice x 5-seed result and the install commands that made it work.

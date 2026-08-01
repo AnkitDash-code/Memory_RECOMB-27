@@ -513,8 +513,11 @@ that would justify it.
   have now been tested; the next genuinely new direction would need a fresh
   source of ideas or a different morphology encoder (DINO/DINOv2) rather than
   further tuning of this same set of mechanisms.
-- Slide-seqV2 / Colab scale-up (`notebooks/04_colab_scaleup.ipynb`) untouched this
-  session; STAGATE and Garfield remain blocked on Windows as documented.
+- Slide-seqV2 / Colab scale-up untouched this session at the time this bullet
+  was written; **since superseded — see section 17.** STAGATE's "blocked on
+  Windows" status was a stale claim and it now runs locally as a second real
+  comparator. Garfield remains genuinely blocked (verified, not stale:
+  `pybedtools` → `pysam` → `htslib`, no Windows wheel).
 
 ### 15. Topologically-Ordered Memory (TOM) — FAILED at its gate, all variants rejected
 
@@ -605,6 +608,88 @@ the richest per-spot signal (2058 genes/spot vs 1324), and `n_hops=4` address
 propagation may over-smooth genuinely separable layers precisely where signal
 is strongest, while GraphST's contrastive term resists that. `n_hops` was
 cross-validated globally (Stage 11), never per-subject.
+
+### 17. Forward plan (Phase A–D): the subject-3 suspect tested, the reviewer-flag
+    items closed, and a second real comparator added
+
+A structured plan to move from "competitive with GraphST on one dataset" toward
+generalization, gated so speculative architecture work only starts if evidence
+supports it. Phase A tested the section-16 suspect directly; Phase B closed
+three reviewer-facing gaps; Phase C (generalization) is scaffolded but not run.
+
+**Phase A — per-subject `n_hops` sweep on subject 3: NOT SUPPORTED, not
+adopted.** Leakage-safe (`src/eval/hop_sweep_subject3.py`): selection on 151673
+only (already the global tuning slice, so already burned), held-out evaluation
+on 151674/675/676, with a boundary-vs-interior breakdown
+(`src/eval/boundary_mask.py`, 7 unit tests) as the actual mechanistic test,
+not aggregate ARI. Rejected on three independent grounds: the boundary delta
+(+0.0056) is an order of magnitude below seed noise (0.0368); per-slice deltas
+disagree in sign; and the global default `n_hops=4` is already optimal on 2 of
+3 held-out slices. **A bug in the verdict logic itself was caught and fixed**
+— the first automated check printed "SUPPORTED" because it tested only the
+sign of the deltas, never magnitude against variance, the same class of error
+as the Stage 12 std-comparison. `n_hops=4` stands.
+
+**Phase B1 — GraphST reproduction gap (0.597 vs. 0.633 literature): explained,
+and confirmed NOT a handicap.** Model config ruled out by inspection first
+(`run_graphst.py` already passes GraphST's published defaults verbatim).
+Swept clustering on a fixed embedding: hierarchical (mclust-like) init gains
++0.012 over the current kmeans init on 151673 alone. The decisive test,
+`src/eval/protocol_invariance.py` (6 slices × 3 seeds, one embedding per
+method/slice/seed re-clustered two ways): the gap narrows under hierarchical
+init, but because **GraphST degrades** under it (−0.079 overall), not because
+we improve — the current protocol is the one that scores the baseline
+*higher*. No handicap; no protocol change warranted; headline comparison
+stands. This also **corrected a conclusion of this project's own** —
+"hierarchical init is better" was a single-slice (151673) finding that did not
+replicate across 6 slices, the third time in this project a single-slice
+result has failed to generalize (after `memory_slots=32` at Stage 8, and
+entmax/contrastive at Stages 14/15).
+
+**Phase B2 — effect sizes and bootstrap CIs: the headline claim needed
+qualifying.** Added rank-biserial effect size and percentile bootstrap CIs to
+`src/eval/significance_test.py`. Per-seed effect size is **large** (−0.545),
+CI **[−0.072, +0.005]** barely includes zero. "No significant difference at
+n=11" was accurate but overloaded — corrected reading: GraphST is probably
+still modestly ahead, and n=11 cannot establish it. This also strengthens the
+case for Phase C: an underpowered comparison needs more datasets, not more
+DLPFC tuning.
+
+**Phase B3 — STAGATE's "blocked on Windows" status was STALE, and it now runs
+locally as a real second comparator.** Re-tested rather than inherited: PyG's
+wheel index now covers torch 2.11.0+cu128 (`torch-sparse 0.6.18+pt211cu128`),
+so `torch_sparse` installs and STAGATE trains locally — no Colab needed.
+Install commands pinned in `pyproject.toml` (kept out of
+`[project.dependencies]` deliberately, since the wheel URL is specific to this
+exact torch+CUDA build). Full 12-slice × 5-seed run
+(`src/eval/run_stagate_dlpfc.py`), same protocol as everything else:
+
+| | Ours | GraphST | STAGATE |
+|---|---|---|---|
+| Held-out per-seed | 0.5342 ± 0.076 | 0.5685 ± 0.083 | 0.5432 ± 0.082 |
+| Held-out consensus | 0.5621 ± 0.082 | 0.5724 ± 0.086 | 0.5500 ± 0.087 |
+
+`src/eval/significance_test_stagate.py` (reusing the Phase B2 machinery):
+**none of the three pairwise Wilcoxon tests are significant at n=11**
+(ours-vs-GraphST p=0.123, ours-vs-STAGATE p=0.700, GraphST-vs-STAGATE p=0.123,
+per-seed). On consensus we edge STAGATE (6/11, rank-biserial +0.15). Adding a
+second comparator did not change the picture: broadly competitive, not proven
+ahead or behind.
+
+**Garfield remains genuinely blocked** — verified, not stale: it depends on
+`pybedtools` → `pysam` → `htslib`, which has no Windows wheel. Still routed
+through `notebooks/05_comparators_and_generalization.ipynb` for Colab.
+
+**Phase C priority reversed by a literature check, before any run.** The plan
+proposed leading generalization with mouse olfactory bulb (Stereo-seq) because
+it is "used in GraphST's own paper." Checked directly against the paper (Nat
+Commun 2023, PMC9977836): GraphST reports **no ARI** for either Stereo-seq OB
+or Slide-seqV2 hippocampus — both are qualitative (marker-gene / atlas
+comparison) only. **Human breast cancer (10x Visium) is the only one of the
+three with a published, directly comparable GraphST ARI** (0.54–0.57 vs.
+pathologist annotation, 20 regions) and should lead. Also: squidpy's
+Slide-seqV2 ships cell-type, not spatial-domain, labels — ARI there would
+score a different task. Phase C itself not yet run.
 
 ## Honest framing for any write-up
 

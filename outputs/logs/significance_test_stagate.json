@@ -1,0 +1,80 @@
+[
+  {
+    "pair": "ours_vs_graphst",
+    "field": "mean",
+    "mean_diff": -0.034273545314871465,
+    "bootstrap_ci": [
+      -0.07213463927572401,
+      0.004791658060779864
+    ],
+    "rank_biserial": -0.5454545454545454,
+    "wilcoxon_p": 0.123046875,
+    "ttest_p": 0.12352662991806929,
+    "shapiro_p": 0.9576903953073173
+  },
+  {
+    "pair": "ours_vs_stagate",
+    "field": "mean",
+    "mean_diff": -0.008995381444428357,
+    "bootstrap_ci": [
+      -0.05342307761412057,
+      0.035966826798577524
+    ],
+    "rank_biserial": -0.15151515151515152,
+    "wilcoxon_p": 0.7001953125,
+    "ttest_p": 0.7089401199351548,
+    "shapiro_p": 0.9464642039125647
+  },
+  {
+    "pair": "graphst_vs_stagate",
+    "field": "mean",
+    "mean_diff": 0.025278163870443106,
+    "bootstrap_ci": [
+      -0.0056740731296696925,
+      0.057126667565156476
+    ],
+    "rank_biserial": 0.5454545454545454,
+    "wilcoxon_p": 0.123046875,
+    "ttest_p": 0.16685775005330547,
+    "shapiro_p": 0.42648365613716405
+  },
+  {
+    "pair": "ours_vs_graphst",
+    "field": "consensus",
+    "mean_diff": -0.010300246998657043,
+    "bootstrap_ci": [
+      -0.05301126543101946,
+      0.03637350320205467
+    ],
+    "rank_biserial": -0.2727272727272727,
+    "wilcoxon_p": 0.46484375,
+    "ttest_p": 0.67762800086678,
+    "shapiro_p": 0.4319463428189493
+  },
+  {
+    "pair": "ours_vs_stagate",
+    "field": "consensus",
+    "mean_diff": 0.012050040535002138,
+    "bootstrap_ci": [
+      -0.024286985389941174,
+      0.04790223158121162
+    ],
+    "rank_biserial": 0.15151515151515152,
+    "wilcoxon_p": 0.7001953125,
+    "ttest_p": 0.5404642121693355,
+    "shapiro_p": 0.5171914055700284
+  },
+  {
+    "pair": "graphst_vs_stagate",
+    "field": "consensus",
+    "mean_diff": 0.022350287533659183,
+    "bootstrap_ci": [
+      -0.016665096057442604,
+      0.062438675420980645
+    ],
+    "rank_biserial": 0.3939393939393939,
+    "wilcoxon_p": 0.2783203125,
+    "ttest_p": 0.3143435491341109,
+    "shapiro_p": 0.8269728282666651
+  }
+]

@@ -1,16 +1,18 @@
-"""STAGATE (Dong & Zhang, Nat Commun 2022) wrapper, for use as a real comparator.
+"""STAGATE (Dong & Zhang, Nat Commun 2022) wrapper, used as a real comparator.
 
-STATUS: **NOT YET EXECUTED.** STAGATE is blocked on this project's Windows
-machine -- `torch_sparse` (a hard PyG dependency) has no prebuilt wheel for
-torch 2.11.0+cu128 and fails to build from source there. This module is written
-against STAGATE_pyG's published tutorial API and is validated in
-`notebooks/05_comparators_and_generalization.ipynb` on Colab (Linux), where
-the wheel problem does not exist. Until that notebook has been run, treat this
-as unverified code, and do not put STAGATE numbers in any results table
-sourced from anything but an actual run.
+STATUS: **EXECUTED, locally, no Colab needed.** This project had recorded
+STAGATE as blocked on Windows because `torch_sparse` (a hard `GATConv`
+dependency) supposedly had no prebuilt wheel for torch 2.11.0+cu128. That
+claim was stale: PyG's wheel index now publishes builds through torch 2.13.0,
+including `torch-sparse 0.6.18+pt211cu128`. Full 12-slice x 5-seed results are
+in `outputs/logs/stagate_dlpfc_results.json` via `src/eval/run_stagate_dlpfc.py`;
+see `outputs/logs/stage2_progress.md` (Phase B3) for the numbers and the
+three-way significance test against GraphST.
 
-Installation (verified resolvable, not yet executed):
-    pip install git+https://github.com/QIFEIDKN/STAGATE_pyG.git
+Installation (verified working, not merely resolvable):
+    uv pip install torch_sparse torch_scatter \
+      --find-links "https://data.pyg.org/whl/torch-2.11.0+cu128.html"
+    uv pip install git+https://github.com/QIFEIDKN/STAGATE_pyG.git
 
 Preprocessing mirrors STAGATE's own DLPFC tutorial (3000 seurat_v3 HVGs,
 normalize_total 1e4, log1p) rather than this repo's `preprocess_hvg`, for the

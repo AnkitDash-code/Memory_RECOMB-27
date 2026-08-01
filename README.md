@@ -120,6 +120,29 @@ behind. So the correct reading is **"GraphST is probably still modestly ahead
 and n=11 is too few slices to establish it,"** not "the methods are
 equivalent." Resolving this needs more datasets, not more DLPFC tuning.
 
+#### A second real comparator: STAGATE (`src/eval/run_stagate_dlpfc.py`)
+
+GraphST was, until now, the only real comparator here — everything above is a
+two-way comparison. STAGATE had been recorded as blocked on this project's
+Windows environment; that turned out to be a **stale claim** (see
+[Limitations](#limitations--honest-status)), and it now runs locally with the
+identical 12-slice × 5-seed × shared-clustering protocol:
+
+| | Ours | GraphST | STAGATE |
+|---|---|---|---|
+| Held-out per-seed | 0.5342 ± 0.076 | 0.5685 ± 0.083 | 0.5432 ± 0.082 |
+| Held-out consensus | 0.5621 ± 0.082 | 0.5724 ± 0.086 | 0.5500 ± 0.087 |
+
+All three pairwise Wilcoxon tests (`src/eval/significance_test_stagate.py`) are
+**not significant at n=11**: ours-vs-GraphST p=0.123, ours-vs-STAGATE p=0.700,
+GraphST-vs-STAGATE p=0.123 (all per-seed; consensus is similarly
+non-significant throughout). On consensus, ours edges STAGATE (6/11 slices,
+rank-biserial +0.15); GraphST edges both of us on both metrics, consistent
+with the effect-size analysis above. With a second comparator in the mix, the
+picture doesn't change: broadly competitive with the field on DLPFC, not
+proven ahead of it, and 11 slices remains the binding constraint rather than
+any one method's number.
+
 #### Design history & external review
 
 A second AI (Gemini, prompted independently by the project owner with this
@@ -403,17 +426,35 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   DLPFC, the earlier model over-segmented badly (34 clusters vs. 7 true layers, ARI 0.17)
   until a resolution-matching fix (`src/eval/metrics.py::search_leiden_resolution`, the
   same convention GraphST itself uses) was added and applied fairly to all methods.
-- **Single run, no seed averaging.** Our local GraphST run (0.491) already undershoots
-  its own literature-reported number (0.633) — some of the gap for our method is likely
-  ordinary run-to-run variance on top of the real architectural gap, not yet disentangled.
-  Even accounting for that, the current results are not competitive with the field,
-  including several methods (e.g. stGRL, MAEST) published more recently than GraphST/STAGATE
-  that were not attempted here.
-- **STAGATE and Garfield could not be run locally** (Windows). STAGATE hard-depends on
-  `torch_sparse`, which has no prebuilt wheel for this project's torch build
-  (2.11.0+cu128; PyG's wheel index tops out at 2.9.1) and fails to build from source.
-  Garfield depends on `pysam`, which has never shipped a Windows wheel at all. Both are
-  wired up in `notebooks/04_colab_scaleup.ipynb` to run on Colab's Linux runtime instead.
+- **STAGATE is now a real, second comparator, run locally, 12 slices × 5 seeds.**
+  This project had recorded STAGATE as "blocked on Windows" — `torch_sparse` (a
+  hard dependency of its `GATConv`) supposedly had no wheel for this project's
+  torch build (2.11.0+cu128). That claim was **stale**: PyG's wheel index now
+  publishes builds through torch 2.13.0, including `torch-sparse 0.6.18+pt211cu128`.
+  Re-testing the blocker took ten minutes and made a real comparator possible;
+  see the pinned install commands in `pyproject.toml`. Held-out (11 slices),
+  same protocol as everything else:
+
+  | | Ours | GraphST | STAGATE |
+  |---|---|---|---|
+  | Per-seed | 0.5342 ± 0.076 | 0.5685 ± 0.083 | 0.5432 ± 0.082 |
+  | Consensus | 0.5621 ± 0.082 | 0.5724 ± 0.086 | 0.5500 ± 0.087 |
+
+  **None of the three pairwise Wilcoxon tests reach significance at n=11**
+  (`src/eval/significance_test_stagate.py`): ours-vs-GraphST p=0.123 (per-seed),
+  ours-vs-STAGATE p=0.700, GraphST-vs-STAGATE p=0.123. On consensus we edge
+  STAGATE (6/11 slices, rank-biserial +0.15), while GraphST edges both of us —
+  though that edge is itself not statistically established at this sample size.
+  The honest picture with two real comparators is the same as with one: broadly
+  competitive, not proven ahead or behind, and n=11 is the limiting factor
+  rather than any single method's numbers.
+- **Garfield remains genuinely blocked locally** (not stale — checked): it
+  depends on `pybedtools` → `pysam`, which requires `htslib` and has never
+  shipped a Windows wheel. Wired up in
+  `notebooks/05_comparators_and_generalization.ipynb` for Colab's Linux runtime.
+  stGRL and MAEST, published more recently than GraphST/STAGATE, were not
+  attempted (not on PyPI; deprioritized per the generalization plan's own
+  "check installability before committing time" instruction).
 - **SpaCeNet is intentionally excluded** from the ARI table — it infers a gene-gene
   conditional-independence graphical model, not spot clusters, so there is no
   cluster-label output to score.

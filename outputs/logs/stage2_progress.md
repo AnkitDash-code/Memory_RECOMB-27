@@ -1298,10 +1298,54 @@ Checked availability BEFORE committing time, per the plan:
 `src/models/run_stagate.py` follows STAGATE's own DLPFC tutorial (3000
 seurat_v3 HVGs, rad_cutoff=150), on the same principle as `run_graphst.py`:
 a comparator should be run the way its authors run it, or the comparison
-measures our preprocessing rather than their method. Marked **NOT YET
-EXECUTED** -- STAGATE is blocked locally because `torch_sparse` has no wheel
-for torch 2.11.0+cu128 on Windows. No STAGATE number enters any results table
-until an actual run produces one.
+measures our preprocessing rather than their method. ~~Marked NOT YET EXECUTED
+-- STAGATE is blocked locally because `torch_sparse` has no wheel for torch
+2.11.0+cu128 on Windows.~~ **Correction, tested directly rather than left as
+an inherited assumption: this was stale.** PyG's wheel index now publishes
+builds through torch 2.13.0, including `torch-sparse 0.6.18+pt211cu128`. It
+installs and STAGATE trains locally without Colab:
+
+```
+uv pip install torch_sparse torch_scatter \
+  --find-links "https://data.pyg.org/whl/torch-2.11.0+cu128.html"
+uv pip install git+https://github.com/QIFEIDKN/STAGATE_pyG.git
+```
+
+Single-slice smoke test (151673, seed 0) landed right next to the literature
+number (STAGATE ARI 0.5828 vs. its published 0.589), so the full protocol was
+run locally: `src/eval/run_stagate_dlpfc.py`, 12 slices x 5 seeds, identical
+mclust-equivalent + spatial-refinement clustering and consensus-across-seeds
+as every other method here.
+
+| | Ours | GraphST | STAGATE |
+|---|---|---|---|
+| Held-out per-seed | 0.5342 +/- 0.076 | 0.5685 +/- 0.083 | 0.5432 +/- 0.082 |
+| Held-out consensus | 0.5621 +/- 0.082 | 0.5724 +/- 0.086 | 0.5500 +/- 0.087 |
+
+STAGATE lands between us and GraphST on both metrics. `src/eval/significance_test_stagate.py`
+extends the Phase B2 machinery (Wilcoxon + rank-biserial + bootstrap CI) to
+all three pairwise comparisons rather than a 3-group omnibus test (with n=11,
+an omnibus test would have even less power than the pairwise tests already in
+use, and the question that matters is "how do we compare to EACH established
+method", not "are the three different in general"):
+
+| pair (per-seed) | mean diff | Wilcoxon p | rank-biserial |
+|---|---|---|---|
+| ours vs graphst | -0.0343 | 0.123 | -0.545 |
+| ours vs stagate | -0.0090 | 0.700 | -0.152 |
+| graphst vs stagate | +0.0253 | 0.123 | +0.545 |
+
+**None of the three pairwise tests reach significance at n=11.** On consensus,
+ours edges STAGATE (6/11 slices, rank-biserial +0.152); GraphST edges both of
+us on both metrics, consistent with the Phase B2 effect-size finding, but that
+edge is itself not statistically established at this sample size either. A
+second real comparator did not change the picture: broadly competitive with
+the field on DLPFC, not proven ahead or behind, n=11 the binding constraint.
+
+Garfield remains genuinely blocked -- verified, not stale: it depends on
+`pybedtools` -> `pysam` -> `htslib`, which has no Windows wheel, confirmed by
+attempting the install directly (`pysam` fails to build: "Cython ... using
+cythonize if necessary ... FileNotFoundError: [WinError 2]").
 
 `notebooks/05_comparators_and_generalization.ipynb` covers B3 and scaffolds C.
 Two deliberate design choices:

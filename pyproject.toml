@@ -33,3 +33,23 @@ torchvision = [{ index = "pytorch-cu128" }]
 name = "pytorch-cu128"
 url = "https://download.pytorch.org/whl/cu128"
 explicit = true
+
+# STAGATE (a real comparator) hard-imports torch_sparse in its GATConv.
+# This project previously recorded STAGATE as "blocked on Windows because PyG's
+# wheel index tops out at torch 2.9.1" -- that is now STALE: the index publishes
+# builds through torch 2.13.0, including torch-sparse 0.6.18+pt211cu128. Pinned
+# here so the environment is reproducible rather than depending on an ad-hoc
+# `--find-links` install.
+#
+# Install these two with:
+#   uv pip install torch_sparse torch_scatter \
+#     --find-links "https://data.pyg.org/whl/torch-2.11.0+cu128.html"
+#   uv pip install git+https://github.com/QIFEIDKN/STAGATE_pyG.git
+#
+# They are kept OUT of [project.dependencies] deliberately: the wheel URL is
+# specific to this exact torch+CUDA build, so baking it into the resolved
+# dependency set would break `uv sync` for anyone on a different torch version.
+#
+# Garfield is NOT installable here and this is not a stale claim: it depends on
+# pybedtools -> pysam, which requires htslib and has no Windows build. That one
+# genuinely needs Colab or WSL.
