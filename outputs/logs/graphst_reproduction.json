@@ -1,0 +1,468 @@
+{
+  "sample": "151673",
+  "literature_ari": 0.633,
+  "current_protocol": {
+    "n_pcs": 20,
+    "init": "kmeans",
+    "covariance": "tied",
+    "refine": true,
+    "ari": 0.5901860125238636
+  },
+  "best_variant": {
+    "n_pcs": 20,
+    "init": "random_from_data",
+    "covariance": "full",
+    "refine": true,
+    "ari": 0.6232092760850884
+  },
+  "all_variants": [
+    {
+      "n_pcs": 15,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5899326962858613
+    },
+    {
+      "n_pcs": 15,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5698551722130756
+    },
+    {
+      "n_pcs": 15,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5673126591223749
+    },
+    {
+      "n_pcs": 15,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5148311982161302
+    },
+    {
+      "n_pcs": 15,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.3785352291187255
+    },
+    {
+      "n_pcs": 15,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.20216430150103015
+    },
+    {
+      "n_pcs": 15,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.49248169711401457
+    },
+    {
+      "n_pcs": 15,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.44759354811048824
+    },
+    {
+      "n_pcs": 15,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.270553208859933
+    },
+    {
+      "n_pcs": 15,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.09652292666204627
+    },
+    {
+      "n_pcs": 15,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.6175470709944033
+    },
+    {
+      "n_pcs": 15,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5498304631249648
+    },
+    {
+      "n_pcs": 15,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5827465939972014
+    },
+    {
+      "n_pcs": 15,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5625379663292738
+    },
+    {
+      "n_pcs": 15,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5485644228846119
+    },
+    {
+      "n_pcs": 15,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5084091856186211
+    },
+    {
+      "n_pcs": 20,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5901860125238636
+    },
+    {
+      "n_pcs": 20,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5712762353187842
+    },
+    {
+      "n_pcs": 20,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5062852959231207
+    },
+    {
+      "n_pcs": 20,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.4686730585461992
+    },
+    {
+      "n_pcs": 20,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.3380989021931453
+    },
+    {
+      "n_pcs": 20,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.11515584407569146
+    },
+    {
+      "n_pcs": 20,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5186552301495106
+    },
+    {
+      "n_pcs": 20,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.48278217587286426
+    },
+    {
+      "n_pcs": 20,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.1551725286268858
+    },
+    {
+      "n_pcs": 20,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.0735635137292701
+    },
+    {
+      "n_pcs": 20,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.6232092760850884
+    },
+    {
+      "n_pcs": 20,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5540125060872112
+    },
+    {
+      "n_pcs": 20,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.6021723794285917
+    },
+    {
+      "n_pcs": 20,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.582678983546725
+    },
+    {
+      "n_pcs": 20,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5566659578600345
+    },
+    {
+      "n_pcs": 20,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5081510338557695
+    },
+    {
+      "n_pcs": 30,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5760763651148646
+    },
+    {
+      "n_pcs": 30,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5649850093607259
+    },
+    {
+      "n_pcs": 30,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5141253800322202
+    },
+    {
+      "n_pcs": 30,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.48782592198554053
+    },
+    {
+      "n_pcs": 30,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.1708504858889729
+    },
+    {
+      "n_pcs": 30,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.09818882869459018
+    },
+    {
+      "n_pcs": 30,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5522589698358386
+    },
+    {
+      "n_pcs": 30,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.537370162026195
+    },
+    {
+      "n_pcs": 30,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.19025139096149063
+    },
+    {
+      "n_pcs": 30,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.05638290983655984
+    },
+    {
+      "n_pcs": 30,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5866204912252226
+    },
+    {
+      "n_pcs": 30,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5499291490618683
+    },
+    {
+      "n_pcs": 30,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5913080883108405
+    },
+    {
+      "n_pcs": 30,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5956349067741386
+    },
+    {
+      "n_pcs": 30,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5242449427057161
+    },
+    {
+      "n_pcs": 30,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.4882105709518001
+    },
+    {
+      "n_pcs": 50,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5814708663676255
+    },
+    {
+      "n_pcs": 50,
+      "init": "kmeans",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5664021041291625
+    },
+    {
+      "n_pcs": 50,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5167337039178408
+    },
+    {
+      "n_pcs": 50,
+      "init": "kmeans",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.47368476600767334
+    },
+    {
+      "n_pcs": 50,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.02894609862622084
+    },
+    {
+      "n_pcs": 50,
+      "init": "k-means++",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.04057958072145228
+    },
+    {
+      "n_pcs": 50,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5379674038027876
+    },
+    {
+      "n_pcs": 50,
+      "init": "k-means++",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.5117121910492667
+    },
+    {
+      "n_pcs": 50,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.09997611961948075
+    },
+    {
+      "n_pcs": 50,
+      "init": "random_from_data",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.05171471549309342
+    },
+    {
+      "n_pcs": 50,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.5516115213108884
+    },
+    {
+      "n_pcs": 50,
+      "init": "random_from_data",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.4956287962171719
+    },
+    {
+      "n_pcs": 50,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": true,
+      "ari": 0.5814522488409969
+    },
+    {
+      "n_pcs": 50,
+      "init": "hierarchical",
+      "covariance": "tied",
+      "refine": false,
+      "ari": 0.5644548006429636
+    },
+    {
+      "n_pcs": 50,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": true,
+      "ari": 0.4389934537668887
+    },
+    {
+      "n_pcs": 50,
+      "init": "hierarchical",
+      "covariance": "full",
+      "refine": false,
+      "ari": 0.4164653772489403
+    }
+  ]
+}
