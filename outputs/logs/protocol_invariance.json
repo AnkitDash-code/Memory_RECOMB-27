@@ -1,0 +1,111 @@
+{
+  "samples": [
+    "151507",
+    "151510",
+    "151669",
+    "151672",
+    "151674",
+    "151676"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "per_slice": [
+    {
+      "sample": "151507",
+      "kmeans": {
+        "ours": 0.4729964660831358,
+        "graphst": 0.47528278947049185,
+        "gap": 0.0022863233873560707
+      },
+      "hierarchical": {
+        "ours": 0.5681002064311634,
+        "graphst": 0.5270113962623295,
+        "gap": -0.04108881016883392
+      }
+    },
+    {
+      "sample": "151510",
+      "kmeans": {
+        "ours": 0.4848535409725343,
+        "graphst": 0.5487434016525642,
+        "gap": 0.06388986068002989
+      },
+      "hierarchical": {
+        "ours": 0.4595028176663673,
+        "graphst": 0.47261641835702933,
+        "gap": 0.01311360069066203
+      }
+    },
+    {
+      "sample": "151669",
+      "kmeans": {
+        "ours": 0.5720322781014839,
+        "graphst": 0.5892933644185311,
+        "gap": 0.017261086317047147
+      },
+      "hierarchical": {
+        "ours": 0.49101555273404296,
+        "graphst": 0.5045796461604102,
+        "gap": 0.013564093426367219
+      }
+    },
+    {
+      "sample": "151672",
+      "kmeans": {
+        "ours": 0.6618829256128088,
+        "graphst": 0.770265773480132,
+        "gap": 0.10838284786732322
+      },
+      "hierarchical": {
+        "ours": 0.6134174545931046,
+        "graphst": 0.45985431982577024,
+        "gap": -0.15356313476733435
+      }
+    },
+    {
+      "sample": "151674",
+      "kmeans": {
+        "ours": 0.48201222925416104,
+        "graphst": 0.6204666535671532,
+        "gap": 0.1384544243129922
+      },
+      "hierarchical": {
+        "ours": 0.44438350324063675,
+        "graphst": 0.6164593927949644,
+        "gap": 0.17207588955432768
+      }
+    },
+    {
+      "sample": "151676",
+      "kmeans": {
+        "ours": 0.45947258492731163,
+        "graphst": 0.5776068961059426,
+        "gap": 0.11813431117863099
+      },
+      "hierarchical": {
+        "ours": 0.47952938536372236,
+        "graphst": 0.5282263633714867,
+        "gap": 0.04869697800776429
+      }
+    }
+  ],
+  "summary": {
+    "kmeans": {
+      "ours": 0.522208337491906,
+      "graphst": 0.5969431464491358,
+      "gap": 0.07473480895722984
+    },
+    "hierarchical": {
+      "ours": 0.5093248200048396,
+      "graphst": 0.5181245894619985,
+      "gap": 0.00879976945715888
+    },
+    "_baseline_favoured_by": "kmeans"
+  },
+  "gap_change": -0.06593503950007096,
+  "verdict": "NO HANDICAP: the CURRENT protocol (kmeans init) is the one that scores the baseline HIGHER (0.5969 vs 0.5181). The gap only narrows under the alternative because GraphST degrades under it, not because our method improves. The reproduction shortfall is therefore not a handicap biasing the comparison in our favour -- if anything the current protocol is generous to the baseline. Headline comparison stands; no protocol change warranted.",
+  "superseded_verdict_note": "An earlier verdict string described hierarchical init as \"the better protocol\". That came from Phase B1, which measured it on ONE slice (151673, +0.012 for GraphST). Across these 6 slices hierarchical init is much WORSE for GraphST (-0.079, and -0.31 on 151672), so the B1 finding does not replicate and the label was wrong."
+}

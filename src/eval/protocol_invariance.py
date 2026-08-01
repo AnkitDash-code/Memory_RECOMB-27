@@ -82,27 +82,41 @@ def main():
         coords = adata.obsm["spatial"]
         truth_np = truth.to_numpy()
 
+        # Train ONCE per (method, seed) and re-cluster the same embedding under
+        # each init. Training inside the init loop would double the compute for
+        # identical embeddings (both trainers are seeded, so the second pass
+        # reproduces the first exactly) -- and, more importantly, keeping one
+        # embedding guarantees the comparison isolates the clustering protocol
+        # rather than mixing in any retraining variance.
         row = {"sample": sample}
-        for init in inits:
-            ours, gst = [], []
-            for seed in SEEDS:
-                _, trained, _ = train_spatial_address_model(
-                    adata.copy(), seed=seed, device=device, verbose=False
-                )
-                labels = cluster(trained.obsm["X_spatial_address"], n_layers, coords, init)
-                ours.append(adjusted_rand_score(truth_np[mask], np.asarray(labels)[mask]))
+        per_init = {init: {"ours": [], "graphst": []} for init in inits}
 
-                g = run_graphst(raw.copy(), n_clusters=n_layers, device=device,
-                                random_seed=seed, cluster=False)
-                gt = truth.reindex(g.obs_names)
-                gmask = gt.notna().to_numpy()
+        for seed in SEEDS:
+            _, trained, _ = train_spatial_address_model(
+                adata.copy(), seed=seed, device=device, verbose=False
+            )
+            ours_emb = trained.obsm["X_spatial_address"]
+
+            g = run_graphst(raw.copy(), n_clusters=n_layers, device=device,
+                            random_seed=seed, cluster=False)
+            gt = truth.reindex(g.obs_names)
+            gmask = gt.notna().to_numpy()
+            gt_np = gt.to_numpy()
+
+            for init in inits:
+                labels = cluster(ours_emb, n_layers, coords, init)
+                per_init[init]["ours"].append(
+                    adjusted_rand_score(truth_np[mask], np.asarray(labels)[mask]))
+
                 glabels = cluster(g.obsm["emb"], n_layers, g.obsm["spatial"], init)
-                gst.append(adjusted_rand_score(gt.to_numpy()[gmask], np.asarray(glabels)[gmask]))
+                per_init[init]["graphst"].append(
+                    adjusted_rand_score(gt_np[gmask], np.asarray(glabels)[gmask]))
 
-            row[init] = {"ours": float(np.mean(ours)), "graphst": float(np.mean(gst)),
-                         "gap": float(np.mean(gst) - np.mean(ours))}
-            scores[init]["ours"].append(np.mean(ours))
-            scores[init]["graphst"].append(np.mean(gst))
+        for init in inits:
+            o, gsc = np.mean(per_init[init]["ours"]), np.mean(per_init[init]["graphst"])
+            row[init] = {"ours": float(o), "graphst": float(gsc), "gap": float(gsc - o)}
+            scores[init]["ours"].append(o)
+            scores[init]["graphst"].append(gsc)
 
         per_slice.append(row)
         print(f"{sample}: "
@@ -120,18 +134,38 @@ def main():
 
     delta_gap = summary["hierarchical"]["gap"] - summary["kmeans"]["gap"]
     print(f"\ngap change from switching protocol: {delta_gap:+.4f}")
-    if abs(delta_gap) < 0.01:
-        verdict = ("PROTOCOL-INVARIANT: the gap is essentially unchanged, so the reproduction "
-                   "shortfall lifts both methods together and does NOT flatter our method. "
-                   "The headline comparison stands.")
-    elif delta_gap > 0:
-        verdict = ("CAUTION: the gap WIDENS under the better protocol -- our previous numbers "
-                   "were partly flattered by a weakened baseline, and the headline claim must "
-                   "be restated against the stronger protocol.")
+
+    # Do NOT assume the alternative init is "better" -- that was a single-slice
+    # finding (151673, Phase B1) and it does not necessarily replicate. Report
+    # which protocol actually scores each method higher on THIS sample, and let
+    # that drive the wording.
+    gst_kmeans = summary["kmeans"]["graphst"]
+    gst_hier = summary["hierarchical"]["graphst"]
+    baseline_favoured_by = "kmeans" if gst_kmeans > gst_hier else "hierarchical"
+    print(f"  GraphST scores higher under: {baseline_favoured_by} "
+          f"(kmeans {gst_kmeans:.4f} vs hierarchical {gst_hier:.4f})")
+
+    if baseline_favoured_by == "kmeans":
+        verdict = (
+            "NO HANDICAP: the CURRENT protocol (kmeans init) is the one that scores the "
+            f"baseline HIGHER ({gst_kmeans:.4f} vs {gst_hier:.4f}). The gap only narrows "
+            "under the alternative because GraphST degrades under it, not because our "
+            "method improves. So the reproduction shortfall is not a handicap biasing the "
+            "comparison in our favour -- if anything the current protocol is generous to "
+            "the baseline. The headline comparison stands, and no protocol change is "
+            "warranted."
+        )
+    elif abs(delta_gap) < 0.01:
+        verdict = ("PROTOCOL-INVARIANT: the gap is essentially unchanged, so the protocol "
+                   "choice lifts both methods together and does not flatter either.")
     else:
-        verdict = ("The gap NARROWS under the better protocol, i.e. the current protocol was "
-                   "if anything conservative toward our method.")
+        verdict = (
+            "CAUTION: the alternative protocol scores the baseline higher AND changes the "
+            f"gap by {delta_gap:+.4f}. Previous numbers may have been flattered by a "
+            "weakened baseline; restate the headline claim against the stronger protocol."
+        )
     print(verdict)
+    summary["_baseline_favoured_by"] = baseline_favoured_by
 
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
     RESULTS_PATH.write_text(json.dumps({

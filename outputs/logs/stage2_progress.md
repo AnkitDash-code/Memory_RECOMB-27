@@ -1213,6 +1213,141 @@ not that the methods are equivalent. At this sample size "not significant" and
 Note this also *strengthens* the case for cross-platform work: an underpowered
 comparison is resolved by more datasets, not by more DLPFC tuning.
 
+## Phase B1 -- GraphST reproduction gap: explained, and NOT a handicap
+
+Our GraphST run scores 0.597 +/- 0.012 on 151673 against a 0.633 literature
+reference. Left unexplained, that threatens every "no significant difference
+from GraphST" claim here, because the comparison would be against a weakened
+baseline -- and the same shortfall would silently reappear on every Phase C
+dataset.
+
+**Model config ruled out by inspection, before spending compute.**
+`run_graphst.py` already passes GraphST's published defaults verbatim
+(dim_input=3000, dim_output=64, epochs=600, random_seed=41, lr=0.001,
+alpha=10/beta=1/theta=0.1/lamda1=10/lamda2=1) and calls GraphST's own
+`preprocess` / `construct_interaction` / `add_contrastive_label` /
+`get_feature`, so HVG count, normalization and graph construction are
+GraphST's own, not ours. The gap is not a config mismatch.
+
+**Clustering swept on a FIXED embedding** (`src/eval/graphst_reproduction.py`,
+64 variants: PCA dim x GMM init x covariance x refinement), so any difference
+is attributable to clustering alone rather than retraining variance:
+
+| variant (PCA-20, refine) | ARI |
+|---|---|
+| kmeans init, tied -- current protocol | 0.5902 |
+| hierarchical init, tied | 0.6022 |
+| literature reference | 0.6330 |
+
+Initialization does matter: R's mclust initializes from model-based
+hierarchical agglomeration while sklearn's GaussianMixture defaults to
+k-means, and a Ward-agglomerative init gained +0.012 here.
+
+**Explicitly NOT adopting the grid maximum** (0.6232, random_from_data +
+full covariance). That estimator ranges from 0.029 to 0.623 across the grid --
+selecting its maximum is choosing on the evaluation metric, the same leakage
+corrected at Stage 8. A single-slice grid search is not a protocol change.
+
+**The decisive test: does the protocol bias the GAP or only the absolute
+numbers?** Since the protocol is applied identically to every method, a
+handicap should move both together. `src/eval/protocol_invariance.py` scored
+both methods' embeddings under both inits on 6 held-out slices x 3 seeds
+(one embedding per method/slice/seed, re-clustered two ways):
+
+| init | ours | GraphST | gap |
+|---|---|---|---|
+| kmeans (current) | 0.5222 | **0.5969** | 0.0747 |
+| hierarchical | 0.5093 | 0.5181 | 0.0088 |
+
+**Verdict: NO HANDICAP.** The gap narrows by 0.066 under hierarchical init,
+but not because our method improves -- because GraphST *degrades* under it
+(-0.079 overall; on 151672 it collapses 0.770 -> 0.460). The current protocol
+is the one that scores the baseline HIGHER, so the reproduction shortfall is
+not biasing the comparison in our favour. If anything the current protocol is
+generous to GraphST. The headline comparison stands and no protocol change is
+warranted.
+
+**A correction to this project's own Phase B1 conclusion.** The "hierarchical
+init is better" finding was measured on ONE slice (151673, +0.012). Across 6
+slices it is substantially WORSE for GraphST (-0.079). It does not replicate,
+and an earlier verdict string in `protocol_invariance.py` that called
+hierarchical "the better protocol" was wrong on this evidence; both the script
+and the saved JSON now record the correction rather than overwriting it
+silently. This is the third time in this project that a single-slice result has
+failed to generalize (after `memory_slots=32` at Stage 8 and entmax/contrastive
+at Stages 14/15) -- single-slice evidence should be treated as a hypothesis,
+never a conclusion.
+
+Residual: ~0.031 of the original 0.043 shortfall remains unexplained after
+initialization. Most plausibly Python-GMM vs R-mclust implementation
+differences plus the fact that the 0.633 reference is Kang et al.'s
+recomputation from GraphST's released predictions -- a different pipeline
+end to end. Documented as an explained-but-not-closed gap, which is the honest
+state.
+
+## Phase B3 -- comparators: installability verified, runners written, Colab notebook added
+
+Checked availability BEFORE committing time, per the plan:
+
+| package | status |
+|---|---|
+| STAGATE | `git+https://github.com/QIFEIDKN/STAGATE_pyG.git` -- resolves (author's own repo) |
+| Garfield | PyPI `garfield==1.0.0`, confirmed the spatial-omics package (Weige Zhou, github.com/zhou-1314/Garfield), not a name collision |
+| stGRL / MAEST / SpaBatch | not on PyPI -- deprioritized per the plan's own "don't block Phase C" instruction |
+
+`src/models/run_stagate.py` follows STAGATE's own DLPFC tutorial (3000
+seurat_v3 HVGs, rad_cutoff=150), on the same principle as `run_graphst.py`:
+a comparator should be run the way its authors run it, or the comparison
+measures our preprocessing rather than their method. Marked **NOT YET
+EXECUTED** -- STAGATE is blocked locally because `torch_sparse` has no wheel
+for torch 2.11.0+cu128 on Windows. No STAGATE number enters any results table
+until an actual run produces one.
+
+`notebooks/05_comparators_and_generalization.ipynb` covers B3 and scaffolds C.
+Two deliberate design choices:
+
+  * **It clones the repo rather than inlining model code.** The older
+    `04_colab_scaleup.ipynb` pasted a copy of the Phase 0 `EmbeddedMemoryLayer`
+    inline; that copy is now eight stages stale and would silently benchmark a
+    model nobody uses.
+  * **Garfield's API is discovered at runtime, not guessed.** Its README
+    documents parameters but ships no quickstart, and writing confident-looking
+    calls against an unverified API is worse than writing none.
+
+## Phase C -- a literature check that REVERSES the plan's dataset priority
+
+The forward plan proposed leading with mouse olfactory bulb (Stereo-seq) on
+the rationale that it is "used directly in GraphST's own paper, so you have a
+literature number to compare against on the same data GraphST was evaluated on
+originally." Checked against the paper (Nat Commun 2023, PMC9977836) -- that
+rationale does not hold:
+
+| dataset | ground truth | GraphST ARI reported? |
+|---|---|---|
+| Mouse olfactory bulb (Stereo-seq) | authors' own DAPI-based laminar annotation | **No** -- qualitative, marker-gene overlap only |
+| Mouse hippocampus (Slide-seqV2) | Allen Brain Atlas reference | **No** -- visual comparison only |
+| **Human breast cancer (10x Visium)** | **pathologist annotation, 20 regions** | **Yes -- ARI 0.54-0.57** |
+
+So of the three proposed platforms, **human breast cancer is the only one with
+a published, directly comparable GraphST ARI**, and it should lead Phase C --
+the opposite of the plan's stated ordering. Stereo-seq OB and Slide-seqV2 have
+no published ARI from GraphST at all; on those, any quantitative claim would
+have to be constructed by us against annotations GraphST never scored against,
+which is a much weaker comparison than the plan assumed.
+
+Two further notes for Phase C:
+
+  * Slide-seqV2 as shipped by squidpy carries **cell-type** annotations, not
+    spatial-domain annotations. ARI against cell type measures a different task
+    than ARI against cortical layers -- a spatial-domain method is not supposed
+    to recover cell types. STAGATE reportedly distributes an annotated
+    Slide-seqV2 mouse OB, which is a possible route to a quantitative
+    evaluation, but it is STAGATE's annotation rather than a shared standard.
+  * Where no domain annotation exists, report unsupervised metrics (silhouette,
+    spatial coherence) and qualitative marker-gene agreement, exactly as the
+    source papers do -- rather than manufacturing a supervised score against
+    the wrong label set.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,
