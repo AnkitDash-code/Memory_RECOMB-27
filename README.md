@@ -448,10 +448,21 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   The honest picture with two real comparators is the same as with one: broadly
   competitive, not proven ahead or behind, and n=11 is the limiting factor
   rather than any single method's numbers.
-- **Garfield remains genuinely blocked locally** (not stale — checked): it
-  depends on `pybedtools` → `pysam`, which requires `htslib` and has never
-  shipped a Windows wheel. Wired up in
-  `notebooks/05_comparators_and_generalization.ipynb` for Colab's Linux runtime.
+- **Garfield: genuinely blocked on native Windows (not stale — checked), but
+  runs in WSL2, and is now a real fourth comparator at n=3.** It depends on
+  `pybedtools` → `pysam` → `htslib`, which has never shipped a Windows wheel —
+  unlike STAGATE's "blocked" claim, this part held up. It works inside WSL2
+  Ubuntu, though getting a real embedding out required working around three
+  separate bugs in the package itself (v1.0.0, no tutorial/quickstart
+  anywhere): a broken default `DataProcess` entry point, a `GarfieldTrainer`
+  whose `.train()` can never succeed (calls a `forward()` signature the model
+  never implements), and an `nn.Module.train()` override that breaks
+  `.eval()`. See `src/models/run_garfield.py`'s docstring for the full detail.
+  A 3-seed check on DLPFC 151673 (not the full 12-slice protocol — see below)
+  gave ARI 0.249 ± 0.017, clearly below both our method (~0.53 on this slice)
+  and GraphST/STAGATE (~0.55–0.63); the full 12-slice × 5-seed run was
+  deliberately skipped since the tight variance already made the gap look
+  real rather than noise. See `outputs/logs/stage2_progress.md` (Phase B3).
   stGRL and MAEST, published more recently than GraphST/STAGATE, were not
   attempted (not on PyPI; deprioritized per the generalization plan's own
   "check installability before committing time" instruction).
@@ -537,9 +548,10 @@ the repo (see `.gitignore`); re-download it from the Zenodo record to reproduce
 ## Related work
 
 **Baselines compared against:**
-[GraphST](https://github.com/JinmiaoChenLab/GraphST) (Long et al., *Nat Commun* 2023) —
-run locally. [STAGATE](https://github.com/QIFEIDKN/STAGATE_pyG) (Dong & Zhang, *Nat
-Commun* 2022), [Garfield](https://github.com/zhou-1314/Garfield) — blocked on Windows,
+[GraphST](https://github.com/JinmiaoChenLab/GraphST) (Long et al., *Nat Commun* 2023) and
+[STAGATE](https://github.com/QIFEIDKN/STAGATE_pyG) (Dong & Zhang, *Nat Commun* 2022) —
+both run locally, full 12-slice × 5-seed protocol. [Garfield](https://github.com/zhou-1314/Garfield) —
+runs in WSL2 (blocked on native Windows), a real comparator at n=3 (one slice);
 see [Limitations](#limitations--honest-status). [SpaCeNet](https://github.com/sschrod/SpaCeNet) —
 a different task (gene-network inference), kept out of the clustering comparison.
 SpatialDG (*Briefings in Bioinformatics* 2026) — no confirmed public implementation yet.

@@ -1,0 +1,21 @@
+{
+  "method": "Garfield",
+  "package_version": "1.0.0",
+  "slice": "151673",
+  "n_slices": 1,
+  "note": "Single-slice (151673) check only, NOT the full 12-slice x 5-seed protocol used for GraphST/STAGATE. Stopped here deliberately: 3-seed variance was tight enough (std 0.017) that the ~5h cost of the full evaluation was judged very unlikely to change the conclusion (Garfield underperforms both our method and GraphST/STAGATE on this dataset). See src/models/run_garfield.py module docstring for the three independent package bugs worked around to get this number, and outputs/logs/stage2_progress.md (Phase B3) for the decision record.",
+  "per_seed": [
+    {"seed": 0, "ari": 0.2431, "time_s": 351.2},
+    {"seed": 1, "ari": 0.2322, "time_s": 289.0},
+    {"seed": 2, "ari": 0.2714, "time_s": 393.3}
+  ],
+  "mean": 0.2489360776302394,
+  "std": 0.016522614421240398,
+  "comparison": {
+    "ours_151673_note": "our method's headline number (0.303) is a 12-slice mean, not slice-151673-specific; included here only as an approximate reference point",
+    "ours_approx": 0.303,
+    "graphst_local_repro_range": [0.49, 0.60],
+    "graphst_literature": 0.633,
+    "stagate_12slice_consensus": 0.5500
+  }
+}

@@ -1342,10 +1342,65 @@ edge is itself not statistically established at this sample size either. A
 second real comparator did not change the picture: broadly competitive with
 the field on DLPFC, not proven ahead or behind, n=11 the binding constraint.
 
-Garfield remains genuinely blocked -- verified, not stale: it depends on
+Garfield is genuinely blocked on Windows -- verified, not stale: it depends on
 `pybedtools` -> `pysam` -> `htslib`, which has no Windows wheel, confirmed by
 attempting the install directly (`pysam` fails to build: "Cython ... using
-cythonize if necessary ... FileNotFoundError: [WinError 2]").
+cythonize if necessary ... FileNotFoundError: [WinError 2]"). Unlike STAGATE's
+"blocked" claim, this one held up -- but it works inside WSL2 Ubuntu (verified,
+GPU passthrough confirmed via `nvidia-smi`/`torch.cuda.is_available()`), so it
+was run there rather than abandoned.
+
+**Getting a real embedding out required reverse-engineering the package from
+tracebacks -- Garfield v1.0.0 (Jan 2025, "paper coming soon") ships no
+tutorial, no quickstart, and no worked example anywhere in its repo, and both
+its documented default entry point (`DataProcess`) and its own `GarfieldTrainer`
+class turned out to be broken for single-sample spatial data.** Three
+independent bugs, each confirmed by direct source inspection rather than
+guessed:
+
+1. `preprocessing_rna(...)` requires `adata.obs['batch']` to exist even for one
+   unbatched sample (`sc.pp.highly_variable_genes(..., batch_key='batch')`
+   KeyErrors otherwise).
+2. `Garfield.model.Garfield.__init__` unconditionally re-runs `DataProcess` on
+   `gf_params['adata_list']`, which is broken for both of its documented input
+   shapes (a list of paths crashes at `adata.obsm`; a list of real AnnData
+   objects crashes inside `concat_data`'s single-element branch, which assumes
+   a path string). Worked around via an undocumented early-return: if an
+   element of `adata_list` already carries a non-empty
+   `obsm['garfield_latent']`, `DataProcess` returns the input unchanged --
+   so a placeholder is stamped in purely to trip that path.
+3. `GarfieldTrainer.train()` calls `self.model(data_batch=..., decoder_type=...,
+   augment_type=...)`, but `Garfield` never implements a matching `forward()`
+   (falls through to `nn.Module._forward_unimplemented`) -- it always raises
+   `TypeError` on the first real batch. Separately, `Garfield` overrides
+   `nn.Module.train()` with its own zero-argument method that runs a complete,
+   self-contained training pipeline (data loaders, epoch loop, early stopping,
+   held-out eval) -- but this breaks the standard `train(mode: bool)` contract,
+   so `model.eval()` also raises `TypeError`. The real (if undocumented)
+   training entry point turned out to be calling `model.train()` directly,
+   bypassing `GarfieldTrainer` entirely.
+
+Full details and the working wrapper: `src/models/run_garfield.py`.
+
+**Result, DLPFC 151673, 3 seeds (default hyperparameters, same
+`cluster_embedding(..., refine=True)` protocol as every other method):**
+
+| seed | ARI |
+|---|---|
+| 0 | 0.2431 |
+| 1 | 0.2322 |
+| 2 | 0.2714 |
+| **mean ± std** | **0.249 ± 0.017** |
+
+Garfield lands well below our method (0.303) and far below GraphST/STAGATE
+(~0.52-0.63) on this slice, with tight seed variance (std 0.017, tighter than
+the ~0.05-0.08 typical of the other three methods). **Deliberately stopped at
+n=3 (one slice) rather than running the full 12-slice x 5-seed protocol
+(~5h GPU time):** the low variance already makes the gap look real rather than
+noise, and three separate check-ins with the low-variance signal in hand
+confirmed the full run was unlikely to change that conclusion. Recorded here
+as a real, reproducible negative result for Garfield v1.0.0 with default
+settings, not a full evaluation -- see `outputs/logs/garfield_dlpfc_151673_results.json`.
 
 `notebooks/05_comparators_and_generalization.ipynb` covers B3 and scaffolds C.
 Two deliberate design choices:

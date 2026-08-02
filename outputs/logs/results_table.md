@@ -117,6 +117,35 @@ the picture: broadly competitive with the field on DLPFC, not proven ahead or
 behind, with n=11 slices remaining the binding constraint rather than any one
 method's number.
 
+### A third comparator, partial: Garfield
+
+Garfield genuinely needs Linux (`pybedtools` -> `pysam` -> `htslib` has no
+Windows wheel — unlike STAGATE's stale "blocked" claim, this one held up), so
+it was run inside WSL2 Ubuntu rather than abandoned. Getting a real embedding
+out required working around three separate bugs in the package itself
+(broken `DataProcess` default entry point, broken `GarfieldTrainer.train()`,
+an `nn.Module.train()` override that breaks `.eval()`) — see
+`src/models/run_garfield.py`'s module docstring for the full detail.
+
+Unlike STAGATE, this is **not** the full 12-slice x 5-seed protocol — a
+3-seed check on the tuning slice (151673) came back with tight variance
+(std 0.017) around a value clearly below every other method here, so the
+~5h cost of the full run was deliberately skipped rather than spent
+confirming an already-clear gap:
+
+| seed | ARI (151673) |
+|---|---|
+| 0 | 0.2431 |
+| 1 | 0.2322 |
+| 2 | 0.2714 |
+| **mean ± std** | **0.249 ± 0.017** |
+
+For reference on this same slice: ours ≈0.53 (5-seed, see below), GraphST
+≈0.59-0.60, GraphST literature 0.633. Recorded as a real, working, but
+underperforming fourth comparator at n=3 (one slice) — not a full evaluation.
+See `outputs/logs/garfield_dlpfc_151673_results.json` and
+`outputs/logs/stage2_progress.md` (Phase B3) for the complete record.
+
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
 The numbers below were measured entirely on the tuning slice, before the 12-slice
@@ -304,7 +333,6 @@ checked for, not assumed away).
 | Method | Status | Reason |
 |---|---|---|
 | SpaCeNet | Not ARI-comparable | It infers a gene-gene conditional-independence graphical model, not a spot clustering -- there is no cluster-label output to compute ARI/silhouette/coherence against. Keeping it out of this table is correct, not an omission. |
-| Garfield | `TODO: infeasible on native Windows` | Depends on `pybedtools` -> `pysam`, which has never shipped a Windows wheel (only manylinux/macOS on PyPI) -- confirmed by attempting the install directly (`pysam`'s build fails: `FileNotFoundError: [WinError 2]` during its Cython/htslib configure step). This is a permanent platform limitation, not a version mismatch. Needs Colab (Linux) or WSL; see `notebooks/05_comparators_and_generalization.ipynb`. |
 | SpatialDG | `TODO: not yet benchmarked` | No confirmed public pip-installable implementation as of this writing. |
 | stGRL / MAEST / SpaBatch | `TODO: not yet benchmarked` | Not available on PyPI; deprioritized per the generalization plan's own "check installability before committing time" instruction rather than left silently unattempted. |
 | Ours / GraphST on Slide-seqV2, breast cancer, Stereo-seq OB | `TODO: not yet benchmarked` | Scaffolded in `notebooks/05_comparators_and_generalization.ipynb` (Phase C); not yet run. A literature check found GraphST reports no ARI on Stereo-seq OB or Slide-seqV2 (qualitative only) -- human breast cancer (10x Visium, pathologist-annotated) is the only one of the three with a published, directly comparable GraphST ARI (0.54-0.57) and should be run first. |
@@ -315,3 +343,10 @@ torch 2.11.0+cu128). **That claim was stale, re-tested rather than left
 unquestioned, and is now removed from this table** -- see the headline
 STAGATE comparison above and `outputs/logs/stage2_progress.md` (Phase B3) for
 the full 12-slice x 5-seed result and the install commands that made it work.
+
+**Garfield was also in this table until now, marked `infeasible on native
+Windows`.** That part of the claim held up on re-test (genuinely needs Linux
+for `pysam`/`htslib`) -- but rather than leaving it there, it was run inside
+WSL2 and is now removed from this table -- see "A third comparator, partial:
+Garfield" above and `outputs/logs/stage2_progress.md` (Phase B3) for the
+bugs worked around and the 3-seed result.

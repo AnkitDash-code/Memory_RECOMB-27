@@ -676,9 +676,28 @@ per-seed). On consensus we edge STAGATE (6/11, rank-biserial +0.15). Adding a
 second comparator did not change the picture: broadly competitive, not proven
 ahead or behind.
 
-**Garfield remains genuinely blocked** — verified, not stale: it depends on
-`pybedtools` → `pysam` → `htslib`, which has no Windows wheel. Still routed
-through `notebooks/05_comparators_and_generalization.ipynb` for Colab.
+**Garfield: genuinely blocked on native Windows (verified, not stale) but runs
+in WSL2, and is now a real fourth comparator at n=3.** `pybedtools` → `pysam`
+→ `htslib` has no Windows wheel, so it was run inside WSL2 Ubuntu (GPU
+passthrough confirmed). Getting a real embedding out required working around
+three separate bugs in Garfield v1.0.0 itself (no tutorial/quickstart
+anywhere in its repo): a broken default `DataProcess` entry point (fixed via
+an undocumented early-return trick), a `GarfieldTrainer.train()` that can
+never succeed (calls `self.model(data_batch=...)` but `Garfield` never
+implements a matching `forward()`), and an `nn.Module.train()` override that
+breaks `.eval()`. The real (if undocumented) entry point turned out to be
+calling `model.train()` directly, bypassing `GarfieldTrainer` entirely — see
+`src/models/run_garfield.py`'s docstring for the full trace of each bug.
+
+3-seed check on DLPFC 151673 (not the full 12-slice × 5-seed protocol —
+deliberately skipped, see below): ARI 0.2431 / 0.2322 / 0.2714, mean 0.249 ±
+0.017. Clearly below both our method (~0.53 on this slice) and GraphST/STAGATE
+(~0.55–0.63), with tight seed variance — tighter than the ~0.05–0.08 typical
+of the other three methods here. The ~5h cost of the full 12-slice run was
+deliberately skipped: the low variance already made the gap look real rather
+than noise, and running the full protocol was judged very unlikely to change
+that conclusion. See `outputs/logs/garfield_dlpfc_151673_results.json` and
+`outputs/logs/stage2_progress.md` (Phase B3) for the complete record.
 
 **Phase C priority reversed by a literature check, before any run.** The plan
 proposed leading generalization with mouse olfactory bulb (Stereo-seq) because
