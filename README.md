@@ -466,6 +466,25 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   stGRL and MAEST, published more recently than GraphST/STAGATE, were not
   attempted (not on PyPI; deprioritized per the generalization plan's own
   "check installability before committing time" instruction).
+- **Phase C, first result: the DLPFC near-parity does NOT generalize to human
+  breast cancer.** Same 10x Visium platform family, but a genuinely different
+  tissue (invasive/DCIS breast carcinoma vs. 6-layer cortex), the exact
+  dataset GraphST's paper reports an ARI on (3798 spots, 20-region
+  pathologist annotation — sourcing the annotation took real cross-referencing
+  between two of Kang et al.'s data releases, see
+  `src/data/load_breast_cancer.py`). 5 seeds, same protocol as DLPFC:
+
+  | | Ours | GraphST |
+  |---|---|---|
+  | Per-seed | 0.412 ± 0.072 | 0.621 ± 0.021 |
+  | Consensus | 0.546 | 0.643 |
+
+  Literature: 0.54–0.57. Unlike DLPFC, this gap is real: all 5 seeds favor
+  GraphST (rank-biserial −1.0), bootstrap 95% CI on the mean difference
+  [−0.271, −0.145] excludes zero. See `outputs/logs/stage2_progress.md`
+  (Phase C) for the full record, including the honest side-note that our
+  local GraphST re-score here *exceeds* its own paper's range — the opposite
+  direction from DLPFC.
 - **SpaCeNet is intentionally excluded** from the ARI table — it infers a gene-gene
   conditional-independence graphical model, not spot clusters, so there is no
   cluster-label output to score.

@@ -1447,6 +1447,62 @@ Two further notes for Phase C:
     source papers do -- rather than manufacturing a supervised score against
     the wrong label set.
 
+## Phase C, first result: human breast cancer -- a real, consistent gap
+
+**Sourcing the dataset and annotation took real verification, not a
+download-and-go.** The raw 10x counts (3798 spots, 36601 genes, "Human Breast
+Cancer Block A Section 1") are public, but the 20-region pathologist
+annotation GraphST's paper reports against is not shipped with them. Kang et
+al. 2025's benchmark code (the same source used for DLPFC) expects a
+`metadata.tsv` with `ID`/`annot_type`/`fine_annot_type` columns for a dataset
+named "Breast_cancer" (`utils_for_all.py::get_adata`), but the Zenodo code
+release (15114362) that ships only DLPFC's raw data as-is does not include it.
+Cross-referencing that exact expected schema against Kang et al.'s companion
+Figshare project (figshare.com/projects/Benchmark_ST_analysis/234116, article
+28200299 "10X Visium") found one file group matching it exactly (3798 rows,
+20 unique `fine_annot_type` values) plus `aligned_fiducials.jpg` /
+`detected_tissue_image.jpg` -- standard 10x Space Ranger QC images present on
+no other file group in that project, confirming a distinct raw sample rather
+than a mislabeled DLPFC slice. Verified by direct download, not inferred from
+a filename. See `src/data/load_breast_cancer.py`'s docstring for the full
+trace.
+
+**Result, 5 seeds, same protocol as DLPFC (mclust-equivalent + spatial
+refinement, K=20), DLPFC-tuned defaults used as-is (no per-dataset
+retuning):**
+
+| | Ours | GraphST |
+|---|---|---|
+| Per-seed | 0.412 ± 0.072 | 0.621 ± 0.021 |
+| Consensus | 0.546 | 0.643 |
+
+Literature (GraphST's own paper, PMC9977836): 0.54-0.57.
+
+**Unlike DLPFC, this gap is real and consistent, not a coin-flip.** All 5
+seeds favor GraphST (rank-biserial -1.0, the maximum possible magnitude);
+Wilcoxon signed-rank p=0.0625 -- the smallest p-value obtainable at n=5, so
+"not significant at α=0.05" here reflects the sample size, not an ambiguous
+result the way DLPFC's p=0.123 did. Bootstrap 95% CI on the mean per-seed
+difference: [-0.271, -0.145], clearly excluding zero. Honest read: on a tissue
+genuinely different from DLPFC cortex (invasive/DCIS breast carcinoma vs.
+6-layer cortex + white matter), even on the same platform family (10x
+Visium), the near-parity result from DLPFC does **not** generalize --
+GraphST's advantage here is real, roughly 4-8x the size of the (statistically
+undetectable) DLPFC gap.
+
+**A side observation worth flagging, not burying:** our local GraphST
+re-score (0.621 per-seed, 0.643 consensus) *exceeds* the paper's own reported
+range (0.54-0.57). The same pattern showed up on DLPFC (our protocol-corrected
+GraphST re-score, 0.5972, landed close to but this time *below* the
+literature's 0.6327) -- the direction differs across datasets, so this isn't
+a one-directional "our harness inflates GraphST" bias, more likely reflecting
+the 5-seed consensus-clustering advantage (GraphST's paper reports what
+appears to be a single run) applied inconsistently by tissue. Recorded here
+rather than smoothed over.
+
+Script: `src/eval/run_breast_cancer.py`. Raw results:
+`outputs/logs/breast_cancer_results.json`.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

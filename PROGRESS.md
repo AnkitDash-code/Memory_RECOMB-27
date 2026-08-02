@@ -708,7 +708,38 @@ comparison) only. **Human breast cancer (10x Visium) is the only one of the
 three with a published, directly comparable GraphST ARI** (0.54–0.57 vs.
 pathologist annotation, 20 regions) and should lead. Also: squidpy's
 Slide-seqV2 ships cell-type, not spatial-domain, labels — ARI there would
-score a different task. Phase C itself not yet run.
+score a different task.
+
+**Phase C, first result run: human breast cancer, and the DLPFC near-parity
+does NOT generalize.** Sourcing this dataset required real detective work —
+the raw 10x counts (3798 spots, 36601 genes) are public, but the 20-region
+pathologist annotation Kang et al.'s benchmark code expects (a `metadata.tsv`
+with `fine_annot_type`) isn't in the same Zenodo release as the DLPFC data;
+it turned up in Kang et al.'s companion Figshare project after
+cross-referencing the exact expected schema, confirmed by the presence of
+`aligned_fiducials.jpg`/`detected_tissue_image.jpg` (10x Space Ranger QC
+images no DLPFC slice carries) — see `src/data/load_breast_cancer.py`.
+
+5 seeds, identical protocol to DLPFC, DLPFC-tuned defaults used as-is:
+
+| | Ours | GraphST |
+|---|---|---|
+| Per-seed | 0.412 ± 0.072 | 0.621 ± 0.021 |
+| Consensus | 0.546 | 0.643 |
+
+Literature (GraphST paper): 0.54–0.57. **Unlike DLPFC, this gap is real, not
+noise:** all 5 seeds favor GraphST (rank-biserial −1.0, the maximum possible
+magnitude), bootstrap 95% CI on the mean per-seed difference [−0.271, −0.145]
+excludes zero cleanly (Wilcoxon p=0.0625 is the smallest value obtainable at
+n=5, a sample-size artifact, not ambiguity). On a tissue genuinely unlike
+DLPFC cortex (invasive/DCIS breast carcinoma), even on the same platform
+family, GraphST's advantage is real and roughly 4–8× the size of the
+statistically-undetectable DLPFC gap. Also flagged honestly rather than
+buried: our local GraphST re-score here (0.621–0.643) *exceeds* its own
+paper's range (0.54–0.57) — the opposite direction from DLPFC, most likely
+the 5-seed consensus-clustering advantage applied where the paper's number
+reflects a single run. See `outputs/logs/stage2_progress.md` (Phase C) for
+the complete record.
 
 ## Honest framing for any write-up
 

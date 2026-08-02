@@ -146,6 +146,39 @@ underperforming fourth comparator at n=3 (one slice) — not a full evaluation.
 See `outputs/logs/garfield_dlpfc_151673_results.json` and
 `outputs/logs/stage2_progress.md` (Phase B3) for the complete record.
 
+## Phase C: cross-platform generalization
+
+### Human breast cancer (10x Visium) — the first result, and it does NOT match DLPFC
+
+The exact dataset GraphST's own paper reports an ARI against (3798 spots,
+36601 genes, 20-region pathologist annotation, ARI 0.54-0.57). Sourcing the
+annotation required cross-referencing Kang et al. 2025's benchmark code
+against their companion Figshare project, since the raw counts and the
+annotation ship from different places — see `src/data/load_breast_cancer.py`
+for the verification trail. Same protocol as DLPFC (mclust-equivalent +
+spatial refinement, K=20), DLPFC-tuned defaults used as-is, 5 seeds:
+
+| | Ours | GraphST |
+|---|---|---|
+| Per-seed | 0.412 ± 0.072 | 0.621 ± 0.021 |
+| Consensus | 0.546 | 0.643 |
+
+Literature (GraphST paper): 0.54–0.57.
+
+**This gap is real, not noise, unlike DLPFC's.** All 5 seeds favor GraphST
+(rank-biserial −1.0); Wilcoxon p=0.0625 is the smallest value obtainable at
+n=5 (not "ambiguous", just underpowered by sample size); bootstrap 95% CI on
+the mean per-seed difference is [−0.271, −0.145], excluding zero cleanly. On
+a tissue genuinely unlike DLPFC cortex (invasive/DCIS breast carcinoma, same
+10x Visium platform family), the DLPFC-level near-parity does **not**
+generalize. Also worth noting plainly: our local GraphST re-score (0.621–0.643)
+*exceeds* its own paper's reported range (0.54–0.57), the opposite direction
+from DLPFC (where our re-score landed *below* the literature number) — most
+likely the 5-seed consensus-clustering advantage, applied where the original
+paper's number reflects a single run. See `outputs/logs/stage2_progress.md`
+(Phase C) for the complete record and `outputs/logs/breast_cancer_results.json`
+for raw numbers.
+
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
 The numbers below were measured entirely on the tuning slice, before the 12-slice
