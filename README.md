@@ -485,6 +485,27 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   (Phase C) for the full record, including the honest side-note that our
   local GraphST re-score here *exceeds* its own paper's range — the opposite
   direction from DLPFC.
+- **Phase C, second result: Slide-seqV2 mouse hippocampus, no clean winner.**
+  No published GraphST ARI exists for this platform, and squidpy's own
+  distribution carries cell-type labels (not spatial domains) and no raw
+  counts — see `src/data/load_slideseqv2.py`. Reported via unsupervised
+  proxies (silhouette, spatial coherence), 3 seeds, subsampled to 12,000 of
+  41,786 spots — a hardware necessity, not a choice: GraphST's own package
+  materializes a dense `(n_spots, n_spots)` adjacency regardless of
+  construction method and hit a confirmed `ArrayMemoryError` (13GB for one
+  copy) at full scale on this 16GB-RAM machine.
+
+  | | Ours | GraphST |
+  |---|---|---|
+  | Silhouette | 0.146 ± 0.004 | 0.069 ± 0.002 |
+  | Spatial coherence (Moran's I) | 0.900 ± 0.0002 | 0.929 ± 0.004 |
+  | ARI vs. cell type (caveat — different task) | 0.061 | 0.071 |
+
+  Unlike breast cancer's clear gap, this one splits: our embeddings separate
+  better (silhouette ~2x), GraphST's clusters are slightly more spatially
+  contiguous. See `outputs/logs/stage2_progress.md` (Phase C) for the full
+  record, including the `datatype="Slide"` KNN-construction path this
+  surfaced in `src/models/run_graphst.py`.
 - **SpaCeNet is intentionally excluded** from the ARI table — it infers a gene-gene
   conditional-independence graphical model, not spot clusters, so there is no
   cluster-label output to score.

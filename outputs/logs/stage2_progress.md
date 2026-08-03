@@ -1503,6 +1503,59 @@ rather than smoothed over.
 Script: `src/eval/run_breast_cancer.py`. Raw results:
 `outputs/logs/breast_cancer_results.json`.
 
+## Phase C, second result: Slide-seqV2 mouse hippocampus -- no clean winner
+
+Per the earlier literature check, no published GraphST ARI exists for this
+platform, and squidpy's own distribution carries cell-type labels (14
+categories: CA1_CA2_CA3_Subiculum, DentatePyramids, Astrocytes,
+Oligodendrocytes, ...), not spatial domains -- confirmed directly (not
+assumed) by inspecting `obs['cluster']`. It also ships no raw counts (checked
+`.raw` and `.layers`, both absent/normalized) -- see
+`src/data/load_slideseqv2.py`. Reported via unsupervised proxies instead:
+silhouette and spatial coherence (mean Moran's I), 3 seeds, K=14 (the
+cell-type count, used only as a common convenient anchor for both methods,
+not a claim about the true number of spatial domains).
+
+**A real, hardware-driven obstacle, not a design choice: GraphST's own
+package cannot run on the full 41,786-spot dataset on this machine.** Its
+`GraphSTModel.__init__` unconditionally `.copy()`s the input AnnData, which
+includes a dense `(n_spots, n_spots)` `adj` matrix -- and this stays dense
+regardless of which of GraphST's two construction functions builds it.
+`construct_interaction` (the default, pairwise-distance based) and
+`construct_interaction_KNN` (GraphST's own documented alternative for
+`datatype in ['Stereo', 'Slide']`, meant for exactly this kind of
+large-N, non-Visium data) both populate a full dense array; the KNN version
+is only cheaper to *compute*, not smaller to *store*. Confirmed by a real
+`numpy._core._exceptions.ArrayMemoryError: Unable to allocate 13.0 GiB` (this
+machine has 16GB total RAM) -- not inferred, hit twice (once via our own
+`consensus_cluster`'s O(n^2) co-association matrix, dropped for this dataset
+in favor of per-seed mean/std; once via GraphST's own `adj` construction).
+`src/models/run_graphst.py` now accepts a `datatype` parameter (default
+`"10X"`, matching GraphST's own default and every other dataset's call site
+unchanged) so `datatype="Slide"`/`"Stereo"` routes to `construct_interaction_KNN`
+when a caller needs it -- but since that still doesn't fix the storage cost,
+the practical fix here was subsampling to 12,000 of 41,786 spots (fixed seed,
+~1.4GB dense matrix), applied identically before both methods train.
+
+| | Ours | GraphST |
+|---|---|---|
+| Silhouette | 0.146 ± 0.004 | 0.069 ± 0.002 |
+| Spatial coherence (Moran's I) | 0.900 ± 0.0002 | 0.929 ± 0.004 |
+| ARI vs. cell type (caveat -- wrong task) | 0.061 | 0.071 |
+
+**Unlike breast cancer, this platform shows no clean winner.** Our embeddings
+separate noticeably better (silhouette roughly 2x GraphST's); GraphST's
+clusters are slightly more spatially contiguous. Both cell-type ARIs are low
+and similar -- expected, since a domain-identification method recovering
+cell-type boundaries would be a coincidence, not a success criterion, so
+neither low number should be read as "failing." Taken together with breast
+cancer: Phase C's honest pattern across two genuinely different platforms is
+"sometimes a real gap (breast cancer), sometimes a wash on different axes
+(Slide-seqV2)" -- not a single, clean generalization story either direction.
+
+Script: `src/eval/run_slideseqv2.py`. Raw results:
+`outputs/logs/slideseqv2_results.json`.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,

@@ -1,0 +1,53 @@
+{
+  "n_spots": 12000,
+  "n_clusters": 14,
+  "subsampled_from": 41786,
+  "ours": {
+    "per_seed": [
+      {
+        "silhouette": 0.1467321515083313,
+        "spatial_coherence_morans_i": 0.9004462129707054,
+        "ari_vs_cell_type_CAVEAT": 0.0660230689777232
+      },
+      {
+        "silhouette": 0.14116567373275757,
+        "spatial_coherence_morans_i": 0.900801538152562,
+        "ari_vs_cell_type_CAVEAT": 0.05298176304829138
+      },
+      {
+        "silhouette": 0.1498228758573532,
+        "spatial_coherence_morans_i": 0.9002314616238564,
+        "ari_vs_cell_type_CAVEAT": 0.06264361803389881
+      }
+    ],
+    "silhouette_mean": 0.14590690036614737,
+    "silhouette_std": 0.0035821377920903365,
+    "spatial_coherence_mean": 0.900493070915708,
+    "spatial_coherence_std": 0.00023507950768860003,
+    "ari_vs_cell_type_mean_CAVEAT": 0.06054948335330446
+  },
+  "graphst": {
+    "per_seed": [
+      {
+        "silhouette": 0.06922930479049683,
+        "spatial_coherence_morans_i": 0.9343092734235495,
+        "ari_vs_cell_type_CAVEAT": 0.06408692418534077
+      },
+      {
+        "silhouette": 0.07036706805229187,
+        "spatial_coherence_morans_i": 0.9267714024047237,
+        "ari_vs_cell_type_CAVEAT": 0.06459983743332774
+      },
+      {
+        "silhouette": 0.06653688102960587,
+        "spatial_coherence_morans_i": 0.9259304325003572,
+        "ari_vs_cell_type_CAVEAT": 0.08522037882978174
+      }
+    ],
+    "silhouette_mean": 0.06871108462413152,
+    "silhouette_std": 0.0016060297346373205,
+    "spatial_coherence_mean": 0.92900370277621,
+    "spatial_coherence_std": 0.0037672817358093864,
+    "ari_vs_cell_type_mean_CAVEAT": 0.07130238014948342
+  }
+}

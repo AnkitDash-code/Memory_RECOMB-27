@@ -179,6 +179,38 @@ paper's number reflects a single run. See `outputs/logs/stage2_progress.md`
 (Phase C) for the complete record and `outputs/logs/breast_cancer_results.json`
 for raw numbers.
 
+### Slide-seqV2 mouse hippocampus — unsupervised metrics, no clear winner
+
+No published GraphST ARI exists for this platform (confirmed earlier), and
+squidpy's distribution carries cell-type labels, not spatial domains, plus no
+raw counts — see `src/data/load_slideseqv2.py`. Reported via unsupervised
+proxies instead (silhouette, spatial coherence), 3 seeds, K=14 (matching the
+cell-type count, not a claim about true domain count). Subsampled to 12,000
+of 41,786 spots (fixed seed) — a hardware-driven necessity: GraphST's own
+package materializes a dense (n_spots, n_spots) adjacency matrix regardless
+of construction method, and a confirmed `ArrayMemoryError` at full scale (13GB
+for one copy, 16GB-RAM machine) meant GraphST's package genuinely cannot run
+on the full dataset here, not something fixable from this side. See
+`src/models/run_graphst.py` for the `datatype="Slide"` KNN-construction path
+this surfaced (GraphST's own documented route for Stereo-seq/Slide-seq scale
+data — still dense, just cheaper to compute, so it doesn't remove the need
+to subsample).
+
+| | Ours | GraphST |
+|---|---|---|
+| Silhouette | 0.146 ± 0.004 | 0.069 ± 0.002 |
+| Spatial coherence (Moran's I) | 0.900 ± 0.0002 | 0.929 ± 0.004 |
+| ARI vs. cell type (CAVEAT — different task) | 0.061 | 0.071 |
+
+**No clean winner, unlike breast cancer's clear gap.** Ours produces
+noticeably better-separated embeddings (silhouette ~2x higher); GraphST
+produces slightly more spatially contiguous clusters. Both cell-type ARIs
+are low and similar, as expected — a domain-identification method is not
+supposed to recover cell types, so neither number should be read as "doing
+badly" at its actual task. See `outputs/logs/stage2_progress.md` (Phase C)
+for the complete record and `outputs/logs/slideseqv2_results.json` for raw
+numbers.
+
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
 The numbers below were measured entirely on the tuning slice, before the 12-slice

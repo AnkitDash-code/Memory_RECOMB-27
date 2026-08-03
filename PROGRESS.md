@@ -741,6 +741,36 @@ the 5-seed consensus-clustering advantage applied where the paper's number
 reflects a single run. See `outputs/logs/stage2_progress.md` (Phase C) for
 the complete record.
 
+**Phase C, second result: Slide-seqV2 mouse hippocampus -- no clean winner,
+unlike breast cancer.** No published GraphST ARI exists for this platform
+(confirmed earlier); squidpy's own distribution carries cell-type labels (14
+categories), not spatial domains, and ships no raw counts -- both confirmed
+directly, not assumed. Reported via unsupervised proxies (silhouette,
+spatial coherence), 3 seeds, K=14 (cell-type count, a common anchor only).
+
+Hit a real, hardware-driven obstacle along the way: GraphST's own package
+cannot run on the full 41,786-spot dataset here. `GraphSTModel.__init__`
+`.copy()`s a dense `(n_spots, n_spots)` `adj` matrix regardless of which of
+GraphST's two construction functions builds it -- `construct_interaction_KNN`
+(its own documented route for `datatype in ['Stereo', 'Slide']`) is cheaper
+to *compute* but still dense in *storage*. Hit a real
+`ArrayMemoryError: Unable to allocate 13.0 GiB` on this 16GB-RAM machine, not
+assumed. `src/models/run_graphst.py` now takes a `datatype` param (default
+unchanged for every other dataset) for the KNN path; the actual fix was
+subsampling to 12,000 of 41,786 spots (fixed seed, ~1.4GB dense matrix).
+
+| | Ours | GraphST |
+|---|---|---|
+| Silhouette | 0.146 ± 0.004 | 0.069 ± 0.002 |
+| Spatial coherence (Moran's I) | 0.900 ± 0.0002 | 0.929 ± 0.004 |
+| ARI vs. cell type (caveat -- wrong task) | 0.061 | 0.071 |
+
+Ours separates embeddings better (silhouette ~2x); GraphST's clusters are
+slightly more spatially contiguous. Taken with breast cancer, Phase C's
+honest pattern across two platforms: sometimes a real gap, sometimes a wash
+on different axes -- not one clean generalization story. See
+`outputs/logs/stage2_progress.md` (Phase C) for the complete record.
+
 ## Honest framing for any write-up
 
 The current result is real progress: one architectural fix (expression-weighted
