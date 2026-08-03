@@ -1,0 +1,44 @@
+{
+  "domain_sizes": {
+    "dlpfc": {
+      "mean": 622.75,
+      "median": 511.5,
+      "min": 166,
+      "max": 2175
+    },
+    "breast_cancer": {
+      "mean": 189.9,
+      "median": 160.0,
+      "min": 28,
+      "max": 449
+    }
+  },
+  "hop_reach_4hop": {
+    "dlpfc_151673": {
+      "mean": 55.31904369332234,
+      "median": 60.0
+    },
+    "breast_cancer": {
+      "mean": 55.00895208004213,
+      "median": 60.0
+    },
+    "n_bc_domains_smaller_than_median_reach": 4,
+    "n_bc_domains_total": 20
+  },
+  "fragmentation": {
+    "dlpfc_151673_mean_n_components": 1.5714285714285714,
+    "breast_cancer_mean_n_components": 6.55
+  },
+  "boundary_edge_weights": {
+    "dlpfc_151673": {
+      "same_domain_mean_weight": 0.14774994552135468,
+      "diff_domain_mean_weight": 0.13837164640426636,
+      "diff_over_same_ratio": 0.9365258812904358
+    },
+    "breast_cancer": {
+      "same_domain_mean_weight": 0.14915670454502106,
+      "diff_domain_mean_weight": 0.12854325771331787,
+      "diff_over_same_ratio": 0.8618000745773315
+    }
+  }
+}

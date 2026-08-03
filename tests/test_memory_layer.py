@@ -16,6 +16,7 @@ from src.models.memory_layer import (
     key_cosine_similarity,
     normalized_adjacency,
     spatial_smoothness_loss,
+    usage_entropy,
 )
 
 
@@ -423,3 +424,78 @@ def test_contrastive_address_loss_minimal_for_disjoint_addresses():
 def test_contrastive_address_loss_maximal_for_identical_addresses():
     real = torch.softmax(torch.randn(5, 4), dim=-1)
     assert contrastive_address_loss(real, real).item() > 0.2
+
+
+def test_adaptive_hops_keeps_valid_simplex():
+    """adaptive_hops's per-spot gate is a convex combination of (n_hops+1)
+    simplices, weighted by a softmax gate (itself summing to 1) -- must stay
+    a valid probability simplex, same invariant as the fixed-hop path."""
+    n_spots, feature_dim, memory_slots = 30, 16, 8
+    layer = SpatialAddressMemoryLayer(
+        feature_dim, memory_slots=memory_slots, memory_dim=8, n_hops=3, adaptive_hops=True
+    )
+    x = torch.randn(n_spots, feature_dim)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+
+    embedding, attn = layer(x, adjacency)
+
+    assert embedding.shape == (n_spots, 8)
+    assert attn.shape == (n_spots, memory_slots)
+    assert torch.allclose(attn.sum(dim=-1), torch.ones(n_spots), atol=1e-5)
+    assert (attn >= -1e-6).all()
+    assert layer.last_hop_gate_weights.shape == (n_spots, 4)  # n_hops + 1
+    assert torch.allclose(layer.last_hop_gate_weights.sum(dim=-1), torch.ones(n_spots), atol=1e-5)
+
+
+def test_adaptive_hops_without_regularizer_collapses_to_depth_zero():
+    """Documents a real, measured failure mode (see train_spatial_address_model's
+    docstring): an untrained gate starts near-uniform, but after a few steps of
+    optimizing pure reconstruction MSE it should move AWAY from spreading
+    weight across depths, since unsmoothed data always reconstructs more
+    easily. This is a regression guard for the mechanism the lambda_hop_usage
+    regularizer exists to counteract, not a claim that collapse is instant."""
+    torch.manual_seed(0)
+    n_spots, feature_dim, memory_slots = 40, 12, 6
+    model = SpatialAddressMemoryAutoencoder(
+        feature_dim, memory_slots=memory_slots, memory_dim=8, n_hops=3, adaptive_hops=True
+    )
+    x = torch.randn(n_spots, feature_dim)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
+
+    for _ in range(200):
+        optimizer.zero_grad()
+        reconstruction, _, _ = model(x, adjacency)
+        loss = torch.nn.functional.mse_loss(reconstruction, x)
+        loss.backward()
+        optimizer.step()
+
+    mean_gate = model.memory.last_hop_gate_weights.mean(dim=0)
+    assert mean_gate[0].item() > 0.9  # collapsed onto depth 0
+
+
+def test_lambda_hop_usage_prevents_collapse():
+    """The same load-balancing fix as lambda_usage (see
+    test_usage_entropy_distinguishes_collapse_from_spread), applied to the
+    hop-depth gate: training against usage_entropy alone (no reconstruction
+    pressure) should keep the marginal depth distribution spread out, not
+    collapsed onto one depth."""
+    torch.manual_seed(0)
+    n_spots, feature_dim, memory_slots = 40, 12, 6
+    model = SpatialAddressMemoryAutoencoder(
+        feature_dim, memory_slots=memory_slots, memory_dim=8, n_hops=3, adaptive_hops=True
+    )
+    x = torch.randn(n_spots, feature_dim)
+    adjacency = normalized_adjacency(_ring_connectivities(n_spots))
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
+
+    for _ in range(200):
+        optimizer.zero_grad()
+        model(x, adjacency)
+        loss = -usage_entropy(model.memory.last_hop_gate_weights)
+        loss.backward()
+        optimizer.step()
+
+    mean_gate = model.memory.last_hop_gate_weights.mean(dim=0)
+    max_entropy = math.log(4)  # n_hops + 1 = 4
+    assert usage_entropy(mean_gate.unsqueeze(0)).item() > 0.9 * max_entropy

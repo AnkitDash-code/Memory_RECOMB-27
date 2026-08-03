@@ -275,6 +275,21 @@ class SpatialAddressMemoryLayer(nn.Module):
     Biologically this encodes the laminar prior directly: cortical layers are
     spatially contiguous bands, so adjacent spots should share domain identity
     even where their individual expression is noisy or dropout-heavy.
+
+    adaptive_hops=True (Phase C follow-up, see cross_validate_adaptive_hops.py)
+    replaces the single fixed n_hops with a PER-SPOT learned combination of all
+    depths 0..n_hops. Motivated by a mechanistic finding on Phase C's breast
+    cancer result: n_hops=4 was cross-validated on DLPFC, where every layer
+    (min 166 spots) is comfortably larger than a 4-hop neighbourhood's ~60-spot
+    reach -- but breast cancer's 20 pathologist-annotated regions average only
+    190 spots, several as small as 28-53, i.e. SMALLER than a single 4-hop
+    neighbourhood. A fixed global hop count that works for large laminar bands
+    over-smooths small domains by construction, mixing in neighbouring, unrelated
+    tissue. Letting each spot's own query (already encoding its expression
+    profile) gate how many hops of propagation to trust lets large homogeneous
+    regions keep using deep propagation while small/heterogeneous regions can
+    fall back toward their own (0-hop) address -- without retuning n_hops per
+    dataset, which would just be leakage spread across datasets instead of slices.
     """
 
     def __init__(
@@ -288,6 +303,7 @@ class SpatialAddressMemoryLayer(nn.Module):
         feature_hops=0,
         latent_hops=0,
         attention_fn="softmax",
+        adaptive_hops=False,
     ):
         super().__init__()
         self.encoder = nn.Sequential(
@@ -300,6 +316,13 @@ class SpatialAddressMemoryLayer(nn.Module):
         self.n_hops = n_hops
         self.temperature = temperature
         self.attention_fn = attention_fn
+        self.adaptive_hops = adaptive_hops
+        if adaptive_hops:
+            # Per-spot softmax over which of the (n_hops + 1) propagation
+            # depths [0, 1, ..., n_hops] to use, conditioned on that spot's
+            # own query (pre-propagation, so it reflects its own expression,
+            # not already-smoothed information).
+            self.hop_gate = nn.Linear(memory_dim, n_hops + 1)
         # Two distinct hybrid variants, deliberately separated because WHERE the
         # neighbour aggregation happens turns out to matter enormously:
         #
@@ -352,10 +375,25 @@ class SpatialAddressMemoryLayer(nn.Module):
         attn_scores = torch.matmul(queries, self.memory_keys.T) / self.temperature
         attn_weights = address_distribution(attn_scores, self.attention_fn, dim=-1)
 
-        propagated = attn_weights
-        if adjacency is not None:
+        self.last_hop_gate_weights = None
+        if adjacency is not None and self.adaptive_hops:
+            depths = [attn_weights]
+            current = attn_weights
             for _ in range(self.n_hops):
-                propagated = torch.sparse.mm(adjacency, propagated)
+                current = torch.sparse.mm(adjacency, current)
+                depths.append(current)
+            depth_stack = torch.stack(depths, dim=1)  # (N, n_hops+1, memory_slots)
+            gate_weights = F.softmax(self.hop_gate(queries), dim=-1)  # (N, n_hops+1)
+            self.last_hop_gate_weights = gate_weights
+            # Convex combination of simplices (gate sums to 1, each depth is
+            # itself a valid simplex) is itself a valid simplex -- no
+            # renormalization needed, same invariant the fixed-hop path keeps.
+            propagated = (depth_stack * gate_weights.unsqueeze(-1)).sum(dim=1)
+        else:
+            propagated = attn_weights
+            if adjacency is not None:
+                for _ in range(self.n_hops):
+                    propagated = torch.sparse.mm(adjacency, propagated)
 
         embedding = torch.matmul(propagated, self.memory_values)
         return embedding, propagated
@@ -380,6 +418,7 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
         feature_hops=0,
         latent_hops=0,
         attention_fn="softmax",
+        adaptive_hops=False,
     ):
         super().__init__()
         self.memory = SpatialAddressMemoryLayer(
@@ -392,6 +431,7 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
             feature_hops=feature_hops,
             latent_hops=latent_hops,
             attention_fn=attention_fn,
+            adaptive_hops=adaptive_hops,
         )
         self.decoder = nn.Sequential(
             nn.Linear(memory_dim, hidden_dim),

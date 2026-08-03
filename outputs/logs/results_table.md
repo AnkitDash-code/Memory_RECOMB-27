@@ -211,6 +211,44 @@ badly" at its actual task. See `outputs/logs/stage2_progress.md` (Phase C)
 for the complete record and `outputs/logs/slideseqv2_results.json` for raw
 numbers.
 
+## Phase D: mechanistic diagnosis + a rejected architectural fix
+
+Why does breast cancer show a real gap while DLPFC doesn't? Measured
+directly (`src/eval/domain_scale_diagnostic.py`), not guessed:
+
+| | DLPFC (12 slices) | Breast cancer |
+|---|---|---|
+| Mean domain size | 622.8 spots | 189.9 spots |
+| Min domain size | 166 spots | 28 spots |
+| Median 4-hop reachable neighbours | 60.0 | 60.0 |
+| Domains smaller than that reach | 0 / 7 | 4 / 20 |
+
+`n_hops=4` was cross-validated entirely on DLPFC, where it never exceeds
+domain size — breast cancer's regions are 3.3x smaller on average, and 4 of
+them are smaller than a single 4-hop neighbourhood. Two alternatives were
+checked and ruled out: fragmentation (mostly one label's artifact — 17/20
+regions are single contiguous components) and boundary edge-weight quality
+(breast cancer's expression-weighted adjacency separates domains *better*
+than DLPFC's — diff/same ratio 0.862 vs. 0.937, lower is better).
+
+A leakage-safe fix was attempted (`src/eval/cross_validate_adaptive_hops.py`):
+a per-spot learned gate over propagation depths 0..n_hops, validated only on
+3 DLPFC held-out slices (never breast cancer):
+
+| config | ARI (3 slices × 3 seeds) |
+|---|---|
+| **fixed n_hops=4 (current default)** | **0.5038 ± 0.0838** |
+| fixed n_hops=0 (no propagation) | 0.3909 ± 0.1143 |
+| adaptive_hops, no regularizer | 0.3501 ± 0.1060 |
+| adaptive_hops, lambda_hop_usage=0.01 | 0.3351 ± 0.1429 |
+
+**Rejected.** The gate collapses to depth 0 without regularization
+(reconstruction loss has no incentive to smooth), and even after fixing
+that collapse it still underperforms the current default with the highest
+variance of any config tested. Kept as an explicit, off-by-default ablation
+(`adaptive_hops=False`, current defaults unchanged), not deleted. See
+`outputs/logs/stage2_progress.md` (Phase D) for the complete record.
+
 ## Single-slice detail (151673, the tuning slice — see above for the real result)
 
 The numbers below were measured entirely on the tuning slice, before the 12-slice

@@ -771,6 +771,45 @@ honest pattern across two platforms: sometimes a real gap, sometimes a wash
 on different axes -- not one clean generalization story. See
 `outputs/logs/stage2_progress.md` (Phase C) for the complete record.
 
+**Phase D: diagnosed WHY breast cancer shows a real gap, mechanistically --
+domain size vs. propagation depth, not fragmentation or edge quality.**
+DLPFC's layers (mean 622.8 spots, min 166 across all 12 slices) always
+exceed a 4-hop neighbourhood's ~60-spot reach -- `n_hops=4` was
+cross-validated entirely on DLPFC (Stage 11), so it was never tested against
+domains smaller than that. Breast cancer's 20 regions average 3.3x smaller
+(189.9 spots), and 4 of them (as small as 28 spots) are *smaller* than a
+single 4-hop neighbourhood -- a fixed global hop count will, by construction,
+over-smooth domains where it does. Two alternative explanations were checked
+and ruled out directly rather than assumed: domain fragmentation (mostly one
+label's artifact, not a general property) and boundary edge-weight quality
+(breast cancer's expression-weighted adjacency separates domains *better*
+than DLPFC's, not worse).
+
+Attempted a leakage-safe architectural fix: a per-spot learned gate over
+propagation depths 0..n_hops (`adaptive_hops=True`), validated only on 3
+DLPFC held-out slices (never 151673, never breast cancer/Slide-seqV2), 3
+seeds each:
+
+| config | ARI (3 slices x 3 seeds) |
+|---|---|
+| fixed n_hops=4 (current default) | **0.5038 +/- 0.0838** |
+| fixed n_hops=0 (no propagation) | 0.3909 +/- 0.1143 |
+| adaptive_hops, no regularizer | 0.3501 +/- 0.1060 |
+| adaptive_hops, lambda_hop_usage=0.01 | 0.3351 +/- 0.1429 |
+
+**REJECTED.** Without regularization the gate collapses to depth 0 (mean
+weight >0.999) for the same reason `lambda_usage` exists for slot addressing:
+reconstruction MSE has no incentive to use propagation, since unsmoothed
+data always reconstructs more easily. A `lambda_hop_usage` regularizer
+(reusing `usage_entropy` on the gate) does prevent the collapse but doesn't
+recover the fixed-hop baseline's ARI and has the highest variance of any
+config tested. Kept in the codebase as an explicit, off-by-default ablation,
+not deleted -- current defaults (`adaptive_hops=False`) are unchanged. Three
+new unit tests verify the mechanism itself is correct (valid simplex,
+measured collapse, regularizer prevents it) even though it doesn't produce a
+net win. See `outputs/logs/stage2_progress.md` (Phase D) for the complete
+record, including a considered-but-not-attempted follow-up idea.
+
 ## Honest framing for any write-up
 
 The current result is real progress: one architectural fix (expression-weighted

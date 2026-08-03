@@ -50,6 +50,8 @@ def train_spatial_address_model(
     kmeans_init=False,
     expression_weighted=True,
     attention_fn="softmax",
+    adaptive_hops=False,
+    lambda_hop_usage=0.0,
     seed=0,
     device=None,
     log_every=100,
@@ -131,6 +133,29 @@ def train_spatial_address_model(
     it be tested on its own, on top of the winning MSE model. Off by default,
     an explicit ablation. See key_cosine_similarity for the accompanying
     codebook-collapse diagnostic, logged whenever lambda_contrastive != 0.
+
+    adaptive_hops=True (Phase D, see cross_validate_adaptive_hops.py) replaces
+    the single fixed n_hops with a per-spot learned gate over depths 0..n_hops
+    -- see SpatialAddressMemoryLayer's docstring for the mechanistic finding
+    that motivated it (n_hops=4 over-smooths domains smaller than a 4-hop
+    neighbourhood, which DLPFC's layers never are but breast cancer's
+    fine-grained regions often are). Off by default, an explicit ablation
+    until cross-validated the same leakage-safe way memory_slots/n_hops/
+    lambda_usage were.
+
+    WITHOUT lambda_hop_usage, adaptive_hops collapses: reconstruction MSE has
+    no incentive to use propagation at all (unsmoothed data always reconstructs
+    itself more easily), so the gate routes essentially every spot to depth 0
+    regardless of domain size -- measured directly (mean gate weight on depth
+    0 > 0.999 across 3 held-out slices x 3 seeds), and this collapsed variant
+    scored WORSE (0.350 +/- 0.106) than even a fixed n_hops=0 (0.391 +/- 0.114),
+    both well below the current default's 0.504 +/- 0.084
+    (outputs/logs/adaptive_hops_check_results.json). lambda_hop_usage > 0
+    reuses `usage_entropy` (already proven against the analogous slot-collapse
+    failure) on the gate weights instead, maximizing the entropy of the
+    MARGINAL depth-usage distribution -- forcing the gate to actually spread
+    usage across depths in aggregate, the same load-balancing fix applied to
+    a different collapse mode of the same underlying problem.
     """
     set_seed(seed)
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -154,6 +179,7 @@ def train_spatial_address_model(
         feature_hops=feature_hops,
         latent_hops=latent_hops,
         attention_fn=attention_fn,
+        adaptive_hops=adaptive_hops,
     ).to(device)
 
     if kmeans_init:
@@ -185,6 +211,13 @@ def train_spatial_address_model(
             permutation = torch.randperm(x.shape[0], device=device)
             _, _, attn_corrupted = model(x[permutation], adjacency)
             loss = loss + lambda_contrastive * contrastive_address_loss(attn_weights, attn_corrupted)
+        if adaptive_hops and lambda_hop_usage:
+            # Same load-balancing fix as lambda_usage, applied to the hop-depth
+            # gate instead of the slot address -- without it the gate collapses
+            # to depth 0 for every spot (see train_spatial_address_model's
+            # docstring for the measured collapse).
+            hop_usage_entropy = usage_entropy(model.memory.last_hop_gate_weights)
+            loss = loss - lambda_hop_usage * hop_usage_entropy
 
         loss.backward()
         optimizer.step()
@@ -204,14 +237,24 @@ def train_spatial_address_model(
                 "n_slots_used": int(n_slots_used),
                 "key_cosine_similarity": key_sim,
             }
+            log_line = (
+                f"epoch {epoch:4d}  recon={row['recon_loss']:.4f}  "
+                f"row_entropy={median_entropy:.3f}  "
+                f"usage_entropy={row['usage_entropy']:.3f}/{max_entropy:.3f}  "
+                f"slots_used={n_slots_used}  key_cos_sim={key_sim:.3f}"
+            )
+            if adaptive_hops:
+                with torch.no_grad():
+                    gate = model.memory.last_hop_gate_weights
+                    mean_gate = gate.mean(dim=0)
+                    eff_depth = (mean_gate * torch.arange(mean_gate.shape[0], device=mean_gate.device)).sum().item()
+                row["hop_gate_usage_entropy"] = hop_usage_entropy.item() if lambda_hop_usage else None
+                row["hop_gate_mean_weights"] = mean_gate.tolist()
+                row["hop_gate_effective_depth"] = eff_depth
+                log_line += f"  eff_hop_depth={eff_depth:.3f}"
             history.append(row)
             if verbose:
-                print(
-                    f"epoch {epoch:4d}  recon={row['recon_loss']:.4f}  "
-                    f"row_entropy={median_entropy:.3f}  "
-                    f"usage_entropy={row['usage_entropy']:.3f}/{max_entropy:.3f}  "
-                    f"slots_used={n_slots_used}  key_cos_sim={key_sim:.3f}"
-                )
+                print(log_line)
 
     model.eval()
     with torch.no_grad():

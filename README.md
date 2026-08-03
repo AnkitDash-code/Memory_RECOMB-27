@@ -506,6 +506,25 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   contiguous. See `outputs/logs/stage2_progress.md` (Phase C) for the full
   record, including the `datatype="Slide"` KNN-construction path this
   surfaced in `src/models/run_graphst.py`.
+- **Phase D: diagnosed why breast cancer shows a real gap — domain size vs.
+  propagation depth, not fragmentation or edge quality.** `n_hops=4` was
+  cross-validated entirely on DLPFC (Stage 11), where even the smallest
+  layer (166 spots) exceeds a 4-hop neighbourhood's ~60-spot reach. Breast
+  cancer's 20 regions average 3.3x smaller (190 spots), and 4 are smaller
+  than a single 4-hop neighbourhood — a fixed global hop count will
+  over-smooth domains where it does. Two alternatives were checked and ruled
+  out directly: domain fragmentation (mostly one label's artifact) and
+  boundary edge-weight quality (breast cancer's is actually *better* than
+  DLPFC's, not worse). A leakage-safe architectural fix — a per-spot learned
+  gate over propagation depths — was implemented and validated on 3 DLPFC
+  held-out slices (never breast cancer), but **rejected**: it collapses to
+  no propagation without regularization (reconstruction loss has no
+  incentive to smooth), and even with an anti-collapse fix
+  (`lambda_hop_usage`) it still underperforms the fixed default (0.335 ± 0.143
+  vs. 0.504 ± 0.084) with the highest variance of any config tested. Kept as
+  an explicit, off-by-default ablation, not deleted — current defaults are
+  unchanged. See `outputs/logs/stage2_progress.md` (Phase D) for the full
+  mechanistic account.
 - **SpaCeNet is intentionally excluded** from the ARI table — it infers a gene-gene
   conditional-independence graphical model, not spot clusters, so there is no
   cluster-label output to score.

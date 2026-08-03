@@ -1556,6 +1556,105 @@ cancer: Phase C's honest pattern across two genuinely different platforms is
 Script: `src/eval/run_slideseqv2.py`. Raw results:
 `outputs/logs/slideseqv2_results.json`.
 
+## Phase D: mechanistic diagnosis of the breast cancer gap, and a rejected fix
+
+Per the forward plan's own gate ("only pursue new architecture ideas if
+Phase C surfaces a concrete pattern"), Phase C did surface one: breast cancer
+showed a real, consistent gap to GraphST that DLPFC never did. This section
+investigates why, mechanistically, rather than guessing.
+
+**Diagnosis (`src/eval/domain_scale_diagnostic.py`): domain size relative to
+propagation depth, not domain fragmentation or edge-weight quality.**
+
+| | DLPFC (12 slices) | Breast cancer |
+|---|---|---|
+| Mean domain size | 622.8 spots | 189.9 spots |
+| Median domain size | 511.5 spots | 160.0 spots |
+| Min domain size | 166 spots | 28 spots |
+| Median 4-hop reachable neighbours | 60.0 | 60.0 |
+| Domains smaller than median 4-hop reach | 0 / 7 (151673) | 4 / 20 |
+
+`n_hops=4` was cross-validated (Stage 11) entirely on DLPFC, where every
+layer -- even the smallest, 166 spots -- comfortably exceeds a 4-hop
+neighbourhood's ~60-spot reach. Breast cancer's 20 pathologist-annotated
+regions average 3.3x smaller, and 4 of them (as small as 28 spots) are
+*smaller* than a single spot's own 4-hop neighbourhood. A fixed, global hop
+count tuned where it never exceeds domain size will, by construction,
+over-smooth domains where it does -- propagating a small domain's address
+signal past its own boundary into whatever larger domain surrounds it.
+
+Two alternative explanations were checked and ruled out, not assumed away:
+  * **Fragmentation** (domains as many disconnected patches rather than one
+    contiguous region): breast cancer domains average more connected
+    components (6.55 vs 1.57), but this is almost entirely driven by one
+    label ("Tumor_edge_6", 109 components in 182 spots -- a boundary concept
+    that is inherently scattered along tumor perimeters) rather than a
+    general property of the 20 regions, most of which (17/20) are single
+    contiguous components.
+  * **Boundary edge-weight quality** (whether `expression_weighted_adjacency`,
+    the existing Stage 13 boundary-blur safeguard, discriminates domain
+    boundaries as well on breast cancer as on DLPFC): checked directly, and
+    it does *better* on breast cancer (diff/same edge-weight ratio 0.862 vs
+    DLPFC's 0.937, lower = better separation) -- ruling this out as the
+    bottleneck.
+
+**Fix attempted (`src/eval/cross_validate_adaptive_hops.py`): a per-spot
+learned gate over propagation depths 0..n_hops, replacing the single fixed
+n_hops** (`adaptive_hops=True` in `SpatialAddressMemoryLayer`/
+`train_spatial_address_model`). Motivation: let large homogeneous regions
+keep using deep propagation while small/heterogeneous regions can fall back
+toward their own address, without retuning `n_hops` per dataset (which would
+be leakage spread across datasets instead of slices -- exactly what this
+project's methodology has avoided throughout). Validated leakage-safely: only
+on 3 DLPFC held-out slices (151507, 151669, 151675 -- never 151673, never
+breast cancer/Slide-seqV2), 3 seeds each.
+
+| config | ARI (3 slices x 3 seeds) |
+|---|---|
+| **fixed n_hops=4 (current default)** | **0.5038 +/- 0.0838** |
+| fixed n_hops=0 (no propagation) | 0.3909 +/- 0.1143 |
+| adaptive_hops, no regularizer | 0.3501 +/- 0.1060 |
+| adaptive_hops, lambda_hop_usage=0.01 | 0.3351 +/- 0.1429 |
+
+**Verdict: REJECTED, and the failure mode itself is informative.** Without
+any regularization, the gate collapses almost completely to depth 0 (mean
+gate weight on depth 0 measured at >0.999 across all 9 runs) -- because
+reconstruction MSE has zero incentive to use propagation at all: unsmoothed
+data always reconstructs itself more easily than smoothed data, the exact
+same collapse pressure `lambda_usage` was added to counteract for slot
+addressing (Stage 2), just acting on a different axis. Adding
+`lambda_hop_usage` (reusing `usage_entropy` on the gate weights instead of
+the slot address) successfully prevents the collapse -- effective depth
+recovers to ~2 -- but the resulting ARI does not recover to the fixed-hop
+baseline and has the *highest* variance of any configuration tested (0.143
+vs. 0.084 for the current default), including some seeds scoring negative
+ARI at higher regularization strengths in an initial single-slice sweep.
+
+Kept in the codebase as an explicit, off-by-default ablation
+(`adaptive_hops=False`, `lambda_hop_usage=0.0` -- current defaults unchanged)
+rather than deleted, per this project's practice of preserving
+tested-and-rejected mechanisms as documented evidence (matching entmax15,
+sparsemax, kmeans_init, and the contrastive-only ablation). Three new unit
+tests (`tests/test_memory_layer.py`) cover the valid-simplex invariant under
+adaptive_hops, the measured collapse-without-regularizer failure mode, and
+that `lambda_hop_usage` alone (no reconstruction pressure) does prevent
+collapse -- so the mechanism itself is verified correct even though it
+doesn't yet produce a net win.
+
+**Honest status:** the mechanistic diagnosis (domain size vs. propagation
+depth) is real and well-supported by direct measurement. The first
+architectural attempt to fix it in a leakage-safe, data-adaptive way did not
+work, and introduces training instability rather than resolving the gap.
+This is reported as a negative result, not smoothed over -- consistent with
+this project's stated principle of saying plainly when a result plateaus
+rather than manufacturing a win. A follow-up idea (concatenating multi-depth
+evidence through a learned linear combination, rather than a softmax gate
+over discrete depths, giving reconstruction loss a more direct gradient path
+into the depth-mixing decision) was considered but not implemented, given
+the risk of this becoming an unprincipled search across architectural
+variants rather than a principled follow-up -- a real next step if this
+direction is revisited, not attempted here.
+
 ## Current best configuration (defaults updated in code)
 
 `train_spatial_address_model(n_hops=4, lambda_usage=0.02, memory_slots=16,
