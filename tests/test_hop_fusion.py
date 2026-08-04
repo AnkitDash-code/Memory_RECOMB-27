@@ -8,6 +8,7 @@ from src.models.memory_layer import (
     address_spatial_coherence_loss,
     normalized_adjacency,
 )
+from src.models.train_hop_fusion import mean_address_entropy_by_hop
 
 
 def _ring(n):
@@ -35,6 +36,8 @@ def test_hop_fusion_concatenates_all_depths_and_heterogeneity():
     assert addresses.shape == (10, 4)
     assert layer.last_fusion_input.shape == (10, 3 * 4 + 1)
     assert torch.allclose(layer.last_fusion_input[:, -1], score)
+    assert len(layer.last_address_by_hop) == 3
+    assert all(torch.allclose(view.sum(dim=-1), torch.ones(10)) for view in layer.last_address_by_hop)
     assert not hasattr(layer, "hop_gate")
 
 
@@ -66,3 +69,16 @@ def test_address_coherence_loss_is_zero_for_identical_addresses():
     edge_index = torch.tensor([[0, 1, 2], [1, 2, 3]])
     edge_weight = torch.ones(3)
     assert address_spatial_coherence_loss(addresses, edge_index, edge_weight).item() == 0.0
+
+
+def test_mean_address_entropy_by_hop_is_rowwise_and_maskable():
+    one_hot = torch.tensor([[1.0, 0.0], [1.0, 0.0]])
+    uniform = torch.full((2, 2), 0.5)
+    entropies = mean_address_entropy_by_hop([one_hot, uniform])
+    assert torch.allclose(
+        entropies,
+        torch.tensor([0.0, np.log(2.0)], dtype=entropies.dtype),
+        atol=1e-6,
+    )
+    masked = mean_address_entropy_by_hop([one_hot, uniform], torch.tensor([True, False]))
+    assert torch.allclose(masked, entropies, atol=1e-6)

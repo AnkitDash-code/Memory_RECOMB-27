@@ -51,6 +51,22 @@ def _as_train_mask(train_mask, n_obs):
     return mask
 
 
+def mean_address_entropy_by_hop(addresses_by_hop, mask=None):
+    """Return the mean per-spot address entropy at every propagation depth.
+
+    This deliberately measures row-wise entropy rather than marginal slot
+    usage.  The former tells us whether each spot makes a discriminative memory
+    assignment; the latter only tells us whether the codebook is used evenly
+    across the dataset.
+    """
+    if not addresses_by_hop:
+        raise ValueError("addresses_by_hop must contain at least one hop view")
+    return torch.stack([
+        attention_entropy(addresses if mask is None else addresses[mask]).mean()
+        for addresses in addresses_by_hop
+    ])
+
+
 def train_hop_fusion_model(
     adata,
     *,
@@ -68,6 +84,7 @@ def train_hop_fusion_model(
     lr=1e-3,
     weight_decay=0.0,
     lambda_usage=0.02,
+    lambda_sharpen=0.0,
     lambda_spatial_coherence=0.0,
     expression_weighted=True,
     train_mask=None,
@@ -88,6 +105,11 @@ def train_hop_fusion_model(
     graph is still evaluated over all observations (a transductive spatial
     embedding), but reconstruction, usage, and optional coherence losses are
     computed only on the training block.
+
+    ``lambda_sharpen`` is an opt-in diagnostic regularizer.  It minimizes the
+    average per-spot address entropy across *all* hop views, restoring an
+    explicit incentive for confident addresses when the concat-fusion decoder
+    can otherwise reconstruct from a wide mixture of diffuse views.
     """
     _set_seed(seed)
     device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -157,6 +179,11 @@ def train_hop_fusion_model(
         recon_loss = F.mse_loss(reconstruction[train_mask_t], x[train_mask_t])
         slot_usage_entropy = usage_entropy(addresses[train_mask_t])
         loss = recon_loss - lambda_usage * slot_usage_entropy
+        sharpen_loss = mean_address_entropy_by_hop(
+            model.memory.last_address_by_hop, train_mask_t
+        ).mean()
+        if lambda_sharpen:
+            loss = loss + lambda_sharpen * sharpen_loss
         coherence_loss = None
         if lambda_spatial_coherence:
             coherence_loss = address_spatial_coherence_loss(
@@ -170,6 +197,13 @@ def train_hop_fusion_model(
         if epoch % log_every == 0 or epoch == epochs - 1:
             with torch.no_grad():
                 row_entropy = attention_entropy(addresses[train_mask_t]).median().item()
+                mean_entropy_by_hop = mean_address_entropy_by_hop(
+                    model.memory.last_address_by_hop, train_mask_t
+                )
+                median_entropy_by_hop = torch.stack([
+                    attention_entropy(view[train_mask_t]).median()
+                    for view in model.memory.last_address_by_hop
+                ])
                 n_slots_used = int(addresses[train_mask_t].argmax(dim=-1).unique().numel())
             row = {
                 "epoch": epoch,
@@ -179,11 +213,15 @@ def train_hop_fusion_model(
                 "usage_entropy": float(slot_usage_entropy.item()),
                 "max_entropy": float(max_entropy),
                 "n_slots_used": n_slots_used,
+                "mean_entropy_by_hop": mean_entropy_by_hop.detach().cpu().tolist(),
+                "median_entropy_by_hop": median_entropy_by_hop.detach().cpu().tolist(),
                 "physical_radius_um": physical_radius_um,
                 "average_edge_length_um": float(avg_edge_length_um),
                 "fusion_hops": int(fusion_hops),
                 "heterogeneity_hops": int(heterogeneity_hops),
             }
+            if lambda_sharpen:
+                row["sharpen_loss"] = float(sharpen_loss.item())
             if coherence_loss is not None:
                 row["spatial_coherence_loss"] = float(coherence_loss.item())
             history.append(row)

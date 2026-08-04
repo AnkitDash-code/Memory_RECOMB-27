@@ -1,0 +1,50 @@
+{
+  "status": "single_slice_exploratory_diagnostic_not_locked",
+  "dataset": {
+    "name": "DLPFC 151673",
+    "n_spots": 3639,
+    "ground_truth_key": "ground_truth_layer"
+  },
+  "shared_configuration": {
+    "platform": "visium",
+    "physical_radius_um": 220.0,
+    "fusion_hops": 4,
+    "memory_slots": 16,
+    "memory_dim": 128,
+    "hidden_dim": 256,
+    "fusion_hidden_dim": 128,
+    "fusion_depth": 2,
+    "temperature": 1.0,
+    "lambda_usage": 0.02,
+    "lambda_spatial_coherence": 0.0,
+    "expression_weighted": true,
+    "seed": 0,
+    "epochs": 400
+  },
+  "maximum_address_entropy": 2.772588722239781,
+  "unsharpened": {
+    "lambda_sharpen": 0.0,
+    "ari": 0.2555832845165478,
+    "final_reconstruction_loss": 0.8015077114105225,
+    "per_hop": {
+      "0": {"mean_entropy": 2.583877, "median_entropy": 2.663633, "usage_entropy": 2.772381},
+      "1": {"mean_entropy": 2.651399, "median_entropy": 2.713263, "usage_entropy": 2.772383},
+      "2": {"mean_entropy": 2.658247, "median_entropy": 2.718471, "usage_entropy": 2.772384},
+      "3": {"mean_entropy": 2.661314, "median_entropy": 2.720409, "usage_entropy": 2.772384},
+      "4": {"mean_entropy": 2.663306, "median_entropy": 2.721827, "usage_entropy": 2.772385}
+    }
+  },
+  "sharpened": {
+    "lambda_sharpen": 0.02,
+    "ari": 0.4392480291450199,
+    "final_reconstruction_loss": 0.8022536635398865,
+    "per_hop": {
+      "0": {"mean_entropy": 0.005121, "median_entropy": 0.000212, "usage_entropy": 2.121859},
+      "1": {"mean_entropy": 0.382418, "median_entropy": 0.389039, "usage_entropy": 2.121310},
+      "2": {"mean_entropy": 0.478990, "median_entropy": 0.510402, "usage_entropy": 2.120843},
+      "3": {"mean_entropy": 0.534903, "median_entropy": 0.573694, "usage_entropy": 2.120445},
+      "4": {"mean_entropy": 0.576288, "median_entropy": 0.617633, "usage_entropy": 2.120102}
+    }
+  },
+  "interpretation": "The sharpness term can produce confident Hop-Fusion addresses and improves this matched one-seed diagnostic ARI, but lambda_sharpen=0.02 over-sharpens hop 0 and lowers marginal slot usage. This is evidence for an address-training-signal interaction, not a selected or generalizable configuration. Joint DLPFC-only selection of lambda_sharpen and lambda_usage is required before downstream evaluation."
+}
