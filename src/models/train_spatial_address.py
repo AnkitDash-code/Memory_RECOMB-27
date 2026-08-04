@@ -16,9 +16,11 @@ from torch.optim import Adam
 from src.data.preprocess import get_hvg_features
 from src.models.memory_layer import (
     SpatialAddressMemoryAutoencoder,
+    address_spatial_coherence_loss,
     attention_entropy,
     contrastive_address_loss,
     expression_weighted_adjacency,
+    expression_similarity_edge_weights,
     key_cosine_similarity,
     normalized_adjacency,
     usage_entropy,
@@ -46,6 +48,7 @@ def train_spatial_address_model(
     latent_hops=0,
     lambda_usage=0.02,
     lambda_sharpen=0.0,
+    lambda_spatial_coherence=0.0,
     lambda_contrastive=0.0,
     kmeans_init=False,
     expression_weighted=True,
@@ -169,6 +172,12 @@ def train_spatial_address_model(
     else:
         adjacency = normalized_adjacency(adata.obsp["spatial_connectivities"], device=device)
 
+    coherence_edge_index = coherence_edge_weight = None
+    if lambda_spatial_coherence:
+        coherence_edge_index, coherence_edge_weight = expression_similarity_edge_weights(
+            adata.obsp["spatial_connectivities"], hvg_features, device=device
+        )
+
     model = SpatialAddressMemoryAutoencoder(
         feature_dim=x.shape[1],
         memory_slots=memory_slots,
@@ -207,6 +216,10 @@ def train_spatial_address_model(
         if lambda_sharpen:
             # Positive sign: MINIMIZE per-row entropy -> confident per-spot assignment.
             loss = loss + lambda_sharpen * attention_entropy(attn_weights).mean()
+        if lambda_spatial_coherence:
+            loss = loss + lambda_spatial_coherence * address_spatial_coherence_loss(
+                attn_weights, coherence_edge_index, coherence_edge_weight
+            )
         if lambda_contrastive:
             permutation = torch.randperm(x.shape[0], device=device)
             _, _, attn_corrupted = model(x[permutation], adjacency)

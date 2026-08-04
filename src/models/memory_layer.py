@@ -246,6 +246,57 @@ def expression_weighted_adjacency(connectivities, features, device=None):
     return sparse.to(device) if device is not None else sparse
 
 
+def expression_similarity_edge_weights(connectivities, features, device=None):
+    """Return structural edges weighted by expression similarity.
+
+    This is kept separate from :func:`expression_weighted_adjacency` because
+    the new address-coherence objective is an ablation of the loss, not a
+    replacement for the graph used by the existing model.  The returned edge
+    weights are symmetric when the input graph is symmetric and are not
+    row-normalized.
+    """
+    import scipy.sparse as sp
+
+    features = np.asarray(features, dtype=np.float32)
+    adjacency = sp.coo_matrix(connectivities)
+    mask = (adjacency.row != adjacency.col) & (adjacency.data > 0)
+    row, col, data = adjacency.row[mask], adjacency.col[mask], adjacency.data[mask]
+    if row.size == 0:
+        edge_index = torch.empty((2, 0), dtype=torch.long, device=device)
+        edge_weight = torch.empty((0,), dtype=torch.float32, device=device)
+        return edge_index, edge_weight
+
+    diffs = features[row] - features[col]
+    distances_sq = np.sum(diffs**2, axis=1)
+    positive = distances_sq[distances_sq > 0]
+    sigma_sq = np.median(positive) if positive.size else 1.0
+    sigma_sq = max(float(sigma_sq), 1e-12)
+    weights = data.astype(np.float32, copy=False) * np.exp(
+        -distances_sq / (2.0 * sigma_sq)
+    ).astype(np.float32)
+    edge_index = torch.tensor(np.stack([row, col]), dtype=torch.long, device=device)
+    edge_weight = torch.tensor(weights, dtype=torch.float32, device=device)
+    return edge_index, edge_weight
+
+
+def address_spatial_coherence_loss(addresses, edge_index, edge_weight=None):
+    """Penalize address discontinuity on expression-similar spatial edges.
+
+    Unlike the concat-fusion mechanism, this term only changes the objective.
+    Keeping it as a standalone function makes the loss-only and
+    concat-plus-loss ablations explicit and testable.
+    """
+    if edge_index.numel() == 0:
+        return addresses.sum() * 0.0
+    row, col = edge_index
+    squared_distance = ((addresses[row] - addresses[col]) ** 2).sum(dim=-1)
+    if edge_weight is None:
+        return squared_distance.mean()
+    edge_weight = edge_weight.to(device=addresses.device, dtype=addresses.dtype)
+    denominator = edge_weight.sum().clamp_min(torch.finfo(addresses.dtype).eps)
+    return (squared_distance * edge_weight).sum() / denominator
+
+
 class SpatialAddressMemoryLayer(nn.Module):
     """Memory addressing where the ADDRESS -- not the feature -- is spatially propagated.
 
@@ -399,6 +450,89 @@ class SpatialAddressMemoryLayer(nn.Module):
         return embedding, propagated
 
 
+class HopFusionMemoryLayer(nn.Module):
+    """Concatenate address views from several physical-scale hop depths.
+
+    The heterogeneity score is an ordinary input feature to ``fusion_mlp``.
+    It never selects, gates, or softmaxes over hop depths.  This deliberately
+    differs from ``SpatialAddressMemoryLayer(adaptive_hops=True)``, which is
+    retained as a tested-and-rejected ablation.
+    """
+
+    def __init__(
+        self,
+        feature_dim,
+        memory_slots=16,
+        memory_dim=128,
+        hidden_dim=256,
+        max_hops=None,
+        fusion_hidden_dim=128,
+        fusion_depth=2,
+        temperature=1.0,
+        attention_fn="softmax",
+    ):
+        super().__init__()
+        if max_hops is None:
+            raise ValueError("max_hops must be supplied from the physical-scale config")
+        if max_hops < 0:
+            raise ValueError(f"max_hops must be >= 0, got {max_hops}")
+        if fusion_hidden_dim < 1 or fusion_depth < 1:
+            raise ValueError("fusion_hidden_dim and fusion_depth must be >= 1")
+
+        self.encoder = nn.Sequential(
+            nn.Linear(feature_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, memory_dim),
+        )
+        self.memory_keys = nn.Parameter(torch.randn(memory_slots, memory_dim) * 0.02)
+        self.max_hops = int(max_hops)
+        self.temperature = temperature
+        self.attention_fn = attention_fn
+        fusion_input_dim = (self.max_hops + 1) * memory_slots + 1
+        fusion_layers = []
+        input_dim = fusion_input_dim
+        for _ in range(fusion_depth):
+            fusion_layers.extend([nn.Linear(input_dim, fusion_hidden_dim), nn.ReLU()])
+            input_dim = fusion_hidden_dim
+        fusion_layers.append(nn.Linear(input_dim, memory_dim))
+        self.fusion_mlp = nn.Sequential(*fusion_layers)
+        self.last_address_by_hop = None
+        self.last_fusion_input = None
+
+    @staticmethod
+    def propagate(addresses, adjacency, hops):
+        """Propagate an address simplex exactly ``hops`` times."""
+        propagated = addresses
+        if adjacency is None:
+            return propagated
+        for _ in range(int(hops)):
+            propagated = torch.sparse.mm(adjacency, propagated)
+        return propagated
+
+    def forward(self, x, adjacency, heterogeneity_score):
+        if heterogeneity_score is None:
+            raise ValueError("heterogeneity_score is required for HopFusionMemoryLayer")
+        queries = self.encoder(x)
+        attn_scores = torch.matmul(queries, self.memory_keys.T) / self.temperature
+        base_addresses = address_distribution(attn_scores, self.attention_fn, dim=-1)
+        addr_by_hop = [
+            self.propagate(base_addresses, adjacency, hops=h)
+            for h in range(self.max_hops + 1)
+        ]
+        heterogeneity_score = heterogeneity_score.reshape(-1, 1).to(
+            device=x.device, dtype=x.dtype
+        )
+        if heterogeneity_score.shape[0] != x.shape[0]:
+            raise ValueError("heterogeneity_score must have one value per observation")
+        fusion_input = torch.cat(addr_by_hop + [heterogeneity_score], dim=-1)
+        self.last_address_by_hop = addr_by_hop
+        self.last_fusion_input = fusion_input
+        embedding = self.fusion_mlp(fusion_input)
+        # The deepest address view is the natural slot-usage diagnostic and
+        # preserves the two-tensor interface of the existing memory layer.
+        return embedding, addr_by_hop[-1]
+
+
 class SpatialAddressMemoryAutoencoder(nn.Module):
     """SpatialAddressMemoryLayer + a decoder back to gene-expression space.
 
@@ -441,6 +575,45 @@ class SpatialAddressMemoryAutoencoder(nn.Module):
 
     def forward(self, x, adjacency=None):
         embedding, attn_weights = self.memory(x, adjacency)
+        reconstruction = self.decoder(embedding)
+        return reconstruction, embedding, attn_weights
+
+
+class HopFusionMemoryAutoencoder(nn.Module):
+    """HopFusionMemoryLayer with the project's expression decoder."""
+
+    def __init__(
+        self,
+        feature_dim,
+        memory_slots=16,
+        memory_dim=128,
+        hidden_dim=256,
+        max_hops=None,
+        fusion_hidden_dim=128,
+        fusion_depth=2,
+        temperature=1.0,
+        attention_fn="softmax",
+    ):
+        super().__init__()
+        self.memory = HopFusionMemoryLayer(
+            feature_dim,
+            memory_slots=memory_slots,
+            memory_dim=memory_dim,
+            hidden_dim=hidden_dim,
+            max_hops=max_hops,
+            fusion_hidden_dim=fusion_hidden_dim,
+            fusion_depth=fusion_depth,
+            temperature=temperature,
+            attention_fn=attention_fn,
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(memory_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, feature_dim),
+        )
+
+    def forward(self, x, adjacency, heterogeneity_score):
+        embedding, attn_weights = self.memory(x, adjacency, heterogeneity_score)
         reconstruction = self.decoder(embedding)
         return reconstruction, embedding, attn_weights
 

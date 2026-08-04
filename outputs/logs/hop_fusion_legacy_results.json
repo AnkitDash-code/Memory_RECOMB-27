@@ -1,0 +1,432 @@
+{
+  "status": "provisional_concat_fusion_real_data_run",
+  "configuration": {
+    "memory_slots": 16,
+    "memory_dim": 128,
+    "hidden_dim": 256,
+    "fusion_hidden_dim": 128,
+    "fusion_depth": 2,
+    "temperature": 1.0,
+    "attention_fn": "softmax",
+    "lambda_usage": 0.02,
+    "lambda_spatial_coherence": 0.0,
+    "expression_weighted": true,
+    "physical_radius_um": 220.0,
+    "epochs": 600,
+    "device": "cuda",
+    "dlpfc_selection_status": "not_locked; radius is current fixed-hop reference 4 * 55 um"
+  },
+  "datasets": {
+    "dlpfc": {
+      "per_slice": {
+        "151507": {
+          "n_spots": 4226,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.4637960930126536,
+            0.29105023388207607,
+            0.3050051402589045,
+            0.21870879353682054,
+            0.4375184743992078
+          ],
+          "mean_ari": 0.3432157470179325,
+          "std_ari": 0.0928610757276932,
+          "consensus_ari": 0.28761816987648847,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.9980032277836,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151508": {
+          "n_spots": 4384,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.26432248902048333,
+            0.35457645184883047,
+            0.22740587944810237,
+            0.3239817432948006,
+            0.18779208502349123
+          ],
+          "mean_ari": 0.27161572972714165,
+          "std_ari": 0.061088110831854114,
+          "consensus_ari": 0.26900133310063024,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.99480934994756,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151509": {
+          "n_spots": 4789,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.40294442321550883,
+            0.356462195992539,
+            0.4290113166593718,
+            0.4109232690024292,
+            0.458211041994755
+          ],
+          "mean_ari": 0.41151044937292075,
+          "std_ari": 0.033440267619013336,
+          "consensus_ari": 0.42019315960206916,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.97915821913007,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151510": {
+          "n_spots": 4634,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.3565174532162693,
+            0.3284469339348549,
+            0.4645596314399511,
+            0.4506391931675658,
+            0.35188274816436005
+          ],
+          "mean_ari": 0.3904091919846002,
+          "std_ari": 0.05585373571520498,
+          "consensus_ari": 0.3684142381049716,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.923993176476976,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151669": {
+          "n_spots": 3661,
+          "n_clusters": 5,
+          "per_seed_ari": [
+            0.2949613809782321,
+            0.3285671120149666,
+            0.403809602909383,
+            0.48532817205920886,
+            0.6013432993332611
+          ],
+          "mean_ari": 0.4228019134590103,
+          "std_ari": 0.11078868795379587,
+          "consensus_ari": 0.6110228072528721,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.99983529713969,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151670": {
+          "n_spots": 3498,
+          "n_clusters": 5,
+          "per_seed_ari": [
+            0.12461099484790525,
+            0.36822083845313586,
+            0.35072307904424077,
+            0.25892187578947756,
+            0.490779955410779
+          ],
+          "mean_ari": 0.3186513487091077,
+          "std_ari": 0.12192887788138537,
+          "consensus_ari": 0.363176914988086,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.9901304244681,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151671": {
+          "n_spots": 4110,
+          "n_clusters": 5,
+          "per_seed_ari": [
+            0.6894272036041498,
+            0.4616609973976763,
+            0.5647109889506481,
+            0.3610054923537228,
+            0.693894370274449
+          ],
+          "mean_ari": 0.5541398105161293,
+          "std_ari": 0.12945961628488178,
+          "consensus_ari": 0.7109257056427183,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 55.00434190039511,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151672": {
+          "n_spots": 4015,
+          "n_clusters": 5,
+          "per_seed_ari": [
+            0.44049974041203643,
+            0.47787399106508527,
+            0.18566183821322732,
+            0.17500888486447544,
+            0.36848991023742506
+          ],
+          "mean_ari": 0.32950687295844994,
+          "std_ari": 0.12681712652656332,
+          "consensus_ari": 0.33645005029759895,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.99301108486351,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151673": {
+          "n_spots": 3639,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.5118246348308353,
+            0.5267775137773578,
+            0.3703757239242299,
+            0.45197033492140704,
+            0.22636466219890092
+          ],
+          "mean_ari": 0.4174625739305462,
+          "std_ari": 0.1102545450232119,
+          "consensus_ari": 0.5407002604979978,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 55.012130935446976,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151674": {
+          "n_spots": 3673,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.4544911544280481,
+            0.5443924867590474,
+            0.34010694729731333,
+            0.5344441272872148,
+            0.5113746560146027
+          ],
+          "mean_ari": 0.4769618743572453,
+          "std_ari": 0.0751924740208749,
+          "consensus_ari": 0.559373915705962,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 54.99792519250391,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151675": {
+          "n_spots": 3592,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.23321462138712612,
+            0.40900723103397263,
+            0.433369621409168,
+            0.4664696624427272,
+            0.42384526465570094
+          ],
+          "mean_ari": 0.39318128018573895,
+          "std_ari": 0.08217829681266677,
+          "consensus_ari": 0.5286001631655141,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 55.00695991446182,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        },
+        "151676": {
+          "n_spots": 3460,
+          "n_clusters": 7,
+          "per_seed_ari": [
+            0.22745812550316868,
+            0.43331350574190153,
+            0.2471054953822421,
+            0.28477012344853947,
+            0.2533771169858372
+          ],
+          "mean_ari": 0.2892048734123378,
+          "std_ari": 0.07437151545796929,
+          "consensus_ari": 0.27322922277771894,
+          "physical_metadata": {
+            "platform": "visium",
+            "physical_radius_um": 220.0,
+            "average_edge_length_um": 55.00163794374622,
+            "fusion_hops": 4,
+            "heterogeneity_hops": 4,
+            "fusion_hidden_dim": 128,
+            "fusion_depth": 2,
+            "train_fraction": 1.0
+          }
+        }
+      },
+      "summary": {
+        "held_out_11_mean_ari": 0.3819271901546013,
+        "held_out_11_std_ari": 0.08002819552049874,
+        "held_out_11_mean_consensus_ari": 0.42981869822860275,
+        "all_12_mean_ari": 0.38488847213593,
+        "all_12_mean_consensus_ari": 0.43905882841771887
+      }
+    },
+    "breast_cancer": {
+      "n_spots": 3798,
+      "n_clusters": 20,
+      "per_seed_ari": [
+        0.35129754230732574,
+        0.3523118473259056,
+        0.4830527941109662,
+        0.401393449502965,
+        0.3124353160940847
+      ],
+      "mean_ari": 0.38009818986824945,
+      "std_ari": 0.058707684738664216,
+      "consensus_ari": 0.49210989029741803,
+      "physical_metadata": {
+        "platform": "visium",
+        "physical_radius_um": 220.0,
+        "average_edge_length_um": 54.985013847122076,
+        "fusion_hops": 4,
+        "heterogeneity_hops": 4,
+        "fusion_hidden_dim": 128,
+        "fusion_depth": 2,
+        "train_fraction": 1.0
+      }
+    },
+    "slideseqv2": {
+      "n_spots": 12000,
+      "n_clusters": 14,
+      "per_seed": [
+        {
+          "seed": 0,
+          "silhouette": -0.07840859144926071,
+          "spatial_coherence_morans_i": 0.7717308202802543
+        },
+        {
+          "seed": 1,
+          "silhouette": -0.11219578236341476,
+          "spatial_coherence_morans_i": 0.8022385077322951
+        },
+        {
+          "seed": 2,
+          "silhouette": -0.011899596080183983,
+          "spatial_coherence_morans_i": 0.8068405820490927
+        }
+      ],
+      "silhouette_mean": -0.06750132329761982,
+      "silhouette_std": 0.04166579428131252,
+      "spatial_coherence_mean": 0.7936033033538807,
+      "spatial_coherence_std": 0.015579878237840137,
+      "physical_metadata": {
+        "platform": "slideseqv2",
+        "physical_radius_um": 220.0,
+        "average_edge_length_um": 10.11026380104845,
+        "fusion_hops": 22,
+        "heterogeneity_hops": 22,
+        "fusion_hidden_dim": 128,
+        "fusion_depth": 2,
+        "train_fraction": 1.0
+      },
+      "subsampled_from": 41786
+    },
+    "visium": {
+      "crop": {
+        "n_spots": 684,
+        "n_clusters": 14,
+        "per_seed": [
+          {
+            "seed": 0,
+            "silhouette": -0.18229535222053528,
+            "spatial_coherence_morans_i": 0.5686227615973399
+          }
+        ],
+        "silhouette_mean": -0.18229535222053528,
+        "silhouette_std": 0.0,
+        "spatial_coherence_mean": 0.5686227615973399,
+        "spatial_coherence_std": 0.0,
+        "physical_metadata": {
+          "platform": "visium",
+          "physical_radius_um": 220.0,
+          "average_edge_length_um": 54.967919810211065,
+          "fusion_hops": 4,
+          "heterogeneity_hops": 4,
+          "fusion_hidden_dim": 128,
+          "fusion_depth": 2,
+          "train_fraction": 1.0
+        }
+      },
+      "full": {
+        "n_spots": 2688,
+        "n_clusters": 25,
+        "per_seed": [
+          {
+            "seed": 0,
+            "silhouette": -0.36450958251953125,
+            "spatial_coherence_morans_i": 0.4546570740240941
+          }
+        ],
+        "silhouette_mean": -0.36450958251953125,
+        "silhouette_std": 0.0,
+        "spatial_coherence_mean": 0.4546570740240941,
+        "spatial_coherence_std": 0.0,
+        "physical_metadata": {
+          "platform": "visium",
+          "physical_radius_um": 220.0,
+          "average_edge_length_um": 54.97004752605876,
+          "fusion_hops": 4,
+          "heterogeneity_hops": 4,
+          "fusion_hidden_dim": 128,
+          "fusion_depth": 2,
+          "train_fraction": 1.0
+        }
+      }
+    }
+  }
+}

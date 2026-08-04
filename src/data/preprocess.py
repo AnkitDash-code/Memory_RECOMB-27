@@ -2,6 +2,8 @@ import numpy as np
 import scanpy as sc
 import squidpy as sq
 
+from src.data.physical_scale import annotate_spatial_scale
+
 
 def preprocess(
     adata,
@@ -10,6 +12,9 @@ def preprocess(
     target_sum=1e4,
     n_neighs=6,
     coord_type="grid",
+    platform="visium",
+    coordinates_in_um=False,
+    native_scale_um=None,
 ):
     """Filter, normalize, log-transform, and build a spatial neighbor graph.
 
@@ -25,6 +30,12 @@ def preprocess(
         sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
     else:
         sq.gr.spatial_neighbors(adata, coord_type="generic", n_neighs=n_neighs)
+    annotate_spatial_scale(
+        adata,
+        platform,
+        coordinates_in_um=coordinates_in_um,
+        native_scale_um=native_scale_um,
+    )
     return adata
 
 
@@ -34,6 +45,9 @@ def preprocess_hvg(
     target_sum=1e4,
     n_neighs=6,
     coord_type="grid",
+    platform="visium",
+    coordinates_in_um=False,
+    native_scale_um=None,
 ):
     """Field-standard ST preprocessing: HVG selection on raw counts, then
     normalize/log1p/scale, plus a spatial neighbor graph.
@@ -68,6 +82,12 @@ def preprocess_hvg(
         sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
     else:
         sq.gr.spatial_neighbors(adata, coord_type="generic", n_neighs=n_neighs)
+    annotate_spatial_scale(
+        adata,
+        platform,
+        coordinates_in_um=coordinates_in_um,
+        native_scale_um=native_scale_um,
+    )
     return adata
 
 

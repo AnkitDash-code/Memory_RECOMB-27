@@ -1,0 +1,5 @@
+{
+  "status": "pending_dlpfc_selection",
+  "selection_config": "configs/hop_fusion_selection.json",
+  "notes": "This placeholder is intentionally not accepted for generalization. cross_validate_hop_fusion.py overwrites it with the locked DLPFC-selected values."
+}

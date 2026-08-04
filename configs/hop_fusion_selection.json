@@ -1,0 +1,23 @@
+{
+  "status": "pending_dlpfc_selection",
+  "reference_platform": "visium",
+  "fixed_baseline_n_hops": 4,
+  "cv_validation_slices": ["151508", "151670", "151674"],
+  "true_holdout_slices": ["151507", "151509", "151510", "151669", "151671", "151672", "151675", "151676"],
+  "tuning_slice_excluded": "151673",
+  "candidates": {
+    "reference_max_hops": [1, 2, 3, 4, 6],
+    "fusion_hidden_dim": [64, 128, 256],
+    "fusion_depth": [1, 2],
+    "lambda_spatial_coherence": [0.0, 0.001, 0.01, 0.05]
+  },
+  "fixed_model": {
+    "memory_slots": 16,
+    "memory_dim": 128,
+    "hidden_dim": 256,
+    "lambda_usage": 0.02,
+    "expression_weighted": true,
+    "attention_fn": "softmax"
+  },
+  "notes": "Run src/eval/cross_validate_hop_fusion.py to select and write configs/hop_fusion_dlpfc.json. No downstream generalization runner accepts this pending file as a locked config."
+}

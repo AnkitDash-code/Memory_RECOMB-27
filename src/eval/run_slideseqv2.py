@@ -78,7 +78,7 @@ def evaluate(seeds, device):
     keep = rng.choice(raw.n_obs, size=min(SUBSAMPLE_N, raw.n_obs), replace=False)
     raw = raw[np.sort(keep)].copy()
 
-    adata = preprocess_hvg(raw.copy(), coord_type="generic")
+    adata = preprocess_hvg(raw.copy(), coord_type="generic", platform="slideseqv2")
     cell_type = adata.obs["cell_type"].to_numpy()
     coords = adata.obsm["spatial"]
 

@@ -36,7 +36,7 @@ def _ari(truth, labels, mask):
 
 def evaluate(seeds, device):
     raw = load_breast_cancer()
-    adata = preprocess_hvg(raw.copy())
+    adata = preprocess_hvg(raw.copy(), platform="visium")
 
     truth = adata.obs["ground_truth_region"]
     mask = truth.notna().to_numpy()
