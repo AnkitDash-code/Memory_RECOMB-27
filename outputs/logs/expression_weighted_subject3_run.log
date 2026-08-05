@@ -1,0 +1,28 @@
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'n_jobs' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'show_progress_bar' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\models\memory_layer.py:172: UserWarning: Sparse invariant checks are implicitly disabled. Memory errors (e.g. SEGFAULT) will occur when operating on a sparse tensor which violates the invariants, but checks incur performance overhead. To silence this warning, explicitly opt in or out. See `torch.sparse.check_sparse_tensor_invariants.__doc__` for guidance.  (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\Context.cpp:767.)
+  sparse = torch.sparse_coo_tensor(indices, values, result.shape).coalesce()
+151674: ours=0.4679+/-0.0398 (consensus=0.5238)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151675: ours=0.4688+/-0.0534 (consensus=0.5511)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151676: ours=0.4914+/-0.0484 (consensus=0.4734)
+
+=== HEADLINE (11 held-out slices; 151673 excluded as tuning slice) ===
+  ours               ARI = 0.4760 +/- 0.0109  (n=3)
+  ours_consensus     ARI = 0.5161 +/- 0.0322  (n=3)
+
+=== all 12 slices (for comparability with published tables) ===
+  ours               ARI = 0.4760 +/- 0.0109  (n=3)
+  ours_consensus     ARI = 0.5161 +/- 0.0322  (n=3)
+
+Saved C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\outputs\logs\dlpfc_multislice_results_expression_weighted.json

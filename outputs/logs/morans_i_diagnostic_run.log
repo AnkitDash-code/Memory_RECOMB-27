@@ -1,0 +1,61 @@
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'n_jobs' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'show_progress_bar' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151507 (subject1): expr_moran(mean/median)=0.0189/0.0049  img_moran(mean/median)=0.5132/0.5167
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151508 (subject1): expr_moran(mean/median)=0.0157/0.0037  img_moran(mean/median)=0.5369/0.5375
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151509 (subject1): expr_moran(mean/median)=0.0226/0.0057  img_moran(mean/median)=0.5883/0.6064
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151510 (subject1): expr_moran(mean/median)=0.0179/0.0047  img_moran(mean/median)=0.5815/0.5879
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151669 (subject2): expr_moran(mean/median)=0.0172/0.0051  img_moran(mean/median)=0.5634/0.5767
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151670 (subject2): expr_moran(mean/median)=0.0174/0.0060  img_moran(mean/median)=0.5888/0.5940
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151671 (subject2): expr_moran(mean/median)=0.0203/0.0054  img_moran(mean/median)=0.5669/0.5683
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151672 (subject2): expr_moran(mean/median)=0.0187/0.0056  img_moran(mean/median)=0.5663/0.5703
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151673 (subject3): expr_moran(mean/median)=0.0418/0.0120  img_moran(mean/median)=0.5624/0.5670
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151674 (subject3): expr_moran(mean/median)=0.0412/0.0116  img_moran(mean/median)=0.5800/0.5846
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151675 (subject3): expr_moran(mean/median)=0.0325/0.0095  img_moran(mean/median)=0.5919/0.6004
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+151676 (subject3): expr_moran(mean/median)=0.0293/0.0092  img_moran(mean/median)=0.5840/0.5931
+
+=== per-subject summary ===
+subject      mean_expr_moran    mean_img_moran  gap (img-expr)
+subject1              0.0188            0.5550          0.5362
+subject2              0.0184            0.5713          0.5530
+subject3              0.0362            0.5796          0.5434
+
+Saved C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\outputs\logs\morans_i_diagnostic_results.json
+Saved outputs/figures/morans_i_diagnostic_scatter.png

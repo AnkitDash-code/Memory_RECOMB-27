@@ -1,0 +1,105 @@
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'n_jobs' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'show_progress_bar' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\models\memory_layer.py:125: UserWarning: Sparse invariant checks are implicitly disabled. Memory errors (e.g. SEGFAULT) will occur when operating on a sparse tensor which violates the invariants, but checks incur performance overhead. To silence this warning, explicitly opt in or out. See `torch.sparse.check_sparse_tensor_invariants.__doc__` for guidance.  (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\Context.cpp:767.)
+  sparse = torch.sparse_coo_tensor(indices, values, coo.shape).coalesce()
+=== Cross-validating n_hops on ['151508', '151670', '151674'] (lambda_usage held at default 0.1) ===
+n_hops=1     CV mean=0.4009
+n_hops=2     CV mean=0.4338
+n_hops=3     CV mean=0.4192
+n_hops=4     CV mean=0.4672
+n_hops=6     CV mean=0.4099
+n_hops=8     CV mean=0.4193
+
+Selected n_hops=4 by cross-validation (single-slice tuning on 151673 alone had picked 4)
+
+=== Cross-validating lambda_usage on ['151508', '151670', '151674'] (n_hops held at CV-selected 4) ===
+lambda_usage=0.02  CV mean=0.5310
+lambda_usage=0.05  CV mean=0.4618
+lambda_usage=0.1   CV mean=0.4672
+lambda_usage=0.2   CV mean=0.4020
+lambda_usage=0.5   CV mean=0.3966
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+
+Selected lambda_usage=0.02 by cross-validation (single-slice tuning on 151673 alone had picked 0.1)
+
+=== Evaluating n_hops=4, lambda_usage=0.02 on 8 true held-out slices ===
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151507: 0.5177
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151509: 0.4923
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151510: 0.4875
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151669: 0.5320
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151671: 0.5775
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151672: 0.6716
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151675: 0.4293
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151676: 0.4490
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+
+CV-selected (n_hops=4, lambda_usage=0.02): 0.5196 +/- 0.0721
+
+=== Baseline for comparison: current defaults (n_hops=4, lambda_usage=0.1) on the same held-out set ===
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151507: 0.5288
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151509: 0.4564
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151510: 0.5008
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151669: 0.4868
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151671: 0.5957
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151672: 0.6632
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151675: 0.3579
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+  151676: 0.4305
+
+Defaults (n_hops=4, lambda_usage=0.1): 0.5025 +/- 0.0892

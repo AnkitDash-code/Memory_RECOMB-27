@@ -1,0 +1,30 @@
+{
+  "status": "regularizers_locked_pending_architecture_selection",
+  "reference_platform": "visium",
+  "lambda_usage": 0.15,
+  "lambda_sharpen": 0.005,
+  "selection_output": "C:\\Users\\ASUS\\Desktop\\code\\Python\\RECOMB-27\\recomb2027\\outputs\\logs\\hop_fusion_regularizer_selection.json",
+  "selection_slices": [
+    "151508",
+    "151670",
+    "151674"
+  ],
+  "true_holdout_slices": [
+    "151507",
+    "151509",
+    "151510",
+    "151669",
+    "151671",
+    "151672",
+    "151675",
+    "151676"
+  ],
+  "tuning_slice_excluded": "151673",
+  "fixed_architecture_used_for_regularizer_selection": {
+    "reference_max_hops": 4,
+    "fusion_hidden_dim": 128,
+    "fusion_depth": 2,
+    "lambda_spatial_coherence": 0.0
+  },
+  "notes": "Only the two regularizers are locked here. The full Hop-Fusion architecture remains pending DLPFC selection, and this file must not be used for downstream generalization."
+}

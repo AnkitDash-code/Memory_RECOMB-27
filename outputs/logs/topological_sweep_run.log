@@ -1,0 +1,22 @@
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'n_jobs' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\.venv\Lib\site-packages\docrep\decorators.py:43: SyntaxWarning: 'show_progress_bar' is not a valid key!
+  doc = func(self, args[0].__doc__, *args[1:], **kwargs)
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\data\preprocess.py:68: FutureWarning: Calling `spatial_neighbors` is deprecated and will be removed in squidpy v1.9.0. Use `spatial_neighbors_knn`, `spatial_neighbors_radius`, `spatial_neighbors_delaunay`, `spatial_neighbors_grid`, or `spatial_neighbors_from_builder` instead.
+  sq.gr.spatial_neighbors(adata, n_rings=1, coord_type="grid", n_neighs=n_neighs)
+INFO     Creating graph using `None` transform and `1` libraries.              
+C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\src\models\memory_layer.py:245: UserWarning: Sparse invariant checks are implicitly disabled. Memory errors (e.g. SEGFAULT) will occur when operating on a sparse tensor which violates the invariants, but checks incur performance overhead. To silence this warning, explicitly opt in or out. See `torch.sparse.check_sparse_tensor_invariants.__doc__` for guidance.  (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\aten\src\ATen\Context.cpp:767.)
+  sparse = torch.sparse_coo_tensor(indices, values, result.shape).coalesce()
+config                         ARI   |rho|  pos_std  slots  key_cos   recon
+---------------------------------------------------------------------------
+ordinal-only                0.5696   0.151   0.1041     16   -0.031  0.8051
+som-only                    0.0000   0.029   0.0000      1    0.995  0.8469
+both (plan default)         0.0000   0.029   0.0000      1    0.995  0.8469
+both, sigma=0.5             0.0000   0.011   0.0000      1    0.442  0.8469
+both, sigma=1.0             0.0000   0.021   0.0000      1    0.674  0.8469
+both, sigma=2.5             0.0000   0.071   0.0000      1    1.000  0.8469
+both, lambda_som=0.002      0.0000   0.165   0.0000      1    0.490  0.8469
+both, lambda_som=2e-4       0.4865   0.162   0.0063     11    0.035  0.8095
+neither (= Stage 13)        0.5150   0.175   0.1177     16   -0.033  0.8052
+
+Saved C:\Users\ASUS\Desktop\code\Python\RECOMB-27\recomb2027\outputs\logs\topological_sweep.json

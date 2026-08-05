@@ -9,7 +9,9 @@
     "reference_max_hops": [1, 2, 3, 4, 6],
     "fusion_hidden_dim": [64, 128, 256],
     "fusion_depth": [1, 2],
-    "lambda_spatial_coherence": [0.0, 0.001, 0.01, 0.05]
+    "lambda_spatial_coherence": [0.0, 0.001, 0.01, 0.05],
+    "lambda_usage": [0.02, 0.04, 0.08, 0.15],
+    "lambda_sharpen": [0.002, 0.005, 0.01, 0.02]
   },
   "fixed_model": {
     "memory_slots": 16,
@@ -19,5 +21,11 @@
     "expression_weighted": true,
     "attention_fn": "softmax"
   },
-  "notes": "Run src/eval/cross_validate_hop_fusion.py to select and write configs/hop_fusion_dlpfc.json. No downstream generalization runner accepts this pending file as a locked config."
+  "regularizer_grid_fixed_architecture": {
+    "reference_max_hops": 4,
+    "fusion_hidden_dim": 128,
+    "fusion_depth": 2,
+    "lambda_spatial_coherence": 0.0
+  },
+  "notes": "The joint lambda_usage x lambda_sharpen grid uses cv_validation_slices only; true_holdout_slices remain untouched until the pair is selected. Run src/eval/select_hop_fusion_regularizers.py before any further Hop-Fusion architecture selection. No downstream generalization runner accepts this pending file as a locked config."
 }
