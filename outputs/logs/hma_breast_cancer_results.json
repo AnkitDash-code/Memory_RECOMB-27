@@ -1,0 +1,78 @@
+{
+  "n_spots": 3798,
+  "n_regions": 20,
+  "model": "HMA",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "baselines": {
+    "ours_SpatialAddressMemoryLayer": {
+      "mean": 0.412,
+      "std": 0.072,
+      "consensus": 0.546
+    },
+    "graphst": {
+      "mean": 0.621,
+      "std": 0.021,
+      "consensus": 0.643
+    }
+  },
+  "hma": {
+    "per_seed": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "mean": 0.0,
+    "std": 0.0,
+    "consensus": 4.225534967883259e-05,
+    "seed_diagnostics": [
+      {
+        "seed": 0,
+        "ari": 0.0,
+        "n_slots_used": 1,
+        "usage_entropy": 2.772585153579712,
+        "attractor_beta": 1.0039173364639282,
+        "collapsed": true
+      },
+      {
+        "seed": 1,
+        "ari": 0.0,
+        "n_slots_used": 1,
+        "usage_entropy": 2.772580862045288,
+        "attractor_beta": 1.0031042098999023,
+        "collapsed": true
+      },
+      {
+        "seed": 2,
+        "ari": 0.0,
+        "n_slots_used": 1,
+        "usage_entropy": 2.7725863456726074,
+        "attractor_beta": 1.006635308265686,
+        "collapsed": true
+      },
+      {
+        "seed": 3,
+        "ari": 0.0,
+        "n_slots_used": 1,
+        "usage_entropy": 2.772581100463867,
+        "attractor_beta": 1.0050063133239746,
+        "collapsed": true
+      },
+      {
+        "seed": 4,
+        "ari": 0.0,
+        "n_slots_used": 1,
+        "usage_entropy": 2.7725820541381836,
+        "attractor_beta": 1.0048595666885376,
+        "collapsed": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "slice": "151673",
+  "seed": 0,
+  "ari": 0.3872792174715246,
+  "baseline_reference_mean": 0.529,
+  "baseline_reference_std": 0.054,
+  "loss_decreased": true,
+  "collapsed": false,
+  "n_spots": 3639,
+  "n_layers": 7,
+  "history_summary": {
+    "epoch_0": {
+      "epoch": 0,
+      "recon_loss": 1.2852686643600464,
+      "total_loss": 1.2298169136047363,
+      "median_row_entropy": 2.772588014602661,
+      "usage_entropy": 2.772588014602661,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 1,
+      "key_cosine_similarity": 0.0013813417172059417,
+      "attractor_beta": 0.9991046190261841
+    },
+    "epoch_100": {
+      "epoch": 100,
+      "recon_loss": 0.8485276103019714,
+      "total_loss": 0.7930766940116882,
+      "median_row_entropy": 2.772545099258423,
+      "usage_entropy": 2.772545337677002,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 1,
+      "key_cosine_similarity": 0.08430653065443039,
+      "attractor_beta": 0.9984137415885925
+    },
+    "epoch_300": {
+      "epoch": 300,
+      "recon_loss": 0.8400558829307556,
+      "total_loss": 0.7846242189407349,
+      "median_row_entropy": 2.6355557441711426,
+      "usage_entropy": 2.7715837955474854,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 4,
+      "key_cosine_similarity": -0.0391567125916481,
+      "attractor_beta": 1.079097867012024
+    },
+    "epoch_final": {
+      "epoch": 599,
+      "recon_loss": 0.8115103244781494,
+      "total_loss": 0.7561008334159851,
+      "median_row_entropy": 2.676362991333008,
+      "usage_entropy": 2.770474910736084,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 8,
+      "key_cosine_similarity": -0.005049125757068396,
+      "attractor_beta": 1.0971850156784058
+    }
+  },
+  "full_history": [
+    {
+      "epoch": 0,
+      "recon_loss": 1.2852686643600464,
+      "total_loss": 1.2298169136047363,
+      "median_row_entropy": 2.772588014602661,
+      "usage_entropy": 2.772588014602661,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 1,
+      "key_cosine_similarity": 0.0013813417172059417,
+      "attractor_beta": 0.9991046190261841
+    },
+    {
+      "epoch": 100,
+      "recon_loss": 0.8485276103019714,
+      "total_loss": 0.7930766940116882,
+      "median_row_entropy": 2.772545099258423,
+      "usage_entropy": 2.772545337677002,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 1,
+      "key_cosine_similarity": 0.08430653065443039,
+      "attractor_beta": 0.9984137415885925
+    },
+    {
+      "epoch": 200,
+      "recon_loss": 0.8468513488769531,
+      "total_loss": 0.7913996577262878,
+      "median_row_entropy": 2.7725837230682373,
+      "usage_entropy": 2.7725837230682373,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 1,
+      "key_cosine_similarity": 0.1526593565940857,
+      "attractor_beta": 0.9965742826461792
+    },
+    {
+      "epoch": 300,
+      "recon_loss": 0.8400558829307556,
+      "total_loss": 0.7846242189407349,
+      "median_row_entropy": 2.6355557441711426,
+      "usage_entropy": 2.7715837955474854,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 4,
+      "key_cosine_similarity": -0.0391567125916481,
+      "attractor_beta": 1.079097867012024
+    },
+    {
+      "epoch": 400,
+      "recon_loss": 0.8148425221443176,
+      "total_loss": 0.7595453858375549,
+      "median_row_entropy": 2.6373708248138428,
+      "usage_entropy": 2.7648561000823975,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 7,
+      "key_cosine_similarity": -0.008730157278478146,
+      "attractor_beta": 1.122506022453308
+    },
+    {
+      "epoch": 500,
+      "recon_loss": 0.8137590885162354,
+      "total_loss": 0.7585390210151672,
+      "median_row_entropy": 2.688359498977661,
+      "usage_entropy": 2.7610039710998535,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 11,
+      "key_cosine_similarity": -0.006919066421687603,
+      "attractor_beta": 1.1134072542190552
+    },
+    {
+      "epoch": 599,
+      "recon_loss": 0.8115103244781494,
+      "total_loss": 0.7561008334159851,
+      "median_row_entropy": 2.676362991333008,
+      "usage_entropy": 2.770474910736084,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 8,
+      "key_cosine_similarity": -0.005049125757068396,
+      "attractor_beta": 1.0971850156784058
+    }
+  ]
+}
