@@ -530,6 +530,28 @@ coherent domains, not the salt-and-pepper noise an untrained/random-init model p
   cluster-label output to score.
 - **SpatialDG has no confirmed public implementation** as of this writing.
 
+## Proposed Architectures & Standardized Rerun Plan
+
+To improve domain identification (especially to close the gap to GraphST on human breast cancer tissue) and ensure leakage-free hyperparameter selection, the project has implemented a suite of alternative architectures and a standardized evaluation protocol:
+
+### Standardized Protocol & Leakage Prevention
+* **Spatial Blocks for Breast Cancer:** To prevent hyperparameter tuning on the test set, the single breast cancer slice is deterministically partitioned into 6 spatial blocks using KMeans on spot coordinates ([breast_cancer_spatial_blocks.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/breast_cancer_spatial_blocks.py)). 2 blocks are dedicated to selection (`SELECTION_BLOCKS = {0, 1}`) and 4 are used for reporting (`REPORT_BLOCKS = {2, 3, 4, 5}`).
+* **Standardized Evaluation ([standard_protocol.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/standard_protocol.py)):** Runs hyperparameter selection on the selection slices/blocks, writes candidate records to disk, selects the best hyperparameter set, and evaluates it on the held-out report slices/blocks over 5 seeds.
+* **Auto-generated Results Table ([build_master_table.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/build_master_table.py)):** Collects results from all logs and generates the master table at `outputs/logs/master_results_table.md`.
+
+### Candidate Architectures
+1. **LDCM (Latent Denoising & Contrastive Memory):** Keeps address-propagation, but adds latent-space smoothing and a contrastive loss to refine representations.
+2. **PPR (Personalized PageRank Address Memory):** Propagates slots-addressing via Personalized PageRank (PPR) over the spatial graph.
+3. **AGAP (Adaptive Gate Address Propagation):** Uses a learned, per-spot gate to dynamically determine propagation depth.
+4. **HMA (Hierarchical Memory Addressing):** Organizes memory slots hierarchically.
+5. **GMSM (Gated Multi-Scale Memory):** Combines multiscale slot representations.
+6. **MSAP (Multi-Scale Address Propagation):** Integrates multiple propagation hop depths.
+7. **BAAP (Boundary-Aware Address Propagation):** Uses edge-weight boundary detectors to prevent smoothing across domains.
+8. **ZISM (Zero-Inflated Spatial Memory):** Integrates Zero-Inflated Negative Binomial (ZINB) count reconstruction.
+9. **Baseline:** Reruns the baseline SpatialAddressMemory model under the block protocol.
+
+The **Master Rerun Plan** ([run_master_rerun.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/run_master_rerun.py)) executes all of these architectures sequentially under the identical standardized protocol.
+
 ## Repository structure
 
 ```
@@ -537,30 +559,42 @@ recomb2027/
   src/
     data/
       load_visium.py       # squidpy Visium crop/full loaders
-      load_geo.py           # Slide-seqV2 loader (see note below)
+      load_geo.py           # Slide-seqV2 loader
       load_dlpfc.py         # DLPFC 151673 + real ground-truth layers
       preprocess.py         # filter/normalize/log1p/spatial graph + PCA helper
-      data_stats.py         # real sparsity/shape stats -> outputs/logs/data_stats.txt
+      data_stats.py         # real sparsity/shape stats
     models/
-      memory_layer.py        # EmbeddedMemoryLayer + trainable autoencoder wrapper
+      memory_layer.py        # EmbeddedMemoryLayer + Autoencoder
+      ldcm_memory_layer.py   # Latent Denoising & Contrastive Memory layer
+      topological_memory_layer.py # Topological memory layer
       train_memory_layer.py  # training loop, tuned hyperparameters, clustering
+      train_ldcm_model.py    # Training loop for LDCM model
+      train_zism_model.py    # Training loop for ZISM model
       baseline_pca.py         # Scanpy PCA+Leiden baseline
-      run_graphst.py          # GraphST wrapper (real package, method="leiden")
+      run_graphst.py          # GraphST wrapper
     eval/
       metrics.py               # silhouette, spatial coherence, ARI, resolution search
+      standard_protocol.py     # Standardized evaluation and tuning protocol
+      breast_cancer_spatial_blocks.py # Breast Cancer K-Means spatial partition
+      verify_breast_cancer_blocks.py # Visual verification of blocks
+      run_master_rerun.py      # Sequential runner for all architectures
+      build_master_table.py    # Regenerates master results table markdown
+      generate_standard_figures.py # Plot and figure generation utilities
+      run_ldcm_standard.py     # Standard protocol evaluator for LDCM
       run_benchmark.py         # baseline vs. memory layer vs. GraphST, crop/full
       run_dlpfc_benchmark.py   # real ARI-vs-ground-truth benchmark on DLPFC
-      compute_literature_ari.py  # reproduces the literature ARI numbers from source data
+      compute_literature_ari.py  # reproduces the literature ARI numbers
       vram_profile.py           # VRAM/latency profiling utility
     viz/
-      spatial_plots.py    # generates the figures above
-  tests/                  # pytest suite, 15 tests
+      spatial_plots.py    # generates Visium crop figures
+  tests/                  # pytest suite
   notebooks/
     04_colab_scaleup.ipynb  # Slide-seqV2 scale-up + STAGATE/Garfield on Colab
   outputs/
-    figures/    # PNGs referenced above
-    logs/       # real logged results (JSON + results_table.md)
-    checkpoints/  # trained model weights (.pt); large .h5ad snapshots are gitignored
+    figures/    # PNGs including breast cancer blocks verification
+    logs/       # master_results_table.md, results_table.md, and raw json results
+    checkpoints/  # trained model weights (.pt)
+  _run_missing_logs.py      # Helper script to run zism/ldcm smoke tests
 ```
 
 `load_geo.py`'s name is a holdover from the original plan, which targeted GEO accession

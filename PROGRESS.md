@@ -832,3 +832,39 @@ averaging across seeds; k-means codebook initialization; entmax15/sparsemax
 address distribution; address-space contrastive regularization), and the
 tuning slice must stay out of any headline
 average.
+
+## Phase E — Standardized Evaluation & Rerun Plan (Proposed Architectures)
+
+To improve domain identification on Breast Cancer (where we previously had a gap to GraphST) and prevent hyperparameter tuning data leakage, we have designed and implemented a standardized protocol alongside several candidate architectures:
+
+### 18. Breast Cancer Spatial Blocks (Leakage Prevention) — DONE
+* Deterministically partitioned the breast cancer tissue slice into 6 spatial blocks using KMeans on spot coordinates ([breast_cancer_spatial_blocks.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/breast_cancer_spatial_blocks.py)). 2 blocks are dedicated to selection (`SELECTION_BLOCKS = {0, 1}`) and 4 are used for reporting (`REPORT_BLOCKS = {2, 3, 4, 5}`).
+* Saved deterministically to `outputs/logs/breast_cancer_blocks.npy` and visually verified in `outputs/figures/breast_cancer_blocks_verification.png`. All future runs must reuse this partition.
+
+### 19. Standardized Evaluation Protocol & Table Generator — DONE
+* Created [standard_protocol.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/standard_protocol.py) which runs hyperparameter tuning on the selection slices/blocks, writes candidate records to disk, selects the best hyperparameter configuration, and evaluates it on the held-out report slices/blocks over 5 seeds.
+* Created [build_master_table.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/build_master_table.py) which reads the JSON logs and generates/updates `outputs/logs/master_results_table.md`.
+* Created [generate_standard_figures.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/generate_standard_figures.py) to plot individual model and master comparison figures.
+
+### 20. Proposed Alternative Architectures — DONE (Implemented)
+All candidate architectures have been implemented in `src/models/` and integrated into the rerun runner:
+1. **LDCM (Latent Denoising & Contrastive Memory):** Latent smoothing via contrastive loss.
+2. **PPR (Personalized PageRank Address Memory):** Personalized PageRank address propagation.
+3. **AGAP (Adaptive Gate Address Propagation):** Dynamically gated hop-depth propagation per spot.
+4. **HMA (Hierarchical Memory Addressing):** Hierarchical slots addressing.
+5. **GMSM (Gated Multi-Scale Memory):** Multi-scale slots representation.
+6. **MSAP (Multi-Scale Address Propagation):** Multi-scale hop depths.
+7. **BAAP (Boundary-Aware Address Propagation):** Detects boundaries to stop smoothing.
+8. **ZISM (Zero-Inflated Spatial Memory):** Zero-inflated negative binomial (ZINB) reconstruction loss.
+
+### 21. Master Rerun Plan & Execution — IN PROGRESS
+* Created the master runner [run_master_rerun.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/run_master_rerun.py) to evaluate all 9 architectures under the standard protocol.
+* Currently running the first architecture, **LDCM**, in the background on DLPFC and Breast Cancer. Other architectures are queued.
+
+### 22. Untracked Files Pending Commits/Pushes
+The following files are untracked and should be committed/pushed to git:
+* **Models:** `src/models/ldcm_memory_layer.py`, `src/models/train_ldcm_model.py`, `src/models/train_zism_model.py`
+* **Evaluation Code:** `src/eval/standard_protocol.py`, `src/eval/breast_cancer_spatial_blocks.py`, `src/eval/verify_breast_cancer_blocks.py`, `src/eval/run_master_rerun.py`, `src/eval/build_master_table.py`, `src/eval/generate_standard_figures.py`, `src/eval/run_ldcm_standard.py`
+* **Outputs:** `outputs/logs/breast_cancer_blocks.npy`, `outputs/figures/breast_cancer_blocks_verification.png`
+* **Run script:** `_run_missing_logs.py`
+

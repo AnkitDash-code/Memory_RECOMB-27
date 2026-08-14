@@ -1,0 +1,65 @@
+{
+  "slice": "151673",
+  "seed": 0,
+  "ari": 0.23503524897220063,
+  "n_spots": 3639,
+  "n_layers": 7,
+  "history_summary": {
+    "epoch_0": {
+      "epoch": 0,
+      "recon_loss": 0.5222150087356567,
+      "total_loss": 0.46677836775779724,
+      "median_row_entropy": 2.771756887435913,
+      "usage_entropy": 2.771832227706909,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 5
+    },
+    "epoch_final": {
+      "epoch": 599,
+      "recon_loss": 0.28815704584121704,
+      "total_loss": 0.2327190637588501,
+      "median_row_entropy": 2.3782219886779785,
+      "usage_entropy": 2.7718992233276367,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    }
+  },
+  "full_history": [
+    {
+      "epoch": 0,
+      "recon_loss": 0.5222150087356567,
+      "total_loss": 0.46677836775779724,
+      "median_row_entropy": 2.771756887435913,
+      "usage_entropy": 2.771832227706909,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 5
+    },
+    {
+      "epoch": 200,
+      "recon_loss": 0.2938918173313141,
+      "total_loss": 0.23844082653522491,
+      "median_row_entropy": 2.676150321960449,
+      "usage_entropy": 2.772549629211426,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 400,
+      "recon_loss": 0.28973639011383057,
+      "total_loss": 0.2342856228351593,
+      "median_row_entropy": 2.464040994644165,
+      "usage_entropy": 2.772538423538208,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 599,
+      "recon_loss": 0.28815704584121704,
+      "total_loss": 0.2327190637588501,
+      "median_row_entropy": 2.3782219886779785,
+      "usage_entropy": 2.7718992233276367,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    }
+  ]
+}
