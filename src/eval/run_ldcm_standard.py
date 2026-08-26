@@ -202,38 +202,41 @@ def evaluate_breast_cancer():
     seed_embeddings = []
     for seed in range(5):
         print(f"\nSeed {seed}:")
+
+        # Train ONCE per seed on the full graph (address propagation is
+        # transductive over the whole tissue regardless of block); block
+        # membership only determines which spots' ARI gets reported where.
+        model, adata_trained, history = train_ldcm_model(
+            adata,
+            epochs=600,
+            lambda_contrastive=best_lambda,
+            seed=seed,
+            verbose=False,
+            **BASELINE_HYPERPARAMS
+        )
+        embedding = adata_trained.obsm["X_ldcm"]
+        labels = cluster_embedding(embedding, n_clusters)
+
         block_aris = []
-        
-        for block_id in REPORT_BLOCKS:
-            block_mask = (block_id == block_id)
-            full_mask = report_mask & block_mask
-            
-            print(f"  Block {block_id}...", end=" ")
-            
-            model, adata_trained, history = train_ldcm_model(
-                adata,
-                epochs=600,
-                lambda_contrastive=best_lambda,
-                seed=seed,
-                verbose=False,
-                **BASELINE_HYPERPARAMS
-            )
-            
-            embedding = adata_trained.obsm["X_ldcm"]
-            labels = cluster_embedding(embedding, n_clusters)
-            ari = _ari(adata.obs["ground_truth_region"].values, labels, full_mask)
+        for report_block in REPORT_BLOCKS:
+            # NOTE: previously `for block_id in REPORT_BLOCKS` shadowed the
+            # outer per-spot `block_id` array with this loop's scalar index,
+            # making `block_mask = (block_id == block_id)` always True --
+            # every "block" silently scored against the whole report_mask
+            # instead of its own spots (identical numbers 4x, fake std=0).
+            block_mask = report_mask & (block_id == report_block)
+            ari = _ari(adata.obs["ground_truth_region"].values, labels, block_mask)
             block_aris.append(ari)
-            print(f"ARI={ari:.4f}")
-            
-            # Store per-block result
-            if str(block_id) not in results["report"]["blocks"]:
-                results["report"]["blocks"][str(block_id)] = {}
-            results["report"]["blocks"][str(block_id)][f"seed_{seed}"] = float(ari)
-        
-        seed_embeddings.append(adata_trained.obsm["X_ldcm"])
+            print(f"  Block {report_block}: ARI={ari:.4f}")
+
+            if str(report_block) not in results["report"]["blocks"]:
+                results["report"]["blocks"][str(report_block)] = {}
+            results["report"]["blocks"][str(report_block)][f"seed_{seed}"] = float(ari)
+
+        seed_embeddings.append(embedding)
         mean_ari = np.mean(block_aris)
         print(f"  Seed {seed} mean ARI: {mean_ari:.4f}")
-        
+
         # Save incremental results
         _save_incremental_result(BREAST_CANCER_OUTPUT_PATH, results)
     
@@ -245,8 +248,8 @@ def evaluate_breast_cancer():
     
     # Compute per-seed mean
     per_seed_means = []
-    for block_id in REPORT_BLOCKS:
-        block_seed_scores = [results["report"]["blocks"][str(block_id)][f"seed_{seed}"] for seed in range(5)]
+    for report_block in REPORT_BLOCKS:
+        block_seed_scores = [results["report"]["blocks"][str(report_block)][f"seed_{seed}"] for seed in range(5)]
         per_seed_means.append(np.mean(block_seed_scores))
     results["report"]["per_seed_mean"] = float(np.mean(per_seed_means))
     results["report"]["per_seed_std"] = float(np.std(per_seed_means))
