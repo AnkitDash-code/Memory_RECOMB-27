@@ -11,7 +11,7 @@ rerun the builder script to refresh after new runs complete._
 | GraphST (reference, legacy) | 0.5724 ± 0.0861 | 0.6426 | Legacy run, logged pre-block protocol |
 | baseline | 0.5726 ± 0.0940 | 0.4760 ± 0.2160 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | ldcm | — | 0.4619 ± 0.2265 | BC HP: lambda_contrastive=0.1, temperature=1 |
-| ppr | — | 0.4333 ± 0.2681 | BC HP: alpha=0.05 |
+| ppr | 0.5521 ± 0.1307 | 0.4333 ± 0.2681 | DLPFC HP: alpha=0.1 | BC HP: alpha=0.05 |
 | agap | 0.4505 ± 0.1210 | 0.4428 ± 0.2597 | HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | hma | — | — |  |
 | gmsm | — | — |  |
@@ -27,7 +27,7 @@ rerun the builder script to refresh after new runs complete._
 | GraphST (reference, legacy) | 0.5685 ± 0.0825 | 0.6213 ± 0.0211 |
 | baseline | 0.5443 ± 0.0803 | 0.3789 ± 0.1889 |
 | ldcm | — | 0.4145 ± 0.1637 |
-| ppr | — | 0.3550 ± 0.1424 |
+| ppr | 0.4847 ± 0.1411 | 0.3550 ± 0.1424 |
 | agap | 0.4376 ± 0.0853 | 0.4470 ± 0.1982 |
 | hma | — | — |
 | gmsm | — | — |
@@ -74,6 +74,19 @@ rerun the builder script to refresh after new runs complete._
 | blocks_5 | 626 | 20 | 0.2449 | 0.2295 ± 0.0971 |
 
 ### ppr
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.3174 | 0.2895 ± 0.0412 |
+| 151509 | 4789 | 7 | 0.5816 | 0.5153 ± 0.0953 |
+| 151510 | 4634 | 7 | 0.5611 | 0.5418 ± 0.0531 |
+| 151670 | 3498 | 5 | 0.6854 | 0.6471 ± 0.0413 |
+| 151671 | 4110 | 5 | 0.7705 | 0.7282 ± 0.0296 |
+| 151672 | 4015 | 5 | 0.5598 | 0.3535 ± 0.1494 |
+| 151675 | 3592 | 7 | 0.4401 | 0.4012 ± 0.1087 |
+| 151676 | 3460 | 7 | 0.5012 | 0.4008 ± 0.0979 |
 
 **Breast Cancer report blocks:**
 
@@ -127,4 +140,5 @@ All rows above come from these files (re-run individual architecture harnesses t
 - `agap_dlpfc_results.json` + `agap_breast_cancer_results.json`
 - `baseline_dlpfc_results.json` + `baseline_breast_cancer_results.json`
 - `ldcm_dlpfc_results.json` + `ldcm_breast_cancer_results.json`
+- `ppr_dlpfc_results.json` + `ppr_breast_cancer_results.json`
 - `stagate_dlpfc_results.json` + `stagate_breast_cancer_results.json`
