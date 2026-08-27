@@ -9,10 +9,10 @@ rerun the builder script to refresh after new runs complete._
 | Architecture | DLPFC — 8 report slices, consensus | Breast Cancer — 4 report blocks, consensus | Notes |
 |---|---|---|---|
 | GraphST (reference, legacy) | 0.5724 ± 0.0861 | 0.6426 | Legacy run, logged pre-block protocol |
-| baseline | — | 0.4760 ± 0.2160 | BC HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
+| baseline | 0.5726 ± 0.0940 | 0.4760 ± 0.2160 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | ldcm | — | — |  |
 | ppr | — | 0.4333 ± 0.2681 | BC HP: alpha=0.05 |
-| agap | — | 0.4428 ± 0.2597 | BC HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
+| agap | 0.4505 ± 0.1210 | 0.4428 ± 0.2597 | HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | hma | — | — |  |
 | gmsm | — | — |  |
 | msap | — | — |  |
@@ -25,10 +25,10 @@ rerun the builder script to refresh after new runs complete._
 | Architecture | DLPFC — 8 report slices, per-seed mean | Breast Cancer — 4 report blocks, per-seed mean |
 |---|---|---|
 | GraphST (reference, legacy) | 0.5685 ± 0.0825 | 0.6213 ± 0.0211 |
-| baseline | — | 0.3789 ± 0.1889 |
+| baseline | 0.5443 ± 0.0803 | 0.3789 ± 0.1889 |
 | ldcm | — | — |
 | ppr | — | 0.3550 ± 0.1424 |
-| agap | — | 0.4470 ± 0.1982 |
+| agap | 0.4376 ± 0.0853 | 0.4470 ± 0.1982 |
 | hma | — | — |
 | gmsm | — | — |
 | msap | — | — |
@@ -39,6 +39,19 @@ rerun the builder script to refresh after new runs complete._
 ## Per-unit detail (consensus ARI, each slice/block)
 
 ### baseline
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.5311 | 0.4708 ± 0.1050 |
+| 151509 | 4789 | 7 | 0.5913 | 0.5457 ± 0.0691 |
+| 151510 | 4634 | 7 | 0.4860 | 0.4936 ± 0.0278 |
+| 151670 | 3498 | 5 | 0.5252 | 0.5358 ± 0.1311 |
+| 151671 | 4110 | 5 | 0.6398 | 0.6494 ± 0.0795 |
+| 151672 | 4015 | 5 | 0.7826 | 0.6992 ± 0.0963 |
+| 151675 | 3592 | 7 | 0.5511 | 0.4688 ± 0.0534 |
+| 151676 | 3460 | 7 | 0.4734 | 0.4914 ± 0.0484 |
 
 **Breast Cancer report blocks:**
 
@@ -63,6 +76,19 @@ rerun the builder script to refresh after new runs complete._
 | blocks_5 | 626 | 20 | 0.1513 | 0.2310 ± 0.1112 |
 
 ### agap
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.3090 | 0.3561 ± 0.0817 |
+| 151509 | 4789 | 7 | 0.5256 | 0.5083 ± 0.0718 |
+| 151510 | 4634 | 7 | 0.5961 | 0.5367 ± 0.0567 |
+| 151670 | 3498 | 5 | 0.3260 | 0.3970 ± 0.1050 |
+| 151671 | 4110 | 5 | 0.4816 | 0.4945 ± 0.0408 |
+| 151672 | 4015 | 5 | 0.6443 | 0.5373 ± 0.1050 |
+| 151675 | 3592 | 7 | 0.3623 | 0.3579 ± 0.0515 |
+| 151676 | 3460 | 7 | 0.3589 | 0.3128 ± 0.0345 |
 
 **Breast Cancer report blocks:**
 
@@ -89,5 +115,7 @@ rerun the builder script to refresh after new runs complete._
 
 All rows above come from these files (re-run individual architecture harnesses to update):
 
+- `agap_dlpfc_results.json` + `agap_breast_cancer_results.json`
+- `baseline_dlpfc_results.json` + `baseline_breast_cancer_results.json`
 - `ldcm_dlpfc_results.json` + `ldcm_breast_cancer_results.json`
 - `stagate_dlpfc_results.json` + `stagate_breast_cancer_results.json`
