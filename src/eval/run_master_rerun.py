@@ -210,7 +210,7 @@ def main():
             out = _run_single(spec, ds, device)
             if out is not None:
                 any_done = True
-                print(f"✅ {spec['name']}/{ds} done → {out.name}")
+                print(f"DONE: {spec['name']}/{ds} -> {out.name}")
                 if not args.skip_table:
                     try:
                         build_master_table()
@@ -219,21 +219,21 @@ def main():
                 if not args.skip_figures:
                     try:
                         for p in generate_all_for_arch(spec["name"]):
-                            print(f"  📊 figure: {p.name}")
+                            print(f"  figure: {p.name}")
                     except Exception as exc:
                         print(f"[warn] figure gen for {spec['name']} failed: {exc}")
 
     if any_done and not args.skip_figures:
         try:
             p = generate_master_comparison()
-            print(f"📊 master comparison → {p.name}")
+            print(f"master comparison -> {p.name}")
         except Exception as exc:
             print(f"[warn] master comparison figure failed: {exc}")
 
     if not args.skip_table:
         try:
             build_master_table()
-            print("✅ master_results_table.md regenerated")
+            print("master_results_table.md regenerated")
         except Exception as exc:
             print(f"[warn] final build_master_table failed: {exc}")
 
