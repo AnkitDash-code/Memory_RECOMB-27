@@ -11,7 +11,7 @@ rerun the builder script to refresh after new runs complete._
 | GraphST (reference, legacy) | 0.5724 ± 0.0861 | 0.6426 | Legacy run, logged pre-block protocol |
 | baseline | — | 0.4760 ± 0.2160 | BC HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | ldcm | — | — |  |
-| ppr | — | — |  |
+| ppr | — | 0.4333 ± 0.2681 | BC HP: alpha=0.05 |
 | agap | — | 0.4428 ± 0.2597 | BC HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | hma | — | — |  |
 | gmsm | — | — |  |
@@ -27,7 +27,7 @@ rerun the builder script to refresh after new runs complete._
 | GraphST (reference, legacy) | 0.5685 ± 0.0825 | 0.6213 ± 0.0211 |
 | baseline | — | 0.3789 ± 0.1889 |
 | ldcm | — | — |
-| ppr | — | — |
+| ppr | — | 0.3550 ± 0.1424 |
 | agap | — | 0.4470 ± 0.1982 |
 | hma | — | — |
 | gmsm | — | — |
@@ -52,6 +52,15 @@ rerun the builder script to refresh after new runs complete._
 ### ldcm
 
 ### ppr
+
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.4844 | 0.3597 ± 0.0560 |
+| blocks_3 | 550 | 20 | 0.8477 | 0.5857 ± 0.1607 |
+| blocks_4 | 575 | 20 | 0.2499 | 0.2434 ± 0.0412 |
+| blocks_5 | 626 | 20 | 0.1513 | 0.2310 ± 0.1112 |
 
 ### agap
 
