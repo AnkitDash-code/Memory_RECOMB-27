@@ -138,7 +138,16 @@ ARCH_SPECS = [
     {
         "name": "baseline",
         "train_fn": train_spatial_address_model,
-        "dlpfc": False,
+        # DLPFC was False here on the premise that run_dlpfc_multislice.py's
+        # 11-slice held-out result (0.5621 consensus) already covers baseline
+        # on DLPFC. It does, but not under the SAME slice split standard_
+        # protocol.py uses for other architectures here (a nested selection/
+        # report split, not "exclude 151673 only") -- so AGAP's DLPFC number
+        # (or any other architecture's) had nothing directly comparable.
+        # Flipped to True so baseline gets a real number under the identical
+        # split; the 11-slice number remains the headline, this is for
+        # apples-to-apples comparison against other architectures only.
+        "dlpfc": True,
         "breast_cancer": True,
         "hp_grid": {},
         "default_hp": dict(SHARED_BASELINE_HP),
