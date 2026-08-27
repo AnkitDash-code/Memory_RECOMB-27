@@ -1,0 +1,114 @@
+{
+  "slice": "151673",
+  "seed": 0,
+  "ari": 0.5016805505036982,
+  "baseline_reference_mean": 0.529,
+  "baseline_reference_std": 0.054,
+  "loss_decreased": true,
+  "collapsed": false,
+  "n_spots": 3639,
+  "n_layers": 7,
+  "history_summary": {
+    "epoch_0": {
+      "epoch": 0,
+      "recon_loss": 1.2852686643600464,
+      "total_loss": 1.229833722114563,
+      "median_row_entropy": 2.7716331481933594,
+      "usage_entropy": 2.771749973297119,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 9
+    },
+    "epoch_100": {
+      "epoch": 100,
+      "recon_loss": 0.8399636149406433,
+      "total_loss": 0.7845215797424316,
+      "median_row_entropy": 2.3640780448913574,
+      "usage_entropy": 2.772101402282715,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    "epoch_300": {
+      "epoch": 300,
+      "recon_loss": 0.8085787296295166,
+      "total_loss": 0.7531529664993286,
+      "median_row_entropy": 1.9379875659942627,
+      "usage_entropy": 2.7712883949279785,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    "epoch_final": {
+      "epoch": 599,
+      "recon_loss": 0.802197277545929,
+      "total_loss": 0.746753990650177,
+      "median_row_entropy": 1.6920099258422852,
+      "usage_entropy": 2.772163152694702,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    }
+  },
+  "full_history": [
+    {
+      "epoch": 0,
+      "recon_loss": 1.2852686643600464,
+      "total_loss": 1.229833722114563,
+      "median_row_entropy": 2.7716331481933594,
+      "usage_entropy": 2.771749973297119,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 9
+    },
+    {
+      "epoch": 100,
+      "recon_loss": 0.8399636149406433,
+      "total_loss": 0.7845215797424316,
+      "median_row_entropy": 2.3640780448913574,
+      "usage_entropy": 2.772101402282715,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 200,
+      "recon_loss": 0.8137645721435547,
+      "total_loss": 0.7583757638931274,
+      "median_row_entropy": 2.106912136077881,
+      "usage_entropy": 2.769439697265625,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 300,
+      "recon_loss": 0.8085787296295166,
+      "total_loss": 0.7531529664993286,
+      "median_row_entropy": 1.9379875659942627,
+      "usage_entropy": 2.7712883949279785,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 400,
+      "recon_loss": 0.8054206371307373,
+      "total_loss": 0.7499855756759644,
+      "median_row_entropy": 1.844192624092102,
+      "usage_entropy": 2.7717535495758057,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 500,
+      "recon_loss": 0.8036470413208008,
+      "total_loss": 0.7482070326805115,
+      "median_row_entropy": 1.751142978668213,
+      "usage_entropy": 2.772000789642334,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    },
+    {
+      "epoch": 599,
+      "recon_loss": 0.802197277545929,
+      "total_loss": 0.746753990650177,
+      "median_row_entropy": 1.6920099258422852,
+      "usage_entropy": 2.772163152694702,
+      "max_entropy": 2.772588722239781,
+      "n_slots_used": 16
+    }
+  ]
+}
