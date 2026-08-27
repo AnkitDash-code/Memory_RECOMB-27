@@ -1,0 +1,97 @@
+{
+  "n_spots": 3798,
+  "n_regions": 20,
+  "model": "PPR",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "alpha_sweep": {
+    "0.1": {
+      "mean_ari": 0.501919426023882,
+      "seed_aris": [
+        0.4741780710154687,
+        0.5296607810322953
+      ]
+    },
+    "0.2": {
+      "mean_ari": 0.48213639635259176,
+      "seed_aris": [
+        0.4710056289491074,
+        0.49326716375607604
+      ]
+    },
+    "0.4": {
+      "mean_ari": 0.4204721959269411,
+      "seed_aris": [
+        0.33821353441991603,
+        0.5027308574339662
+      ]
+    }
+  },
+  "selected_alpha": 0.1,
+  "baselines": {
+    "ours_SpatialAddressMemoryLayer": {
+      "mean": 0.412,
+      "std": 0.072,
+      "consensus": 0.546
+    },
+    "graphst": {
+      "mean": 0.621,
+      "std": 0.021,
+      "consensus": 0.643
+    }
+  },
+  "ppr": {
+    "per_seed": [
+      0.4741780710154687,
+      0.5296607810322953,
+      0.4692627929279556,
+      0.30766906881853434,
+      0.40997503499696614
+    ],
+    "mean": 0.438149149758244,
+    "std": 0.07544448671878444,
+    "consensus": 0.5473928803621043,
+    "seed_diagnostics": [
+      {
+        "seed": 0,
+        "ari": 0.4741780710154687,
+        "n_slots_used": 16,
+        "usage_entropy": 2.770023822784424,
+        "collapsed": false
+      },
+      {
+        "seed": 1,
+        "ari": 0.5296607810322953,
+        "n_slots_used": 16,
+        "usage_entropy": 2.7710185050964355,
+        "collapsed": false
+      },
+      {
+        "seed": 2,
+        "ari": 0.4692627929279556,
+        "n_slots_used": 16,
+        "usage_entropy": 2.7717013359069824,
+        "collapsed": false
+      },
+      {
+        "seed": 3,
+        "ari": 0.30766906881853434,
+        "n_slots_used": 15,
+        "usage_entropy": 2.7692718505859375,
+        "collapsed": false
+      },
+      {
+        "seed": 4,
+        "ari": 0.40997503499696614,
+        "n_slots_used": 16,
+        "usage_entropy": 2.763021945953369,
+        "collapsed": false
+      }
+    ]
+  }
+}
