@@ -1,83 +1,4059 @@
 {
-  "architecture": "LDCM",
+  "architecture": "ldcm",
   "dataset": "breast_cancer",
-  "hyperparameters": {
-    "memory_slots": 16,
-    "memory_dim": 128,
-    "hidden_dim": 256,
-    "n_hops": 4,
-    "temperature": 1.0,
-    "lambda_usage": 0.02,
-    "expression_weighted": true,
-    "lambda_contrastive": 0.05
-  },
   "selection": {
-    "0.05": {
-      "mean_ari": 0.4882070860524707,
-      "seed_aris": [
-        0.40595535595894233,
-        0.5100409916946863,
-        0.5486249105037835
+    "hp_grid": {
+      "lambda_contrastive": [
+        0.01,
+        0.1,
+        0.2
+      ],
+      "temperature": [
+        0.5,
+        1.0
       ]
     },
-    "0.1": {
-      "mean_ari": 0.48545313069652013,
-      "seed_aris": [
-        0.5442819166462266,
-        0.481471811327138,
-        0.4306056641161958
-      ]
+    "candidates": [
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.01,
+          "temperature": 0.5
+        },
+        "score": 0.4604064537449434,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.6314320074287797,
+              0.5074048677702839
+            ],
+            "mean": 0.5694184375995318,
+            "std": 0.06201356982924788,
+            "consensus_ari": 0.5975679233373847,
+            "hp_config": {
+              "lambda_contrastive": 0.01,
+              "temperature": 0.5
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.3511726184453382,
+              0.4418755955785866
+            ],
+            "mean": 0.3965241070119624,
+            "std": 0.04535148856662419,
+            "consensus_ari": 0.32324498415250197,
+            "hp_config": {
+              "lambda_contrastive": 0.01,
+              "temperature": 0.5
+            }
+          }
+        ]
+      },
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.01,
+          "temperature": 1.0
+        },
+        "score": 0.37348798665495486,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.432384607878952,
+              0.5166673993259109
+            ],
+            "mean": 0.47452600360243147,
+            "std": 0.04214139572347944,
+            "consensus_ari": 0.44580908506194983,
+            "hp_config": {
+              "lambda_contrastive": 0.01,
+              "temperature": 1.0
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.3077998546545305,
+              0.30218852905746457
+            ],
+            "mean": 0.3049941918559975,
+            "std": 0.0028056627985329763,
+            "consensus_ari": 0.3011668882479599,
+            "hp_config": {
+              "lambda_contrastive": 0.01,
+              "temperature": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.1,
+          "temperature": 0.5
+        },
+        "score": 0.4498769945039841,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.4944415547235062,
+              0.7088020446216283
+            ],
+            "mean": 0.6016217996725672,
+            "std": 0.10718024494906106,
+            "consensus_ari": 0.505108607686569,
+            "hp_config": {
+              "lambda_contrastive": 0.1,
+              "temperature": 0.5
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.4164406545210441,
+              0.3964612805117988
+            ],
+            "mean": 0.40645096751642146,
+            "std": 0.00998968700462266,
+            "consensus_ari": 0.3946453813213992,
+            "hp_config": {
+              "lambda_contrastive": 0.1,
+              "temperature": 0.5
+            }
+          }
+        ]
+      },
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.1,
+          "temperature": 1.0
+        },
+        "score": 0.49422246648009904,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.6214866569184806,
+              0.5737894682089906
+            ],
+            "mean": 0.5976380625637356,
+            "std": 0.023848594354745012,
+            "consensus_ari": 0.5958405613024294,
+            "hp_config": {
+              "lambda_contrastive": 0.1,
+              "temperature": 1.0
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.32672636819396206,
+              0.4050545415103627
+            ],
+            "mean": 0.3658904548521624,
+            "std": 0.039164086658200314,
+            "consensus_ari": 0.3926043716577687,
+            "hp_config": {
+              "lambda_contrastive": 0.1,
+              "temperature": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.2,
+          "temperature": 0.5
+        },
+        "score": 0.4028345430647021,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.5454951964796705,
+              0.41578836138632647
+            ],
+            "mean": 0.4806417789329985,
+            "std": 0.06485341754667201,
+            "consensus_ari": 0.5431664632560698,
+            "hp_config": {
+              "lambda_contrastive": 0.2,
+              "temperature": 0.5
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.36065554222809715,
+              0.2585770982152838
+            ],
+            "mean": 0.3096163202216905,
+            "std": 0.051039222006406676,
+            "consensus_ari": 0.2625026228733345,
+            "hp_config": {
+              "lambda_contrastive": 0.2,
+              "temperature": 0.5
+            }
+          }
+        ]
+      },
+      {
+        "hp_config": {
+          "lambda_contrastive": 0.2,
+          "temperature": 1.0
+        },
+        "score": 0.2794699385102596,
+        "units": [
+          {
+            "unit_id": "blocks_0",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.37817908372960063,
+              0.23696164831806754
+            ],
+            "mean": 0.3075703660238341,
+            "std": 0.07060871770576654,
+            "consensus_ari": 0.2536292615837632,
+            "hp_config": {
+              "lambda_contrastive": 0.2,
+              "temperature": 1.0
+            }
+          },
+          {
+            "unit_id": "blocks_1",
+            "n_spots": 663,
+            "n_classes": 20,
+            "per_seed_aris": [
+              0.30142528402962177,
+              0.26656156155843647
+            ],
+            "mean": 0.2839934227940291,
+            "std": 0.01743186123559265,
+            "consensus_ari": 0.3053106154367559,
+            "hp_config": {
+              "lambda_contrastive": 0.2,
+              "temperature": 1.0
+            }
+          }
+        ]
+      }
+    ],
+    "best_hp": {
+      "lambda_contrastive": 0.1,
+      "temperature": 1.0
     },
-    "0.2": {
-      "mean_ari": 0.4028346051704343,
-      "seed_aris": [
-        0.38264868063621393,
-        0.3966435125895334,
-        0.4292116222855555
-      ]
-    },
-    "0.5": {
-      "mean_ari": 0.38693745472855046,
-      "seed_aris": [
-        0.4001556043631619,
-        0.39384344811769306,
-        0.3668133117047965
-      ]
-    }
+    "best_score": 0.49422246648009904
   },
-  "report": {
-    "blocks": {
-      "2": {
-        "seed_0": 0.45946500099028376,
-        "seed_1": 0.5104924910971296,
-        "seed_2": 0.5260240262714653,
-        "seed_3": 0.5075114760645895,
-        "seed_4": 0.34473655274235054
+  "fits_selection": [
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 0.5
       },
-      "3": {
-        "seed_0": 0.42644499585099266,
-        "seed_1": 0.781644693404396,
-        "seed_2": 0.384732029378499,
-        "seed_3": 0.4008364343565932,
-        "seed_4": 0.7905316007211456
+      "ari_per_seed": 0.6314320074287797,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 1.9360374212265015,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8048281669616699,
+          "contrastive_loss": 7.098971843719482,
+          "total_loss": 0.8204078674316406,
+          "median_row_entropy": 2.430677652359009,
+          "usage_entropy": 2.7705013751983643,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7874372601509094,
+          "contrastive_loss": 6.731672286987305,
+          "total_loss": 0.7994725704193115,
+          "median_row_entropy": 2.009479522705078,
+          "usage_entropy": 2.764070749282837,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7521860003471375,
+          "contrastive_loss": 6.603851795196533,
+          "total_loss": 0.7628878355026245,
+          "median_row_entropy": 1.7678908109664917,
+          "usage_entropy": 2.7668371200561523,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7376954555511475,
+          "contrastive_loss": 6.544837951660156,
+          "total_loss": 0.7477661967277527,
+          "median_row_entropy": 1.6220474243164062,
+          "usage_entropy": 2.768883228302002,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7283312082290649,
+          "contrastive_loss": 6.52313756942749,
+          "total_loss": 0.7381406426429749,
+          "median_row_entropy": 1.5913147926330566,
+          "usage_entropy": 2.7710986137390137,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7217170000076294,
+          "contrastive_loss": 6.4973368644714355,
+          "total_loss": 0.7312511801719666,
+          "median_row_entropy": 1.612092137336731,
+          "usage_entropy": 2.7719573974609375,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 0.5
       },
-      "4": {
-        "seed_0": 0.36154900199705453,
-        "seed_1": 0.38930865259458985,
-        "seed_2": 0.3699696774260485,
-        "seed_3": 0.3084690741722321,
-        "seed_4": 0.3408461810003378
+      "ari_per_seed": 0.5074048677702839,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 1.933669090270996,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.802998423576355,
+          "contrastive_loss": 7.250708103179932,
+          "total_loss": 0.821552038192749,
+          "median_row_entropy": 2.577357053756714,
+          "usage_entropy": 2.697673797607422,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 11
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7894701957702637,
+          "contrastive_loss": 6.956674575805664,
+          "total_loss": 0.8036774396896362,
+          "median_row_entropy": 2.486279010772705,
+          "usage_entropy": 2.767975330352783,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7538871765136719,
+          "contrastive_loss": 6.733103275299072,
+          "total_loss": 0.766070544719696,
+          "median_row_entropy": 2.0236408710479736,
+          "usage_entropy": 2.757382869720459,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7424019575119019,
+          "contrastive_loss": 6.62898588180542,
+          "total_loss": 0.7535036206245422,
+          "median_row_entropy": 2.032923936843872,
+          "usage_entropy": 2.759408950805664,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7319058179855347,
+          "contrastive_loss": 6.586968898773193,
+          "total_loss": 0.742472767829895,
+          "median_row_entropy": 1.9804050922393799,
+          "usage_entropy": 2.765137195587158,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7263162136077881,
+          "contrastive_loss": 6.53659725189209,
+          "total_loss": 0.7362778186798096,
+          "median_row_entropy": 1.9451186656951904,
+          "usage_entropy": 2.770219326019287,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 0.5
       },
-      "5": {
-        "seed_0": 0.12672821944237042,
-        "seed_1": 0.2868183915652311,
-        "seed_2": 0.14878966265042587,
-        "seed_3": 0.2962382704407307,
-        "seed_4": 0.15829878585995555
+      "ari_per_seed": 0.3511726184453382,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 1.9360374212265015,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8048281669616699,
+          "contrastive_loss": 7.098971843719482,
+          "total_loss": 0.8204078674316406,
+          "median_row_entropy": 2.430677652359009,
+          "usage_entropy": 2.7705013751983643,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7874372601509094,
+          "contrastive_loss": 6.731672286987305,
+          "total_loss": 0.7994725704193115,
+          "median_row_entropy": 2.009479522705078,
+          "usage_entropy": 2.764070749282837,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7521860003471375,
+          "contrastive_loss": 6.603851795196533,
+          "total_loss": 0.7628878355026245,
+          "median_row_entropy": 1.7678908109664917,
+          "usage_entropy": 2.7668371200561523,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7376954555511475,
+          "contrastive_loss": 6.544837951660156,
+          "total_loss": 0.7477661967277527,
+          "median_row_entropy": 1.6220474243164062,
+          "usage_entropy": 2.768883228302002,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7283312082290649,
+          "contrastive_loss": 6.52313756942749,
+          "total_loss": 0.7381406426429749,
+          "median_row_entropy": 1.5913147926330566,
+          "usage_entropy": 2.7710986137390137,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7217170000076294,
+          "contrastive_loss": 6.4973368644714355,
+          "total_loss": 0.7312511801719666,
+          "median_row_entropy": 1.612092137336731,
+          "usage_entropy": 2.7719573974609375,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.4418755955785866,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 1.933669090270996,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.802998423576355,
+          "contrastive_loss": 7.250708103179932,
+          "total_loss": 0.821552038192749,
+          "median_row_entropy": 2.577357053756714,
+          "usage_entropy": 2.697673797607422,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 11
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7894701957702637,
+          "contrastive_loss": 6.956674575805664,
+          "total_loss": 0.8036774396896362,
+          "median_row_entropy": 2.486279010772705,
+          "usage_entropy": 2.767975330352783,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7538871765136719,
+          "contrastive_loss": 6.733103275299072,
+          "total_loss": 0.766070544719696,
+          "median_row_entropy": 2.0236408710479736,
+          "usage_entropy": 2.757382869720459,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7424019575119019,
+          "contrastive_loss": 6.62898588180542,
+          "total_loss": 0.7535036206245422,
+          "median_row_entropy": 2.032923936843872,
+          "usage_entropy": 2.759408950805664,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7319058179855347,
+          "contrastive_loss": 6.586968898773193,
+          "total_loss": 0.742472767829895,
+          "median_row_entropy": 1.9804050922393799,
+          "usage_entropy": 2.765137195587158,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7263162136077881,
+          "contrastive_loss": 6.53659725189209,
+          "total_loss": 0.7362778186798096,
+          "median_row_entropy": 1.9451186656951904,
+          "usage_entropy": 2.770219326019287,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.432384607878952,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 1.9356263875961304,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8048487901687622,
+          "contrastive_loss": 7.690709114074707,
+          "total_loss": 0.8264482617378235,
+          "median_row_entropy": 2.570617198944092,
+          "usage_entropy": 2.7653818130493164,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 10
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7745178937911987,
+          "contrastive_loss": 7.50034761428833,
+          "total_loss": 0.7941254377365112,
+          "median_row_entropy": 2.415644884109497,
+          "usage_entropy": 2.7697978019714355,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7535858750343323,
+          "contrastive_loss": 7.416676998138428,
+          "total_loss": 0.7723555564880371,
+          "median_row_entropy": 2.1350796222686768,
+          "usage_entropy": 2.76985502243042,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7410793304443359,
+          "contrastive_loss": 7.381340503692627,
+          "total_loss": 0.7594857215881348,
+          "median_row_entropy": 2.1196532249450684,
+          "usage_entropy": 2.7703495025634766,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7333142757415771,
+          "contrastive_loss": 7.365301132202148,
+          "total_loss": 0.7515387535095215,
+          "median_row_entropy": 2.0075459480285645,
+          "usage_entropy": 2.7714242935180664,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7290636301040649,
+          "contrastive_loss": 7.354897499084473,
+          "total_loss": 0.7471834421157837,
+          "median_row_entropy": 1.9688520431518555,
+          "usage_entropy": 2.771456718444824,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.5166673993259109,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 1.9332537651062012,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.802069902420044,
+          "contrastive_loss": 7.604881286621094,
+          "total_loss": 0.8227159976959229,
+          "median_row_entropy": 2.477339744567871,
+          "usage_entropy": 2.7701339721679688,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7802961468696594,
+          "contrastive_loss": 7.51212215423584,
+          "total_loss": 0.8003112077713013,
+          "median_row_entropy": 2.4194142818450928,
+          "usage_entropy": 2.7553086280822754,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7553848624229431,
+          "contrastive_loss": 7.453588485717773,
+          "total_loss": 0.7747309803962708,
+          "median_row_entropy": 2.0975377559661865,
+          "usage_entropy": 2.759488105773926,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7444655299186707,
+          "contrastive_loss": 7.388610363006592,
+          "total_loss": 0.7629619836807251,
+          "median_row_entropy": 2.067452907562256,
+          "usage_entropy": 2.7694826126098633,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7336456775665283,
+          "contrastive_loss": 7.356235980987549,
+          "total_loss": 0.7518060207366943,
+          "median_row_entropy": 1.9550197124481201,
+          "usage_entropy": 2.7701034545898438,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7268540859222412,
+          "contrastive_loss": 7.346286296844482,
+          "total_loss": 0.7448974847793579,
+          "median_row_entropy": 1.9247066974639893,
+          "usage_entropy": 2.7709710597991943,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.3077998546545305,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 1.9356263875961304,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8048487901687622,
+          "contrastive_loss": 7.690709114074707,
+          "total_loss": 0.8264482617378235,
+          "median_row_entropy": 2.570617198944092,
+          "usage_entropy": 2.7653818130493164,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 10
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7745178937911987,
+          "contrastive_loss": 7.50034761428833,
+          "total_loss": 0.7941254377365112,
+          "median_row_entropy": 2.415644884109497,
+          "usage_entropy": 2.7697978019714355,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7535858750343323,
+          "contrastive_loss": 7.416676998138428,
+          "total_loss": 0.7723555564880371,
+          "median_row_entropy": 2.1350796222686768,
+          "usage_entropy": 2.76985502243042,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7410793304443359,
+          "contrastive_loss": 7.381340503692627,
+          "total_loss": 0.7594857215881348,
+          "median_row_entropy": 2.1196532249450684,
+          "usage_entropy": 2.7703495025634766,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7333142757415771,
+          "contrastive_loss": 7.365301132202148,
+          "total_loss": 0.7515387535095215,
+          "median_row_entropy": 2.0075459480285645,
+          "usage_entropy": 2.7714242935180664,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7290636301040649,
+          "contrastive_loss": 7.354897499084473,
+          "total_loss": 0.7471834421157837,
+          "median_row_entropy": 1.9688520431518555,
+          "usage_entropy": 2.771456718444824,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.01,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.30218852905746457,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 1.9332537651062012,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.802069902420044,
+          "contrastive_loss": 7.604881286621094,
+          "total_loss": 0.8227159976959229,
+          "median_row_entropy": 2.477339744567871,
+          "usage_entropy": 2.7701339721679688,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7802961468696594,
+          "contrastive_loss": 7.51212215423584,
+          "total_loss": 0.8003112077713013,
+          "median_row_entropy": 2.4194142818450928,
+          "usage_entropy": 2.7553086280822754,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7553848624229431,
+          "contrastive_loss": 7.453588485717773,
+          "total_loss": 0.7747309803962708,
+          "median_row_entropy": 2.0975377559661865,
+          "usage_entropy": 2.759488105773926,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7444655299186707,
+          "contrastive_loss": 7.388610363006592,
+          "total_loss": 0.7629619836807251,
+          "median_row_entropy": 2.067452907562256,
+          "usage_entropy": 2.7694826126098633,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7336456775665283,
+          "contrastive_loss": 7.356235980987549,
+          "total_loss": 0.7518060207366943,
+          "median_row_entropy": 1.9550197124481201,
+          "usage_entropy": 2.7701034545898438,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7268540859222412,
+          "contrastive_loss": 7.346286296844482,
+          "total_loss": 0.7448974847793579,
+          "median_row_entropy": 1.9247066974639893,
+          "usage_entropy": 2.7709710597991943,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.4944415547235062,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 2.67783784866333,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8071219325065613,
+          "contrastive_loss": 6.799904823303223,
+          "total_loss": 1.433368444442749,
+          "median_row_entropy": 1.9718844890594482,
+          "usage_entropy": 2.687197208404541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7679303288459778,
+          "contrastive_loss": 6.551529884338379,
+          "total_loss": 1.3677561283111572,
+          "median_row_entropy": 1.6159937381744385,
+          "usage_entropy": 2.7663609981536865,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7457612156867981,
+          "contrastive_loss": 6.493328094482422,
+          "total_loss": 1.3397737741470337,
+          "median_row_entropy": 1.518517017364502,
+          "usage_entropy": 2.766012668609619,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7351616621017456,
+          "contrastive_loss": 6.478634357452393,
+          "total_loss": 1.3277164697647095,
+          "median_row_entropy": 1.4966121912002563,
+          "usage_entropy": 2.7654361724853516,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7301799058914185,
+          "contrastive_loss": 6.448228359222412,
+          "total_loss": 1.319669485092163,
+          "median_row_entropy": 1.5224370956420898,
+          "usage_entropy": 2.766664981842041,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.727174699306488,
+          "contrastive_loss": 6.449493885040283,
+          "total_loss": 1.3167904615402222,
+          "median_row_entropy": 1.5503102540969849,
+          "usage_entropy": 2.7666807174682617,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.7088020446216283,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 2.675469160079956,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8061591982841492,
+          "contrastive_loss": 6.936850547790527,
+          "total_loss": 1.4477035999298096,
+          "median_row_entropy": 2.3458070755004883,
+          "usage_entropy": 2.607034206390381,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7764967679977417,
+          "contrastive_loss": 6.6349639892578125,
+          "total_loss": 1.385169506072998,
+          "median_row_entropy": 1.9943792819976807,
+          "usage_entropy": 2.7411797046661377,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.751628041267395,
+          "contrastive_loss": 6.520723819732666,
+          "total_loss": 1.3484834432601929,
+          "median_row_entropy": 1.7107654809951782,
+          "usage_entropy": 2.76084303855896,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7402674555778503,
+          "contrastive_loss": 6.4932427406311035,
+          "total_loss": 1.3343185186386108,
+          "median_row_entropy": 1.673134684562683,
+          "usage_entropy": 2.7636611461639404,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7309668064117432,
+          "contrastive_loss": 6.468616008758545,
+          "total_loss": 1.3224899768829346,
+          "median_row_entropy": 1.6194937229156494,
+          "usage_entropy": 2.766918182373047,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7258588671684265,
+          "contrastive_loss": 6.4549102783203125,
+          "total_loss": 1.3159945011138916,
+          "median_row_entropy": 1.6275362968444824,
+          "usage_entropy": 2.7677698135375977,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.4164406545210441,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 2.67783784866333,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8071219325065613,
+          "contrastive_loss": 6.799904823303223,
+          "total_loss": 1.433368444442749,
+          "median_row_entropy": 1.9718844890594482,
+          "usage_entropy": 2.687197208404541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7679303288459778,
+          "contrastive_loss": 6.551529884338379,
+          "total_loss": 1.3677561283111572,
+          "median_row_entropy": 1.6159937381744385,
+          "usage_entropy": 2.7663609981536865,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7457612156867981,
+          "contrastive_loss": 6.493328094482422,
+          "total_loss": 1.3397737741470337,
+          "median_row_entropy": 1.518517017364502,
+          "usage_entropy": 2.766012668609619,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7351616621017456,
+          "contrastive_loss": 6.478634357452393,
+          "total_loss": 1.3277164697647095,
+          "median_row_entropy": 1.4966121912002563,
+          "usage_entropy": 2.7654361724853516,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7301799058914185,
+          "contrastive_loss": 6.448228359222412,
+          "total_loss": 1.319669485092163,
+          "median_row_entropy": 1.5224370956420898,
+          "usage_entropy": 2.766664981842041,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.727174699306488,
+          "contrastive_loss": 6.449493885040283,
+          "total_loss": 1.3167904615402222,
+          "median_row_entropy": 1.5503102540969849,
+          "usage_entropy": 2.7666807174682617,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.3964612805117988,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 2.675469160079956,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8061591982841492,
+          "contrastive_loss": 6.936850547790527,
+          "total_loss": 1.4477035999298096,
+          "median_row_entropy": 2.3458070755004883,
+          "usage_entropy": 2.607034206390381,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7764967679977417,
+          "contrastive_loss": 6.6349639892578125,
+          "total_loss": 1.385169506072998,
+          "median_row_entropy": 1.9943792819976807,
+          "usage_entropy": 2.7411797046661377,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.751628041267395,
+          "contrastive_loss": 6.520723819732666,
+          "total_loss": 1.3484834432601929,
+          "median_row_entropy": 1.7107654809951782,
+          "usage_entropy": 2.76084303855896,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7402674555778503,
+          "contrastive_loss": 6.4932427406311035,
+          "total_loss": 1.3343185186386108,
+          "median_row_entropy": 1.673134684562683,
+          "usage_entropy": 2.7636611461639404,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7309668064117432,
+          "contrastive_loss": 6.468616008758545,
+          "total_loss": 1.3224899768829346,
+          "median_row_entropy": 1.6194937229156494,
+          "usage_entropy": 2.766918182373047,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7258588671684265,
+          "contrastive_loss": 6.4549102783203125,
+          "total_loss": 1.3159945011138916,
+          "median_row_entropy": 1.6275362968444824,
+          "usage_entropy": 2.7677698135375977,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.6214866569184806,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.5737894682089906,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.32672636819396206,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.4050545415103627,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.5454951964796705,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 3.5020601749420166,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8099805116653442,
+          "contrastive_loss": 6.872612953186035,
+          "total_loss": 2.13132643699646,
+          "median_row_entropy": 2.2069504261016846,
+          "usage_entropy": 2.658830404281616,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7683147192001343,
+          "contrastive_loss": 6.586276531219482,
+          "total_loss": 2.0303337574005127,
+          "median_row_entropy": 1.7503504753112793,
+          "usage_entropy": 2.7618179321289062,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7466244101524353,
+          "contrastive_loss": 6.502285480499268,
+          "total_loss": 1.9917441606521606,
+          "median_row_entropy": 1.6310230493545532,
+          "usage_entropy": 2.7668631076812744,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7365288734436035,
+          "contrastive_loss": 6.451097011566162,
+          "total_loss": 1.971421480178833,
+          "median_row_entropy": 1.5811705589294434,
+          "usage_entropy": 2.7663369178771973,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7314999103546143,
+          "contrastive_loss": 6.430862903594971,
+          "total_loss": 1.9622763395309448,
+          "median_row_entropy": 1.5796345472335815,
+          "usage_entropy": 2.769808769226074,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.728574275970459,
+          "contrastive_loss": 6.416039943695068,
+          "total_loss": 1.9563684463500977,
+          "median_row_entropy": 1.597529649734497,
+          "usage_entropy": 2.7706871032714844,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.41578836138632647,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 3.4996917247772217,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8077481389045715,
+          "contrastive_loss": 6.886298656463623,
+          "total_loss": 2.134720802307129,
+          "median_row_entropy": 1.961111068725586,
+          "usage_entropy": 2.5143496990203857,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7746724486351013,
+          "contrastive_loss": 6.587238788604736,
+          "total_loss": 2.03755259513855,
+          "median_row_entropy": 1.9091531038284302,
+          "usage_entropy": 2.7283763885498047,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7538911700248718,
+          "contrastive_loss": 6.529776096343994,
+          "total_loss": 2.004760265350342,
+          "median_row_entropy": 1.73131263256073,
+          "usage_entropy": 2.754305362701416,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7437452077865601,
+          "contrastive_loss": 6.467658042907715,
+          "total_loss": 1.9820494651794434,
+          "median_row_entropy": 1.628340482711792,
+          "usage_entropy": 2.7613637447357178,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7364599704742432,
+          "contrastive_loss": 6.448978424072266,
+          "total_loss": 1.9709659814834595,
+          "median_row_entropy": 1.607755184173584,
+          "usage_entropy": 2.7644805908203125,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7320388555526733,
+          "contrastive_loss": 6.438393592834473,
+          "total_loss": 1.9643642902374268,
+          "median_row_entropy": 1.6226623058319092,
+          "usage_entropy": 2.767667770385742,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.36065554222809715,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085357189178467,
+          "contrastive_loss": 8.24222469329834,
+          "total_loss": 3.5020601749420166,
+          "median_row_entropy": 2.744077205657959,
+          "usage_entropy": 2.7460272312164307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8099805116653442,
+          "contrastive_loss": 6.872612953186035,
+          "total_loss": 2.13132643699646,
+          "median_row_entropy": 2.2069504261016846,
+          "usage_entropy": 2.658830404281616,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7683147192001343,
+          "contrastive_loss": 6.586276531219482,
+          "total_loss": 2.0303337574005127,
+          "median_row_entropy": 1.7503504753112793,
+          "usage_entropy": 2.7618179321289062,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7466244101524353,
+          "contrastive_loss": 6.502285480499268,
+          "total_loss": 1.9917441606521606,
+          "median_row_entropy": 1.6310230493545532,
+          "usage_entropy": 2.7668631076812744,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7365288734436035,
+          "contrastive_loss": 6.451097011566162,
+          "total_loss": 1.971421480178833,
+          "median_row_entropy": 1.5811705589294434,
+          "usage_entropy": 2.7663369178771973,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7314999103546143,
+          "contrastive_loss": 6.430862903594971,
+          "total_loss": 1.9622763395309448,
+          "median_row_entropy": 1.5796345472335815,
+          "usage_entropy": 2.769808769226074,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.728574275970459,
+          "contrastive_loss": 6.416039943695068,
+          "total_loss": 1.9563684463500977,
+          "median_row_entropy": 1.597529649734497,
+          "usage_entropy": 2.7706871032714844,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 0.5
+      },
+      "ari_per_seed": 0.2585770982152838,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061418771743774,
+          "contrastive_loss": 8.242225646972656,
+          "total_loss": 3.4996917247772217,
+          "median_row_entropy": 2.7432503700256348,
+          "usage_entropy": 2.7447547912597656,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8077481389045715,
+          "contrastive_loss": 6.886298656463623,
+          "total_loss": 2.134720802307129,
+          "median_row_entropy": 1.961111068725586,
+          "usage_entropy": 2.5143496990203857,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7746724486351013,
+          "contrastive_loss": 6.587238788604736,
+          "total_loss": 2.03755259513855,
+          "median_row_entropy": 1.9091531038284302,
+          "usage_entropy": 2.7283763885498047,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7538911700248718,
+          "contrastive_loss": 6.529776096343994,
+          "total_loss": 2.004760265350342,
+          "median_row_entropy": 1.73131263256073,
+          "usage_entropy": 2.754305362701416,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7437452077865601,
+          "contrastive_loss": 6.467658042907715,
+          "total_loss": 1.9820494651794434,
+          "median_row_entropy": 1.628340482711792,
+          "usage_entropy": 2.7613637447357178,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7364599704742432,
+          "contrastive_loss": 6.448978424072266,
+          "total_loss": 1.9709659814834595,
+          "median_row_entropy": 1.607755184173584,
+          "usage_entropy": 2.7644805908203125,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7320388555526733,
+          "contrastive_loss": 6.438393592834473,
+          "total_loss": 1.9643642902374268,
+          "median_row_entropy": 1.6226623058319092,
+          "usage_entropy": 2.767667770385742,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.37817908372960063,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 3.501650094985962,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8086808323860168,
+          "contrastive_loss": 7.5116472244262695,
+          "total_loss": 2.2564690113067627,
+          "median_row_entropy": 2.571406364440918,
+          "usage_entropy": 2.7270631790161133,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7904623746871948,
+          "contrastive_loss": 7.396450996398926,
+          "total_loss": 2.2146546840667725,
+          "median_row_entropy": 2.3603148460388184,
+          "usage_entropy": 2.7548911571502686,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 14
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7605001926422119,
+          "contrastive_loss": 7.350028038024902,
+          "total_loss": 2.1756234169006348,
+          "median_row_entropy": 2.070737361907959,
+          "usage_entropy": 2.744126796722412,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7499640583992004,
+          "contrastive_loss": 7.3429951667785645,
+          "total_loss": 2.1632421016693115,
+          "median_row_entropy": 1.9965739250183105,
+          "usage_entropy": 2.7660470008850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7437836527824402,
+          "contrastive_loss": 7.331153392791748,
+          "total_loss": 2.154615879058838,
+          "median_row_entropy": 1.9269278049468994,
+          "usage_entropy": 2.7699172496795654,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.737083375453949,
+          "contrastive_loss": 7.321406841278076,
+          "total_loss": 2.1459426879882812,
+          "median_row_entropy": 1.8305150270462036,
+          "usage_entropy": 2.7710976600646973,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_0",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.23696164831806754,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 3.499277353286743,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8051390647888184,
+          "contrastive_loss": 7.5389533042907715,
+          "total_loss": 2.2603299617767334,
+          "median_row_entropy": 2.4947009086608887,
+          "usage_entropy": 2.6299872398376465,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7735636234283447,
+          "contrastive_loss": 7.455469608306885,
+          "total_loss": 2.209545612335205,
+          "median_row_entropy": 2.4896316528320312,
+          "usage_entropy": 2.7555975914001465,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.760492742061615,
+          "contrastive_loss": 7.3917131423950195,
+          "total_loss": 2.183587074279785,
+          "median_row_entropy": 2.264359474182129,
+          "usage_entropy": 2.762409210205078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7522673606872559,
+          "contrastive_loss": 7.366025924682617,
+          "total_loss": 2.170149564743042,
+          "median_row_entropy": 2.185899257659912,
+          "usage_entropy": 2.766144037246704,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7451680898666382,
+          "contrastive_loss": 7.347568035125732,
+          "total_loss": 2.1593470573425293,
+          "median_row_entropy": 2.1487045288085938,
+          "usage_entropy": 2.766728639602661,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7376506924629211,
+          "contrastive_loss": 7.3361921310424805,
+          "total_loss": 2.1495144367218018,
+          "median_row_entropy": 2.124453544616699,
+          "usage_entropy": 2.7687313556671143,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.30142528402962177,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 3.501650094985962,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8086808323860168,
+          "contrastive_loss": 7.5116472244262695,
+          "total_loss": 2.2564690113067627,
+          "median_row_entropy": 2.571406364440918,
+          "usage_entropy": 2.7270631790161133,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7904623746871948,
+          "contrastive_loss": 7.396450996398926,
+          "total_loss": 2.2146546840667725,
+          "median_row_entropy": 2.3603148460388184,
+          "usage_entropy": 2.7548911571502686,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 14
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7605001926422119,
+          "contrastive_loss": 7.350028038024902,
+          "total_loss": 2.1756234169006348,
+          "median_row_entropy": 2.070737361907959,
+          "usage_entropy": 2.744126796722412,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7499640583992004,
+          "contrastive_loss": 7.3429951667785645,
+          "total_loss": 2.1632421016693115,
+          "median_row_entropy": 1.9965739250183105,
+          "usage_entropy": 2.7660470008850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7437836527824402,
+          "contrastive_loss": 7.331153392791748,
+          "total_loss": 2.154615879058838,
+          "median_row_entropy": 1.9269278049468994,
+          "usage_entropy": 2.7699172496795654,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.737083375453949,
+          "contrastive_loss": 7.321406841278076,
+          "total_loss": 2.1459426879882812,
+          "median_row_entropy": 1.8305150270462036,
+          "usage_entropy": 2.7710976600646973,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_1",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.2,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.26656156155843647,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 3.499277353286743,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8051390647888184,
+          "contrastive_loss": 7.5389533042907715,
+          "total_loss": 2.2603299617767334,
+          "median_row_entropy": 2.4947009086608887,
+          "usage_entropy": 2.6299872398376465,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7735636234283447,
+          "contrastive_loss": 7.455469608306885,
+          "total_loss": 2.209545612335205,
+          "median_row_entropy": 2.4896316528320312,
+          "usage_entropy": 2.7555975914001465,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.760492742061615,
+          "contrastive_loss": 7.3917131423950195,
+          "total_loss": 2.183587074279785,
+          "median_row_entropy": 2.264359474182129,
+          "usage_entropy": 2.762409210205078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7522673606872559,
+          "contrastive_loss": 7.366025924682617,
+          "total_loss": 2.170149564743042,
+          "median_row_entropy": 2.185899257659912,
+          "usage_entropy": 2.766144037246704,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7451680898666382,
+          "contrastive_loss": 7.347568035125732,
+          "total_loss": 2.1593470573425293,
+          "median_row_entropy": 2.1487045288085938,
+          "usage_entropy": 2.766728639602661,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7376506924629211,
+          "contrastive_loss": 7.3361921310424805,
+          "total_loss": 2.1495144367218018,
+          "median_row_entropy": 2.124453544616699,
+          "usage_entropy": 2.7687313556671143,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    }
+  ],
+  "hp_config_used": {
+    "lambda_contrastive": 0.1,
+    "temperature": 1.0
+  },
+  "fits_report": [
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_2",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.4553139517325962,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_2",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.34027354850829417,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_2",
+      "seed": 2,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.34491054346913047,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9068611860275269,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.6757757663726807,
+          "median_row_entropy": 2.7648379802703857,
+          "usage_entropy": 2.7654173374176025,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8043212294578552,
+          "contrastive_loss": 7.5520710945129395,
+          "total_loss": 1.5081603527069092,
+          "median_row_entropy": 2.4339451789855957,
+          "usage_entropy": 2.568401575088501,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7806756496429443,
+          "contrastive_loss": 7.45858097076416,
+          "total_loss": 1.4716609716415405,
+          "median_row_entropy": 2.5892271995544434,
+          "usage_entropy": 2.7436423301696777,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7626970410346985,
+          "contrastive_loss": 7.40120792388916,
+          "total_loss": 1.44753098487854,
+          "median_row_entropy": 2.3375186920166016,
+          "usage_entropy": 2.764342784881592,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7511871457099915,
+          "contrastive_loss": 7.366873741149902,
+          "total_loss": 1.4324860572814941,
+          "median_row_entropy": 2.172797441482544,
+          "usage_entropy": 2.7694201469421387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7404190897941589,
+          "contrastive_loss": 7.348506927490234,
+          "total_loss": 1.419851541519165,
+          "median_row_entropy": 2.056051731109619,
+          "usage_entropy": 2.7709102630615234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735258936882019,
+          "contrastive_loss": 7.334540843963623,
+          "total_loss": 1.413285493850708,
+          "median_row_entropy": 2.0062243938446045,
+          "usage_entropy": 2.7713775634765625,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_2",
+      "seed": 3,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.3493075946170964,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9075398445129395,
+          "contrastive_loss": 8.242227554321289,
+          "total_loss": 2.6764273643493652,
+          "median_row_entropy": 2.7664804458618164,
+          "usage_entropy": 2.7667651176452637,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8038584589958191,
+          "contrastive_loss": 7.559753894805908,
+          "total_loss": 1.5082963705062866,
+          "median_row_entropy": 2.5290048122406006,
+          "usage_entropy": 2.5768752098083496,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7799153923988342,
+          "contrastive_loss": 7.457520484924316,
+          "total_loss": 1.4704631567001343,
+          "median_row_entropy": 2.534046173095703,
+          "usage_entropy": 2.760211229324341,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 12
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7632378339767456,
+          "contrastive_loss": 7.4118757247924805,
+          "total_loss": 1.4491691589355469,
+          "median_row_entropy": 2.2713804244995117,
+          "usage_entropy": 2.762810230255127,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7525820136070251,
+          "contrastive_loss": 7.367252826690674,
+          "total_loss": 1.4339115619659424,
+          "median_row_entropy": 2.096569538116455,
+          "usage_entropy": 2.769785165786743,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7432219982147217,
+          "contrastive_loss": 7.352583885192871,
+          "total_loss": 1.4230494499206543,
+          "median_row_entropy": 1.9951175451278687,
+          "usage_entropy": 2.7715466022491455,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735683798789978,
+          "contrastive_loss": 7.341277122497559,
+          "total_loss": 1.4143753051757812,
+          "median_row_entropy": 1.937031865119934,
+          "usage_entropy": 2.771806478500366,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_2",
+      "seed": 4,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.33669457835398053,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.906477451324463,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.675464391708374,
+          "median_row_entropy": 2.761436939239502,
+          "usage_entropy": 2.7617907524108887,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8036766648292542,
+          "contrastive_loss": 7.584609508514404,
+          "total_loss": 1.5074121952056885,
+          "median_row_entropy": 2.599581718444824,
+          "usage_entropy": 2.736269474029541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7729759812355042,
+          "contrastive_loss": 7.450027942657471,
+          "total_loss": 1.4626635313034058,
+          "median_row_entropy": 2.371614933013916,
+          "usage_entropy": 2.765760898590088,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7562176585197449,
+          "contrastive_loss": 7.380073547363281,
+          "total_loss": 1.4389591217041016,
+          "median_row_entropy": 1.9721757173538208,
+          "usage_entropy": 2.7632944583892822,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7454237341880798,
+          "contrastive_loss": 7.349712371826172,
+          "total_loss": 1.4249950647354126,
+          "median_row_entropy": 1.8255831003189087,
+          "usage_entropy": 2.7699975967407227,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7371032238006592,
+          "contrastive_loss": 7.338588237762451,
+          "total_loss": 1.415541648864746,
+          "median_row_entropy": 1.735033631324768,
+          "usage_entropy": 2.771019458770752,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7313607931137085,
+          "contrastive_loss": 7.328821182250977,
+          "total_loss": 1.4088175296783447,
+          "median_row_entropy": 1.673302412033081,
+          "usage_entropy": 2.771268367767334,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_3",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.8294335000568819,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_3",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.4631470407742265,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_3",
+      "seed": 2,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.8466594656918364,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9068611860275269,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.6757757663726807,
+          "median_row_entropy": 2.7648379802703857,
+          "usage_entropy": 2.7654173374176025,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8043212294578552,
+          "contrastive_loss": 7.5520710945129395,
+          "total_loss": 1.5081603527069092,
+          "median_row_entropy": 2.4339451789855957,
+          "usage_entropy": 2.568401575088501,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7806756496429443,
+          "contrastive_loss": 7.45858097076416,
+          "total_loss": 1.4716609716415405,
+          "median_row_entropy": 2.5892271995544434,
+          "usage_entropy": 2.7436423301696777,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7626970410346985,
+          "contrastive_loss": 7.40120792388916,
+          "total_loss": 1.44753098487854,
+          "median_row_entropy": 2.3375186920166016,
+          "usage_entropy": 2.764342784881592,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7511871457099915,
+          "contrastive_loss": 7.366873741149902,
+          "total_loss": 1.4324860572814941,
+          "median_row_entropy": 2.172797441482544,
+          "usage_entropy": 2.7694201469421387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7404190897941589,
+          "contrastive_loss": 7.348506927490234,
+          "total_loss": 1.419851541519165,
+          "median_row_entropy": 2.056051731109619,
+          "usage_entropy": 2.7709102630615234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735258936882019,
+          "contrastive_loss": 7.334540843963623,
+          "total_loss": 1.413285493850708,
+          "median_row_entropy": 2.0062243938446045,
+          "usage_entropy": 2.7713775634765625,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_3",
+      "seed": 3,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.38911354053630876,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9075398445129395,
+          "contrastive_loss": 8.242227554321289,
+          "total_loss": 2.6764273643493652,
+          "median_row_entropy": 2.7664804458618164,
+          "usage_entropy": 2.7667651176452637,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8038584589958191,
+          "contrastive_loss": 7.559753894805908,
+          "total_loss": 1.5082963705062866,
+          "median_row_entropy": 2.5290048122406006,
+          "usage_entropy": 2.5768752098083496,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7799153923988342,
+          "contrastive_loss": 7.457520484924316,
+          "total_loss": 1.4704631567001343,
+          "median_row_entropy": 2.534046173095703,
+          "usage_entropy": 2.760211229324341,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 12
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7632378339767456,
+          "contrastive_loss": 7.4118757247924805,
+          "total_loss": 1.4491691589355469,
+          "median_row_entropy": 2.2713804244995117,
+          "usage_entropy": 2.762810230255127,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7525820136070251,
+          "contrastive_loss": 7.367252826690674,
+          "total_loss": 1.4339115619659424,
+          "median_row_entropy": 2.096569538116455,
+          "usage_entropy": 2.769785165786743,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7432219982147217,
+          "contrastive_loss": 7.352583885192871,
+          "total_loss": 1.4230494499206543,
+          "median_row_entropy": 1.9951175451278687,
+          "usage_entropy": 2.7715466022491455,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735683798789978,
+          "contrastive_loss": 7.341277122497559,
+          "total_loss": 1.4143753051757812,
+          "median_row_entropy": 1.937031865119934,
+          "usage_entropy": 2.771806478500366,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_3",
+      "seed": 4,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.8639351286228605,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.906477451324463,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.675464391708374,
+          "median_row_entropy": 2.761436939239502,
+          "usage_entropy": 2.7617907524108887,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8036766648292542,
+          "contrastive_loss": 7.584609508514404,
+          "total_loss": 1.5074121952056885,
+          "median_row_entropy": 2.599581718444824,
+          "usage_entropy": 2.736269474029541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7729759812355042,
+          "contrastive_loss": 7.450027942657471,
+          "total_loss": 1.4626635313034058,
+          "median_row_entropy": 2.371614933013916,
+          "usage_entropy": 2.765760898590088,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7562176585197449,
+          "contrastive_loss": 7.380073547363281,
+          "total_loss": 1.4389591217041016,
+          "median_row_entropy": 1.9721757173538208,
+          "usage_entropy": 2.7632944583892822,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7454237341880798,
+          "contrastive_loss": 7.349712371826172,
+          "total_loss": 1.4249950647354126,
+          "median_row_entropy": 1.8255831003189087,
+          "usage_entropy": 2.7699975967407227,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7371032238006592,
+          "contrastive_loss": 7.338588237762451,
+          "total_loss": 1.415541648864746,
+          "median_row_entropy": 1.735033631324768,
+          "usage_entropy": 2.771019458770752,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7313607931137085,
+          "contrastive_loss": 7.328821182250977,
+          "total_loss": 1.4088175296783447,
+          "median_row_entropy": 1.673302412033081,
+          "usage_entropy": 2.771268367767334,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_4",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.3648702286560611,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_4",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.33896218172984977,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_4",
+      "seed": 2,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.4163924254820917,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9068611860275269,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.6757757663726807,
+          "median_row_entropy": 2.7648379802703857,
+          "usage_entropy": 2.7654173374176025,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8043212294578552,
+          "contrastive_loss": 7.5520710945129395,
+          "total_loss": 1.5081603527069092,
+          "median_row_entropy": 2.4339451789855957,
+          "usage_entropy": 2.568401575088501,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7806756496429443,
+          "contrastive_loss": 7.45858097076416,
+          "total_loss": 1.4716609716415405,
+          "median_row_entropy": 2.5892271995544434,
+          "usage_entropy": 2.7436423301696777,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7626970410346985,
+          "contrastive_loss": 7.40120792388916,
+          "total_loss": 1.44753098487854,
+          "median_row_entropy": 2.3375186920166016,
+          "usage_entropy": 2.764342784881592,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7511871457099915,
+          "contrastive_loss": 7.366873741149902,
+          "total_loss": 1.4324860572814941,
+          "median_row_entropy": 2.172797441482544,
+          "usage_entropy": 2.7694201469421387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7404190897941589,
+          "contrastive_loss": 7.348506927490234,
+          "total_loss": 1.419851541519165,
+          "median_row_entropy": 2.056051731109619,
+          "usage_entropy": 2.7709102630615234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735258936882019,
+          "contrastive_loss": 7.334540843963623,
+          "total_loss": 1.413285493850708,
+          "median_row_entropy": 2.0062243938446045,
+          "usage_entropy": 2.7713775634765625,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_4",
+      "seed": 3,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.4211801419878533,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9075398445129395,
+          "contrastive_loss": 8.242227554321289,
+          "total_loss": 2.6764273643493652,
+          "median_row_entropy": 2.7664804458618164,
+          "usage_entropy": 2.7667651176452637,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8038584589958191,
+          "contrastive_loss": 7.559753894805908,
+          "total_loss": 1.5082963705062866,
+          "median_row_entropy": 2.5290048122406006,
+          "usage_entropy": 2.5768752098083496,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7799153923988342,
+          "contrastive_loss": 7.457520484924316,
+          "total_loss": 1.4704631567001343,
+          "median_row_entropy": 2.534046173095703,
+          "usage_entropy": 2.760211229324341,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 12
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7632378339767456,
+          "contrastive_loss": 7.4118757247924805,
+          "total_loss": 1.4491691589355469,
+          "median_row_entropy": 2.2713804244995117,
+          "usage_entropy": 2.762810230255127,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7525820136070251,
+          "contrastive_loss": 7.367252826690674,
+          "total_loss": 1.4339115619659424,
+          "median_row_entropy": 2.096569538116455,
+          "usage_entropy": 2.769785165786743,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7432219982147217,
+          "contrastive_loss": 7.352583885192871,
+          "total_loss": 1.4230494499206543,
+          "median_row_entropy": 1.9951175451278687,
+          "usage_entropy": 2.7715466022491455,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735683798789978,
+          "contrastive_loss": 7.341277122497559,
+          "total_loss": 1.4143753051757812,
+          "median_row_entropy": 1.937031865119934,
+          "usage_entropy": 2.771806478500366,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_4",
+      "seed": 4,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.38178253721418404,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.906477451324463,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.675464391708374,
+          "median_row_entropy": 2.761436939239502,
+          "usage_entropy": 2.7617907524108887,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8036766648292542,
+          "contrastive_loss": 7.584609508514404,
+          "total_loss": 1.5074121952056885,
+          "median_row_entropy": 2.599581718444824,
+          "usage_entropy": 2.736269474029541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7729759812355042,
+          "contrastive_loss": 7.450027942657471,
+          "total_loss": 1.4626635313034058,
+          "median_row_entropy": 2.371614933013916,
+          "usage_entropy": 2.765760898590088,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7562176585197449,
+          "contrastive_loss": 7.380073547363281,
+          "total_loss": 1.4389591217041016,
+          "median_row_entropy": 1.9721757173538208,
+          "usage_entropy": 2.7632944583892822,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7454237341880798,
+          "contrastive_loss": 7.349712371826172,
+          "total_loss": 1.4249950647354126,
+          "median_row_entropy": 1.8255831003189087,
+          "usage_entropy": 2.7699975967407227,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7371032238006592,
+          "contrastive_loss": 7.338588237762451,
+          "total_loss": 1.415541648864746,
+          "median_row_entropy": 1.735033631324768,
+          "usage_entropy": 2.771019458770752,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7313607931137085,
+          "contrastive_loss": 7.328821182250977,
+          "total_loss": 1.4088175296783447,
+          "median_row_entropy": 1.673302412033081,
+          "usage_entropy": 2.771268367767334,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_5",
+      "seed": 0,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.23772228300881545,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9085301160812378,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.677427053451538,
+          "median_row_entropy": 2.7658185958862305,
+          "usage_entropy": 2.7662978172302246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8060346841812134,
+          "contrastive_loss": 7.516304969787598,
+          "total_loss": 1.504193902015686,
+          "median_row_entropy": 2.4753360748291016,
+          "usage_entropy": 2.673563003540039,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7832574248313904,
+          "contrastive_loss": 7.4403300285339355,
+          "total_loss": 1.472093939781189,
+          "median_row_entropy": 2.462188720703125,
+          "usage_entropy": 2.759826421737671,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7612727880477905,
+          "contrastive_loss": 7.373142719268799,
+          "total_loss": 1.443408727645874,
+          "median_row_entropy": 2.1433935165405273,
+          "usage_entropy": 2.7589221000671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7440232038497925,
+          "contrastive_loss": 7.347952365875244,
+          "total_loss": 1.42344331741333,
+          "median_row_entropy": 1.9563031196594238,
+          "usage_entropy": 2.768756866455078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7370019555091858,
+          "contrastive_loss": 7.338244438171387,
+          "total_loss": 1.4154332876205444,
+          "median_row_entropy": 1.9127681255340576,
+          "usage_entropy": 2.7696523666381836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7314072847366333,
+          "contrastive_loss": 7.328920841217041,
+          "total_loss": 1.4089003801345825,
+          "median_row_entropy": 1.883361577987671,
+          "usage_entropy": 2.7699532508850098,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_5",
+      "seed": 1,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.09268809592004865,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9061311483383179,
+          "contrastive_loss": 8.242229461669922,
+          "total_loss": 2.6750543117523193,
+          "median_row_entropy": 2.7646193504333496,
+          "usage_entropy": 2.7649848461151123,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8035176396369934,
+          "contrastive_loss": 7.532632350921631,
+          "total_loss": 1.5016809701919556,
+          "median_row_entropy": 2.5731828212738037,
+          "usage_entropy": 2.754991054534912,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7747200727462769,
+          "contrastive_loss": 7.458704471588135,
+          "total_loss": 1.4654825925827026,
+          "median_row_entropy": 2.4910621643066406,
+          "usage_entropy": 2.7553958892822266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7563722133636475,
+          "contrastive_loss": 7.392408847808838,
+          "total_loss": 1.4406338930130005,
+          "median_row_entropy": 2.1022515296936035,
+          "usage_entropy": 2.7489612102508545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7462775111198425,
+          "contrastive_loss": 7.357564926147461,
+          "total_loss": 1.4267839193344116,
+          "median_row_entropy": 1.9924756288528442,
+          "usage_entropy": 2.7625041007995605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.737511157989502,
+          "contrastive_loss": 7.3538665771484375,
+          "total_loss": 1.417641043663025,
+          "median_row_entropy": 1.8090788125991821,
+          "usage_entropy": 2.762833595275879,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.729893147945404,
+          "contrastive_loss": 7.335433006286621,
+          "total_loss": 1.4080109596252441,
+          "median_row_entropy": 1.7210925817489624,
+          "usage_entropy": 2.7712764739990234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_5",
+      "seed": 2,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.23295206081779743,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9068611860275269,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.6757757663726807,
+          "median_row_entropy": 2.7648379802703857,
+          "usage_entropy": 2.7654173374176025,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8043212294578552,
+          "contrastive_loss": 7.5520710945129395,
+          "total_loss": 1.5081603527069092,
+          "median_row_entropy": 2.4339451789855957,
+          "usage_entropy": 2.568401575088501,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7806756496429443,
+          "contrastive_loss": 7.45858097076416,
+          "total_loss": 1.4716609716415405,
+          "median_row_entropy": 2.5892271995544434,
+          "usage_entropy": 2.7436423301696777,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 13
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7626970410346985,
+          "contrastive_loss": 7.40120792388916,
+          "total_loss": 1.44753098487854,
+          "median_row_entropy": 2.3375186920166016,
+          "usage_entropy": 2.764342784881592,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7511871457099915,
+          "contrastive_loss": 7.366873741149902,
+          "total_loss": 1.4324860572814941,
+          "median_row_entropy": 2.172797441482544,
+          "usage_entropy": 2.7694201469421387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7404190897941589,
+          "contrastive_loss": 7.348506927490234,
+          "total_loss": 1.419851541519165,
+          "median_row_entropy": 2.056051731109619,
+          "usage_entropy": 2.7709102630615234,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735258936882019,
+          "contrastive_loss": 7.334540843963623,
+          "total_loss": 1.413285493850708,
+          "median_row_entropy": 2.0062243938446045,
+          "usage_entropy": 2.7713775634765625,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_5",
+      "seed": 3,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.39329136902565565,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.9075398445129395,
+          "contrastive_loss": 8.242227554321289,
+          "total_loss": 2.6764273643493652,
+          "median_row_entropy": 2.7664804458618164,
+          "usage_entropy": 2.7667651176452637,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8038584589958191,
+          "contrastive_loss": 7.559753894805908,
+          "total_loss": 1.5082963705062866,
+          "median_row_entropy": 2.5290048122406006,
+          "usage_entropy": 2.5768752098083496,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7799153923988342,
+          "contrastive_loss": 7.457520484924316,
+          "total_loss": 1.4704631567001343,
+          "median_row_entropy": 2.534046173095703,
+          "usage_entropy": 2.760211229324341,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 12
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7632378339767456,
+          "contrastive_loss": 7.4118757247924805,
+          "total_loss": 1.4491691589355469,
+          "median_row_entropy": 2.2713804244995117,
+          "usage_entropy": 2.762810230255127,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7525820136070251,
+          "contrastive_loss": 7.367252826690674,
+          "total_loss": 1.4339115619659424,
+          "median_row_entropy": 2.096569538116455,
+          "usage_entropy": 2.769785165786743,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7432219982147217,
+          "contrastive_loss": 7.352583885192871,
+          "total_loss": 1.4230494499206543,
+          "median_row_entropy": 1.9951175451278687,
+          "usage_entropy": 2.7715466022491455,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.735683798789978,
+          "contrastive_loss": 7.341277122497559,
+          "total_loss": 1.4143753051757812,
+          "median_row_entropy": 1.937031865119934,
+          "usage_entropy": 2.771806478500366,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "breast_cancer",
+      "unit_id": "blocks_5",
+      "seed": 4,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      },
+      "ari_per_seed": 0.19104756746846754,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.906477451324463,
+          "contrastive_loss": 8.242228507995605,
+          "total_loss": 2.675464391708374,
+          "median_row_entropy": 2.761436939239502,
+          "usage_entropy": 2.7617907524108887,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8036766648292542,
+          "contrastive_loss": 7.584609508514404,
+          "total_loss": 1.5074121952056885,
+          "median_row_entropy": 2.599581718444824,
+          "usage_entropy": 2.736269474029541,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7729759812355042,
+          "contrastive_loss": 7.450027942657471,
+          "total_loss": 1.4626635313034058,
+          "median_row_entropy": 2.371614933013916,
+          "usage_entropy": 2.765760898590088,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7562176585197449,
+          "contrastive_loss": 7.380073547363281,
+          "total_loss": 1.4389591217041016,
+          "median_row_entropy": 1.9721757173538208,
+          "usage_entropy": 2.7632944583892822,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7454237341880798,
+          "contrastive_loss": 7.349712371826172,
+          "total_loss": 1.4249950647354126,
+          "median_row_entropy": 1.8255831003189087,
+          "usage_entropy": 2.7699975967407227,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7371032238006592,
+          "contrastive_loss": 7.338588237762451,
+          "total_loss": 1.415541648864746,
+          "median_row_entropy": 1.735033631324768,
+          "usage_entropy": 2.771019458770752,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7313607931137085,
+          "contrastive_loss": 7.328821182250977,
+          "total_loss": 1.4088175296783447,
+          "median_row_entropy": 1.673302412033081,
+          "usage_entropy": 2.771268367767334,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    }
+  ],
+  "per_unit": [
+    {
+      "unit_id": "blocks_2",
+      "n_spots": 721,
+      "n_classes": 20,
+      "per_seed_aris": [
+        0.4553139517325962,
+        0.34027354850829417,
+        0.34491054346913047,
+        0.3493075946170964,
+        0.33669457835398053
+      ],
+      "mean": 0.3653000433362195,
+      "std": 0.045207503571591694,
+      "consensus_ari": 0.3639746760554446,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
       }
     },
-    "per_seed_mean": 0.39597176090132113,
-    "consensus": 0.5634437809736885,
-    "per_seed_std": 0.13243742657919833
+    {
+      "unit_id": "blocks_3",
+      "n_spots": 550,
+      "n_classes": 20,
+      "per_seed_aris": [
+        0.8294335000568819,
+        0.4631470407742265,
+        0.8466594656918364,
+        0.38911354053630876,
+        0.8639351286228605
+      ],
+      "mean": 0.6784577351364228,
+      "std": 0.20763724391601632,
+      "consensus_ari": 0.8417486056593462,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      }
+    },
+    {
+      "unit_id": "blocks_4",
+      "n_spots": 575,
+      "n_classes": 20,
+      "per_seed_aris": [
+        0.3648702286560611,
+        0.33896218172984977,
+        0.4163924254820917,
+        0.4211801419878533,
+        0.38178253721418404
+      ],
+      "mean": 0.384637503014008,
+      "std": 0.031076906228897343,
+      "consensus_ari": 0.397165649188392,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      }
+    },
+    {
+      "unit_id": "blocks_5",
+      "n_spots": 626,
+      "n_classes": 20,
+      "per_seed_aris": [
+        0.23772228300881545,
+        0.09268809592004865,
+        0.23295206081779743,
+        0.39329136902565565,
+        0.19104756746846754
+      ],
+      "mean": 0.22954027524815696,
+      "std": 0.09705999565646098,
+      "consensus_ari": 0.2449083372286205,
+      "hp_config": {
+        "lambda_contrastive": 0.1,
+        "temperature": 1.0
+      }
+    }
+  ],
+  "summary": {
+    "n_units": 4,
+    "per_seed_mean": 0.4144838891837019,
+    "per_seed_std": 0.16370414559682822,
+    "consensus_mean": 0.4619493170329508,
+    "consensus_std": 0.22646756967036422
   }
 }
