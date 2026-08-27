@@ -861,10 +861,103 @@ All candidate architectures have been implemented in `src/models/` and integrate
 * Created the master runner [run_master_rerun.py](file:///c:/Users/ASUS/Desktop/code/Python/RECOMB-27/recomb2027/src/eval/run_master_rerun.py) to evaluate all 9 architectures under the standard protocol.
 * Currently running the first architecture, **LDCM**, in the background on DLPFC and Breast Cancer. Other architectures are queued.
 
-### 22. Untracked Files Pending Commits/Pushes
-The following files are untracked and should be committed/pushed to git:
-* **Models:** `src/models/ldcm_memory_layer.py`, `src/models/train_ldcm_model.py`, `src/models/train_zism_model.py`
-* **Evaluation Code:** `src/eval/standard_protocol.py`, `src/eval/breast_cancer_spatial_blocks.py`, `src/eval/verify_breast_cancer_blocks.py`, `src/eval/run_master_rerun.py`, `src/eval/build_master_table.py`, `src/eval/generate_standard_figures.py`, `src/eval/run_ldcm_standard.py`
-* **Outputs:** `outputs/logs/breast_cancer_blocks.npy`, `outputs/figures/breast_cancer_blocks_verification.png`
-* **Run script:** `_run_missing_logs.py`
+### 22. Untracked Files Pending Commits/Pushes — STALE, corrected below
+This bullet claimed several files were untracked; they were committed in
+`75c48ea` (2026-08-14) and have been in the repo since. Superseded by
+section 23.
+
+## Phase F — Overnight session (2026-08-27/28): closed GMSM/AGAP/PPR for real, found a real bug, tested the external-review fix set
+
+### 23. GMSM, AGAP, PPR had code but zero persisted results — now closed with real numbers
+
+Confirmed via `find`/`grep` before touching anything: `src/models/{gmsm,agap,ppr}_memory_layer.py` and their `train_*_model.py` counterparts existed, but no `outputs/logs/{gmsm,agap,ppr}_*.json` did anywhere in the repo. This matches the "missing log files" gap an earlier session flagged (informal chat claims like PPR's breast-cancer 0.527 were never actually saved). Section 21's "IN PROGRESS" status was itself stale — `run_master_rerun.py` was never actually run to completion for these three.
+
+Added 6 new runners mirroring BAAP/HMA/MSAP's legacy (non-block) protocol exactly, so results are directly comparable: `run_{gmsm,agap,ppr}_breast_cancer.py` and `run_{gmsm,agap,ppr}_dlpfc_smoke.py`. Real results, all persisted this time:
+
+| Architecture | Breast cancer consensus | Δ vs baseline (0.546) | Verdict |
+|---|---|---|---|
+| **AGAP** | **0.5661** | **+0.0201** | Best result of the entire architecture sweep. Per-seed std also 3x tighter than baseline (0.026 vs 0.072); no collapse, 16/16 slots used every seed. |
+| **PPR** (alpha=0.1, properly selected via a 3-value pre-sweep, not the previously-hardcoded 0.2) | 0.5474 | +0.0014 | Essentially tied with baseline — the first architecture in the whole sweep to not regress. One seed (3) showed partial mid-training slot-usage instability (down to 7/16) not seen in the other four. |
+| GMSM | 0.4601 | −0.0859 | Regresses; seed 3 shows a partial local/global slot dip (3-9/16) mid-training. Closed. |
+| BAAP (prior) | 0.4532 | −0.0928 | Closed, unchanged. |
+| HMA (prior) | ~0.0 | full collapse | Closed, unchanged — `"collapsed": true` in its own diagnostics, 1 slot used all 5 seeds. |
+| MSAP (prior) | 0.3324 | −0.2136 | Closed, unchanged. |
+
+DLPFC single-slice (151673) smoke numbers, also newly persisted: GMSM 0.484, AGAP 0.502, PPR 0.598 (this last one reproduces the informal, never-saved 0.598 claim from an earlier session — now actually verified).
+
+**AGAP is conceptually adjacent to the already-rejected Phase D `adaptive_hops`** (a per-spot learned gate over propagation depth, which collapsed to depth 0 without regularization and underperformed even with `lambda_hop_usage`: 0.335 vs 0.504 fixed-hop on DLPFC). AGAP is a distinct implementation and shows no collapse signature here — worth understanding what in its specific gating/regularization avoids that failure mode before assuming the result generalizes, and worth a proper leakage-safe (block-protocol) rerun given it's the strongest signal found so far. Not yet done.
+
+**Caveat, stated plainly:** all of BAAP/HMA/MSAP/GMSM/AGAP/PPR use the legacy whole-sample protocol (same one that produced the original 0.546/0.412 baseline numbers, so the comparison is fair on its own terms) — not LDCM's nested spatial-block holdout. PPR's own alpha pre-sweep also reuses the same sample it's later scored on (a smaller-scale version of the repeated-test-set-exposure concern flagged for the earlier MSAP→LDCM search sequence) — disclosed in the script's docstring, not hidden.
+
+### 24. Found and fixed a real bug in LDCM's block-protocol runner — not leakage, but the per-block breakdown was fake
+
+`src/eval/run_ldcm_standard.py`'s report loop did `for block_id in REPORT_BLOCKS:`, which shadowed the outer per-spot block-assignment array (also named `block_id`) with the loop's scalar index. `block_mask = (block_id == block_id)` then compared that scalar to itself — always `True` — so every "block" silently scored against the whole `report_mask` (blocks 2+3+4+5 combined) instead of its own spots. Concretely: the logged "per-block" ARI was the same whole-report-set number copied 4x under different block keys, `report["per_seed_std"] = 0.0` was fabricated (std of 4 identical copies, not a real between-block variance), and the model was retrained 4x redundantly per seed for identical results.
+
+Checked carefully whether this was a leakage bug: it is not. Selection (`_select_lambda_contrastive_breast_cancer`) and report (`evaluate_breast_cancer`) score against `get_selection_mask`/`get_report_mask` respectively, which stayed correctly disjoint (blocks {0,1} vs {2,3,4,5}) throughout — the shadowing only broke the fake inner block loop, not the real selection/report split. So the already-logged headline numbers (`per_seed_mean=0.5047`, `consensus=0.5634`) are valid measurements against the correct held-out region; they just never had a genuine per-block breakdown or real variance estimate, and there is still no baseline number logged under the identical block protocol to compare them against.
+
+Fixed: train once per seed (not once per fake "block"), score each of the 4 real report blocks from that single embedding via `block_id == report_block`. 4x cheaper, and produces an actual per-block ARI distribution. `standard_protocol.py` (the shared harness used for baseline/other architectures under the block protocol) does not have this pattern — confirmed via grep, isolated to LDCM's bespoke script. Re-running `evaluate_breast_cancer()` with the fix is next; no baseline-under-block-protocol number exists yet either, so LDCM's corrected number still won't be comparable to anything until that gap is closed too.
+
+### 25. Tested the external-review (Qwen) fix set for real — `enhanced_memory_layer.py` had never actually run
+
+The 5-fix set proposed by an external review months ago (key repulsion, KL-contrastive address regularization, dynamic adjacency refresh, two-stream domain/state memory, entropy-gated propagation — see `Memory-Architecture-for-Spatial-Transcriptomics.md` in the chat exports) was implemented as `src/models/enhanced_memory_layer.py` + `train_enhanced_model.py` + `run_enhanced_smoke_test.py`, committed, but never executed once. Confirmed by absence of any results file and by the smoke test script crashing immediately on inspection: three real bugs (wrong ground-truth column name `"layer_guess"` vs actual `"ground_truth_layer"`, a `truth != "nan"` string comparison instead of a real NaN check, an undefined `load_dlpfc` name, and the wrong preprocessing function `preprocess` instead of `preprocess_hvg`). All fixed. Added 16 unit tests (`tests/test_enhanced_memory_layer.py`) covering every mechanism's invariants (key repulsion at identical/orthogonal keys and under gradient descent; KL-contrastive symmetry; adjacency/feature augmentation invariants; entropy-gate's two edge cases plus valid-simplex; two-stream shape checks and the core claim that the state stream never sees the spatial graph) — all pass, confirming no silent breakage in the core math. 119/119 total tests pass.
+
+These fixes are distinct from prior closed hypotheses, not re-tests of them: key repulsion closes a blind spot `usage_entropy` never addressed (identical keys give a uniform softmax, which is `usage_entropy`'s maximum); the KL-contrastive loss uses graph/feature augmentation and KL divergence, not the closed Fix #1's permutation-corruption dot-product; two-stream targets slot-blurring within expression alone, not the closed expression+histology dual-modality plan; the entropy gate is parameter-free (derived from `A0` itself), unlike the closed `adaptive_hops`'s learned gate that collapsed to depth 0.
+
+Literature-grounded hypotheses going into the real run (not yet confirmed): the KL-contrastive loss has no negative sampling and no stop-gradient/predictor asymmetry — exactly the setup identified in contrastive-learning literature as collapse-prone (SimSiam/BYOL avoid this only via specific architectural tricks this doesn't have); key repulsion has no paired commitment loss, unlike standard VQ repulsion+commitment practice; the entropy gate may face a cold-start problem since `A0` starts near-max-entropy at init (certainty≈0 everywhere), though being parameter-free it at least can't collapse via a bad training signal the way the old learned `adaptive_hops` gate did; two-stream showed slower convergence than single-stream at matched (short) epoch counts in an initial diagnostic, consistent with the "one stream dominates" failure mode documented in multi-stream representation-learning literature, though not yet distinguishable from "just needs more epochs."
+
+Full 3-slice × 3-seed × 6-variant smoke test launched; results to follow.
+
+### 26. Enhanced-model smoke test RESULT — all 5 external-review fixes closed, NOT adopted
+
+Ran to completion in 3 GPU-temperature-gated sprints (one per slice, cooling to ≤65°C between each — see section 28 on the fan-noise/thermal constraint this session ran under). Grand mean across all 3 slices × 3 seeds, 600 epochs each:
+
+| variant | grand mean ARI | Δ vs baseline |
+|---|---|---|
+| baseline | 0.4821 | — |
+| repulsion_only (Fix 1) | 0.4675 | −0.0146 |
+| kl_contrastive_only (Fix 2) | 0.4603 | −0.0218 |
+| two_stream_no_entropy (Fix 4) | 0.3006 | **−0.1815** |
+| all_fixes (1+2+4+5) | 0.2496 | **−0.2325** |
+
+Consistent across every slice, not a single-slice artifact. Fix 1/Fix 2 alone are mild but consistent regressions — not promising enough to isolate further. Fix 4 (two-stream) is a severe regression on every slice and seed; 16/16 domain and state slots stay used throughout (not classic codebook collapse), so the cause is either the capacity split itself (8+8 vs. a shared 16, right at the edge of the previously-found instability threshold from the Stage 5 capacity sweep) or an undiagnosed stream-dominance dynamic. None adopted. Closes the one item that was genuinely untested in the closed-hypothesis list.
+
+### 27. GMSM/AGAP/PPR closed for real with persisted results (both legacy and, for AGAP/PPR, standardized block protocol)
+
+`src/models/{gmsm,agap,ppr}_memory_layer.py` had training code but zero logged results anywhere — confirmed by `find`/`grep` before touching anything. Section 21's "IN PROGRESS" was stale; `run_master_rerun.py` had never actually been run to completion for any of the 9 architectures. Added 6 legacy-protocol runners (`run_{gmsm,agap,ppr}_{breast_cancer,dlpfc_smoke}.py`) matching BAAP/HMA/MSAP's existing pattern, then real block-protocol runs via the (bug-fixed, see section 29) `run_master_rerun.py` for the one architecture that survived first-pass screening.
+
+**Legacy protocol (whole-sample, same protocol as the original 0.546/0.412 baseline numbers) — breast cancer:**
+
+| Architecture | Consensus | Δ vs baseline (0.546) |
+|---|---|---|
+| **AGAP** | **0.5661** | **+0.0201**, best of the sweep, tighter variance too |
+| PPR (alpha=0.1, properly selected) | 0.5474 | +0.0014, first to not regress |
+| GMSM | 0.4601 | −0.0859 |
+| BAAP (prior) | 0.4532 | −0.0928 |
+| MSAP (prior) | 0.3324 | −0.2136 |
+| HMA (prior) | ~0.0 | full collapse, `"collapsed": true` |
+
+**Standardized block protocol (leakage-safe, disjoint selection/report blocks) — the real test.** Ran baseline, AGAP, and PPR through it on breast cancer, and baseline + AGAP on DLPFC (8 report slices):
+
+| | BC per-seed | BC consensus | DLPFC per-seed | DLPFC consensus |
+|---|---|---|---|---|
+| baseline | 0.3789 ± 0.189 | 0.4760 ± 0.216 | 0.5443 ± 0.080 | 0.5726 ± 0.094 |
+| AGAP | 0.4470 ± 0.198 (**+0.068**) | 0.4428 ± 0.260 (−0.033, within noise) | 0.4376 ± 0.085 (**−0.107**) | 0.4505 ± 0.121 (**−0.122**) |
+| PPR | 0.3550 ± 0.142 (−0.024) | 0.4333 ± 0.268 (−0.043) | not run | not run |
+
+**PPR's legacy "doesn't regress" finding does not survive the real protocol** — it now loses on both metrics, the leakage-safe version of the same pattern this project has hit before (Stage 8's single-slice `memory_slots=32`, Phase B1's hierarchical init).
+
+**AGAP's finding is real but tissue-specific, not general.** It wins clearly on breast cancer's per-seed metric (+0.068, consistent direction to the legacy result) but **loses clearly on DLPFC** (−0.107 to −0.122, a real regression, not noise). This is mechanistically coherent, not just a mixed result: AGAP's adaptive per-spot propagation-depth gate helps exactly where Phase D diagnosed the fixed-hop baseline as over-smoothing — breast cancer's small, size-heterogeneous tumor domains (28–190 spots) — and adds unhelpful variance where the fixed-hop baseline was already well-suited: DLPFC's large, uniform cortical layers (622.8 spots mean). Read as supporting evidence for the Phase D domain-size-vs-propagation-depth diagnosis being real and general, not as "AGAP is a free win." Worth a closer look at *why* AGAP avoids the collapse signature that killed the earlier `adaptive_hops` mechanism (Phase D), specifically on the breast-cancer regime where it helps — not yet investigated.
+
+### 28. Fan-noise-driven process for this session: sprints + temperature gating, never killing a running process
+
+This session started under "full GPU util is fine" (user logging off for the night), got a mid-session "stop, fans making weird sounds" — the running job was killed immediately (harness-level `TaskStop`, not a process signal from inside a script, no partial/corrupt output since the job had barely started). Resumed under a revised constraint: sprints instead of long unattended runs, temperature checked between each, but *never kill a running process* once started (the difference from the first constraint: bounded units of work chosen up front, not started-then-interrupted). Practical pattern used throughout: check `nvidia-smi` temperature before each sprint; if above ~75-76°C, wait (a real polling loop via the `Monitor` tool, not a blind sleep) for a ≤65°C cooldown target before starting the next one; jobs that exceeded the foreground timeout were allowed to continue in the background rather than killed, with a passive (non-interventionist) temperature watch running alongside just to know if something needed flagging. GPU peaked at 85°C once during the AGAP/DLPFC sweep (a larger, more continuous job than the earlier single-slice sprints) and self-recovered without intervention — consistent with normal mobile-GPU thermal behavior, not a fault.
+
+`run_enhanced_smoke_test.py`'s all-3-slices-in-one-process design doesn't support this pattern (only saves once at the end), so `src/eval/run_enhanced_smoke_sprint.py` was added: runs exactly one slice per invocation and merges into the results JSON incrementally, so every sprint is a complete, self-contained, already-saved unit — nothing is ever "mid-flight" between sprints.
+
+### 29. Two more real bugs found and fixed in `run_master_rerun.py`, neither previously triggered
+
+1. **`agap`'s `ARCH_SPECS` entry inherited `expression_weighted=True`** from `SHARED_BASELINE_HP`, but `train_agap_model()` has no such parameter (it always builds its own edge-index graph via `connectivities_to_edge_index`, confirmed by inspecting all 8 architectures' train-function signatures side by side — AGAP is the only one without it). `TypeError` on the very first attempted `--only agap` run, before any training started (no wasted GPU time). Fixed by excluding that one key for AGAP's `default_hp` specifically.
+2. **Every successful run crashed at the very end** with `UnicodeEncodeError` — the completion messages used ✅/📊 characters, which the default Windows console encoding (cp1252) can't encode. The actual training and file save always completed first, so no run ever actually lost data to this, but every prior invocation would have *looked* like a hard failure from its exit state. Replaced with plain ASCII markers.
+
+Also found, not a bug but a real methodological gap: **`run_ldcm_standard.py` (bespoke) and `standard_protocol.py` (generic, used for baseline/AGAP/PPR here) compute "consensus" differently** — LDCM's script does one global consensus clustering over all report spots combined; the generic harness does 4 separate per-block consensus clusterings and averages them. These are not the same statistic, so LDCM's consensus number (0.5634) is not yet comparable to baseline's/AGAP's/PPR's block-protocol consensus numbers (0.476/0.443/0.433) — only the per-seed-mean metric is computed identically across both paths and is safe to compare. Reconciling this (rerunning LDCM through the generic harness, or vice versa) is still open.
 
