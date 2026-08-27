@@ -10,7 +10,7 @@ rerun the builder script to refresh after new runs complete._
 |---|---|---|---|
 | GraphST (reference, legacy) | 0.5724 ± 0.0861 | 0.6426 | Legacy run, logged pre-block protocol |
 | baseline | 0.5726 ± 0.0940 | 0.4760 ± 0.2160 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
-| ldcm | — | 0.4619 ± 0.2265 | BC HP: lambda_contrastive=0.1, temperature=1 |
+| ldcm | 0.4906 ± 0.0685 | 0.4619 ± 0.2265 | DLPFC HP: lambda_contrastive=0.01, temperature=1 | BC HP: lambda_contrastive=0.1, temperature=1 |
 | ppr | 0.5521 ± 0.1307 | 0.4333 ± 0.2681 | DLPFC HP: alpha=0.1 | BC HP: alpha=0.05 |
 | agap | 0.4505 ± 0.1210 | 0.4428 ± 0.2597 | HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | hma | — | — |  |
@@ -26,7 +26,7 @@ rerun the builder script to refresh after new runs complete._
 |---|---|---|
 | GraphST (reference, legacy) | 0.5685 ± 0.0825 | 0.6213 ± 0.0211 |
 | baseline | 0.5443 ± 0.0803 | 0.3789 ± 0.1889 |
-| ldcm | — | 0.4145 ± 0.1637 |
+| ldcm | 0.4774 ± 0.0938 | 0.4145 ± 0.1637 |
 | ppr | 0.4847 ± 0.1411 | 0.3550 ± 0.1424 |
 | agap | 0.4376 ± 0.0853 | 0.4470 ± 0.1982 |
 | hma | — | — |
@@ -63,6 +63,19 @@ rerun the builder script to refresh after new runs complete._
 | blocks_5 | 626 | 20 | 0.3175 | 0.1908 ± 0.1070 |
 
 ### ldcm
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.4607 | 0.4153 ± 0.0561 |
+| 151509 | 4789 | 7 | 0.4395 | 0.4062 ± 0.0044 |
+| 151510 | 4634 | 7 | 0.4812 | 0.4548 ± 0.0742 |
+| 151670 | 3498 | 5 | 0.4443 | 0.4340 ± 0.0547 |
+| 151671 | 4110 | 5 | 0.6452 | 0.6219 ± 0.1106 |
+| 151672 | 4015 | 5 | 0.5559 | 0.6521 ± 0.0967 |
+| 151675 | 3592 | 7 | 0.4405 | 0.4011 ± 0.0514 |
+| 151676 | 3460 | 7 | 0.4573 | 0.4341 ± 0.0436 |
 
 **Breast Cancer report blocks:**
 
