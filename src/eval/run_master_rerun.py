@@ -84,7 +84,12 @@ ARCH_SPECS = [
         "dlpfc": True,
         "breast_cancer": True,
         "hp_grid": {},
-        "default_hp": dict(SHARED_BASELINE_HP),
+        # train_agap_model has no expression_weighted param (it always builds
+        # its own edge-index graph via connectivities_to_edge_index) -- unlike
+        # every other architecture here, so it can't inherit SHARED_BASELINE_HP
+        # wholesale. Confirmed via signature inspection of all 8 train_fns
+        # before this was caught the hard way (TypeError, no wasted GPU time).
+        "default_hp": {k: v for k, v in SHARED_BASELINE_HP.items() if k != "expression_weighted"},
     },
     {
         "name": "hma",
