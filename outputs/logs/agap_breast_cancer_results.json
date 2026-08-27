@@ -1,0 +1,78 @@
+{
+  "n_spots": 3798,
+  "n_regions": 20,
+  "model": "AGAP",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "baselines": {
+    "ours_SpatialAddressMemoryLayer": {
+      "mean": 0.412,
+      "std": 0.072,
+      "consensus": 0.546
+    },
+    "graphst": {
+      "mean": 0.621,
+      "std": 0.021,
+      "consensus": 0.643
+    }
+  },
+  "agap": {
+    "per_seed": [
+      0.4886839286382885,
+      0.5339477707045297,
+      0.4808890941549499,
+      0.5291973626304644,
+      0.47230264374080805
+    ],
+    "mean": 0.5010041599738082,
+    "std": 0.025535540609697246,
+    "consensus": 0.5660682830235565,
+    "seed_diagnostics": [
+      {
+        "seed": 0,
+        "ari": 0.4886839286382885,
+        "n_slots_used": 16,
+        "usage_entropy": 2.771549701690674,
+        "median_row_entropy": 1.7522552013397217,
+        "collapsed": false
+      },
+      {
+        "seed": 1,
+        "ari": 0.5339477707045297,
+        "n_slots_used": 16,
+        "usage_entropy": 2.771190643310547,
+        "median_row_entropy": 1.6424648761749268,
+        "collapsed": false
+      },
+      {
+        "seed": 2,
+        "ari": 0.4808890941549499,
+        "n_slots_used": 16,
+        "usage_entropy": 2.770756244659424,
+        "median_row_entropy": 1.7192051410675049,
+        "collapsed": false
+      },
+      {
+        "seed": 3,
+        "ari": 0.5291973626304644,
+        "n_slots_used": 16,
+        "usage_entropy": 2.7710533142089844,
+        "median_row_entropy": 1.6931047439575195,
+        "collapsed": false
+      },
+      {
+        "seed": 4,
+        "ari": 0.47230264374080805,
+        "n_slots_used": 16,
+        "usage_entropy": 2.7688705921173096,
+        "median_row_entropy": 1.8186726570129395,
+        "collapsed": false
+      }
+    ]
+  }
+}
