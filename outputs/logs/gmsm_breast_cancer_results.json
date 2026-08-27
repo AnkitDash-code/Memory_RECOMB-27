@@ -1,0 +1,88 @@
+{
+  "n_spots": 3798,
+  "n_regions": 20,
+  "model": "GMSM",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "baselines": {
+    "ours_SpatialAddressMemoryLayer": {
+      "mean": 0.412,
+      "std": 0.072,
+      "consensus": 0.546
+    },
+    "graphst": {
+      "mean": 0.621,
+      "std": 0.021,
+      "consensus": 0.643
+    }
+  },
+  "gmsm": {
+    "per_seed": [
+      0.34937039518745705,
+      0.3470889496637401,
+      0.4040622177004979,
+      0.30108789330152436,
+      0.4396666824423875
+    ],
+    "mean": 0.36825522765912144,
+    "std": 0.0483690715983913,
+    "consensus": 0.46008535570670495,
+    "seed_diagnostics": [
+      {
+        "seed": 0,
+        "ari": 0.34937039518745705,
+        "local_slots_used": 16,
+        "global_slots_used": 16,
+        "local_usage_entropy": 2.769322395324707,
+        "global_usage_entropy": 2.7696757316589355,
+        "mean_gate": 0.7463878989219666,
+        "collapsed": false
+      },
+      {
+        "seed": 1,
+        "ari": 0.3470889496637401,
+        "local_slots_used": 15,
+        "global_slots_used": 13,
+        "local_usage_entropy": 2.771857261657715,
+        "global_usage_entropy": 2.771730899810791,
+        "mean_gate": 0.5908858776092529,
+        "collapsed": false
+      },
+      {
+        "seed": 2,
+        "ari": 0.4040622177004979,
+        "local_slots_used": 16,
+        "global_slots_used": 16,
+        "local_usage_entropy": 2.771996021270752,
+        "global_usage_entropy": 2.7718896865844727,
+        "mean_gate": 0.5559965372085571,
+        "collapsed": false
+      },
+      {
+        "seed": 3,
+        "ari": 0.30108789330152436,
+        "local_slots_used": 9,
+        "global_slots_used": 9,
+        "local_usage_entropy": 2.772559404373169,
+        "global_usage_entropy": 2.7725419998168945,
+        "mean_gate": 0.48484542965888977,
+        "collapsed": false
+      },
+      {
+        "seed": 4,
+        "ari": 0.4396666824423875,
+        "local_slots_used": 16,
+        "global_slots_used": 16,
+        "local_usage_entropy": 2.771838903427124,
+        "global_usage_entropy": 2.771799325942993,
+        "mean_gate": 0.862288773059845,
+        "collapsed": false
+      }
+    ]
+  }
+}
