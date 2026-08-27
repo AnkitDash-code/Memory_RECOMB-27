@@ -965,3 +965,17 @@ Also found, not a bug but a real methodological gap: **`run_ldcm_standard.py` (b
 ### 30. Quick check on the block-3-easy/block-5-hard pattern: not class imbalance, still open
 
 Checked the obvious hypothesis first: block 3 and block 5 have nearly identical class-composition profiles (block 3: one dominant class at 73%, IDC_4, 550 spots; block 5: one dominant class at 72%, IDC_5, 626 spots; both have 6-7 total classes with a similar long tail of small classes). So the easy/hard split across baseline, AGAP, LDCM, and PPR (all four, consistently) is not explained by class count or class-imbalance -- both blocks are structurally similar in that sense. The actual explanation (spatial arrangement of the tail classes relative to the dominant one, or genuine transcriptional similarity between block 5's specific tail classes and its dominant class vs. block 3's) is still open; would need a per-class expression-similarity check, not done here. Recorded as a ruled-out hypothesis, not a finding.
+
+### 31. Full standardized-protocol matrix complete: a real tradeoff, not a win or a loss
+
+Final picture, same harness, same metrics, both tissues, all four tested architectures (baseline, AGAP, LDCM, PPR):
+
+| architecture | BC per-seed Δ | DLPFC per-seed Δ | pattern |
+|---|---|---|---|
+| AGAP | +0.068 | −0.107 | wins breast cancer, loses DLPFC |
+| LDCM | +0.036 | −0.067 | wins breast cancer, loses DLPFC (smaller both ways) |
+| PPR | −0.024 | −0.060 | loses everywhere |
+
+**The headline finding: both mechanisms that showed any positive signal on breast cancer trade it away on DLPFC, in the same direction and roughly proportional magnitude to their gain.** This is stronger evidence than either result alone — two architecturally different mechanisms (AGAP's per-spot adaptive gate, LDCM's latent contrastive smoothing) show the same tradeoff shape, consistent with a real, general tension between small/heterogeneous domains (breast cancer tumor regions) and large/uniform domains (DLPFC cortical layers) rather than an architecture-specific quirk. This reframes the project's open question from "find an architecture that beats baseline everywhere" to "there may not be one fixed architecture that's best across both regimes" — a more interesting, defensible, and mechanistically grounded claim than either a clean win or a clean loss would have been, and it's supported by Phase D's earlier domain-size-vs-propagation-depth diagnosis rather than contradicting it.
+
+GMSM/BAAP/MSAP/HMA remain closed under the legacy protocol only — their regressions were large enough (−0.09 to full collapse) that a block-protocol rerun is very unlikely to change the conclusion, so this was deprioritized in favor of completing the more informative AGAP/LDCM/PPR matrix.
