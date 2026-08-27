@@ -9,11 +9,10 @@ rerun the builder script to refresh after new runs complete._
 | Architecture | DLPFC — 8 report slices, consensus | Breast Cancer — 4 report blocks, consensus | Notes |
 |---|---|---|---|
 | GraphST (reference, legacy) | 0.5724 ± 0.0861 | 0.6426 | Legacy run, logged pre-block protocol |
-| Ours baseline (legacy run) | 0.5621 ± 0.0821 | 0.5462 | Pre-block protocol; use `baseline` row once rerun done |
-| baseline | — | — |  |
+| baseline | — | 0.4760 ± 0.2160 | BC HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | ldcm | — | — |  |
 | ppr | — | — |  |
-| agap | — | — |  |
+| agap | — | 0.4428 ± 0.2597 | BC HP: lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | hma | — | — |  |
 | gmsm | — | — |  |
 | msap | — | — |  |
@@ -26,11 +25,10 @@ rerun the builder script to refresh after new runs complete._
 | Architecture | DLPFC — 8 report slices, per-seed mean | Breast Cancer — 4 report blocks, per-seed mean |
 |---|---|---|
 | GraphST (reference, legacy) | 0.5685 ± 0.0825 | 0.6213 ± 0.0211 |
-| Ours baseline (legacy run) | 0.5342 ± 0.0764 | 0.4119 ± 0.0721 |
-| baseline | — | — |
+| baseline | — | 0.3789 ± 0.1889 |
 | ldcm | — | — |
 | ppr | — | — |
-| agap | — | — |
+| agap | — | 0.4470 ± 0.1982 |
 | hma | — | — |
 | gmsm | — | — |
 | msap | — | — |
@@ -42,11 +40,29 @@ rerun the builder script to refresh after new runs complete._
 
 ### baseline
 
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.3830 | 0.3439 ± 0.0579 |
+| blocks_3 | 550 | 20 | 0.8479 | 0.6920 ± 0.2060 |
+| blocks_4 | 575 | 20 | 0.3555 | 0.2888 ± 0.0424 |
+| blocks_5 | 626 | 20 | 0.3175 | 0.1908 ± 0.1070 |
+
 ### ldcm
 
 ### ppr
 
 ### agap
+
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.3679 | 0.3947 ± 0.0558 |
+| blocks_3 | 550 | 20 | 0.8579 | 0.7789 ± 0.1047 |
+| blocks_4 | 575 | 20 | 0.4033 | 0.3586 ± 0.0362 |
+| blocks_5 | 626 | 20 | 0.1422 | 0.2560 ± 0.0836 |
 
 ### hma
 
