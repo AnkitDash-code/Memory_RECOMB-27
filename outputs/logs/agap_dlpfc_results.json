@@ -1,0 +1,3349 @@
+{
+  "architecture": "agap",
+  "dataset": "dlpfc",
+  "hp_config_used": {
+    "memory_slots": 16,
+    "memory_dim": 128,
+    "n_hops": 4,
+    "lambda_usage": 0.02
+  },
+  "fits_report": [
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.2939575778268805,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1429020166397095,
+          "total_loss": 1.0874723196029663,
+          "median_row_entropy": 2.7713897228240967,
+          "usage_entropy": 2.771486282348633,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8041563034057617,
+          "total_loss": 0.748754620552063,
+          "median_row_entropy": 2.327352523803711,
+          "usage_entropy": 2.770085334777832,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7964907288551331,
+          "total_loss": 0.7410438060760498,
+          "median_row_entropy": 2.239093065261841,
+          "usage_entropy": 2.7723448276519775,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7956549525260925,
+          "total_loss": 0.7402191162109375,
+          "median_row_entropy": 2.2074215412139893,
+          "usage_entropy": 2.7717909812927246,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.794029712677002,
+          "total_loss": 0.7385799884796143,
+          "median_row_entropy": 2.1827688217163086,
+          "usage_entropy": 2.7724876403808594,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7927585244178772,
+          "total_loss": 0.7373180985450745,
+          "median_row_entropy": 2.1307716369628906,
+          "usage_entropy": 2.772020101547241,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7912874221801758,
+          "total_loss": 0.7358425259590149,
+          "median_row_entropy": 2.0700643062591553,
+          "usage_entropy": 2.7722434997558594,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.2784845757335233,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1424051523208618,
+          "total_loss": 1.0869743824005127,
+          "median_row_entropy": 2.7714478969573975,
+          "usage_entropy": 2.771538734436035,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8039911985397339,
+          "total_loss": 0.748755156993866,
+          "median_row_entropy": 2.307332754135132,
+          "usage_entropy": 2.761800765991211,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7965691685676575,
+          "total_loss": 0.7411250472068787,
+          "median_row_entropy": 2.120450496673584,
+          "usage_entropy": 2.772207260131836,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7950822114944458,
+          "total_loss": 0.7396324276924133,
+          "median_row_entropy": 2.122605800628662,
+          "usage_entropy": 2.7724905014038086,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7934151887893677,
+          "total_loss": 0.7379657626152039,
+          "median_row_entropy": 2.0278267860412598,
+          "usage_entropy": 2.772472620010376,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7920951843261719,
+          "total_loss": 0.7367058396339417,
+          "median_row_entropy": 1.9406495094299316,
+          "usage_entropy": 2.769468069076538,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7900433540344238,
+          "total_loss": 0.734595537185669,
+          "median_row_entropy": 1.8114728927612305,
+          "usage_entropy": 2.7723898887634277,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3248859426103305,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1422059535980225,
+          "total_loss": 1.0867767333984375,
+          "median_row_entropy": 2.7713587284088135,
+          "usage_entropy": 2.771463632583618,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8040969967842102,
+          "total_loss": 0.7486656904220581,
+          "median_row_entropy": 2.2920641899108887,
+          "usage_entropy": 2.7715659141540527,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7967925667762756,
+          "total_loss": 0.7413480877876282,
+          "median_row_entropy": 2.168644428253174,
+          "usage_entropy": 2.7722249031066895,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7954149842262268,
+          "total_loss": 0.739963710308075,
+          "median_row_entropy": 2.160735607147217,
+          "usage_entropy": 2.7725636959075928,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7944834232330322,
+          "total_loss": 0.7390338182449341,
+          "median_row_entropy": 2.131389617919922,
+          "usage_entropy": 2.7724807262420654,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7924501895904541,
+          "total_loss": 0.7370085120201111,
+          "median_row_entropy": 2.0562636852264404,
+          "usage_entropy": 2.7720842361450195,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.790871262550354,
+          "total_loss": 0.7354968190193176,
+          "median_row_entropy": 1.8309775590896606,
+          "usage_entropy": 2.7687230110168457,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5045868027652036,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1407719850540161,
+          "total_loss": 1.0853325128555298,
+          "median_row_entropy": 2.7718868255615234,
+          "usage_entropy": 2.7719733715057373,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8040757179260254,
+          "total_loss": 0.7486721277236938,
+          "median_row_entropy": 2.1997222900390625,
+          "usage_entropy": 2.770179510116577,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7964105010032654,
+          "total_loss": 0.7409712076187134,
+          "median_row_entropy": 2.125436782836914,
+          "usage_entropy": 2.7719645500183105,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7950721979141235,
+          "total_loss": 0.7396261096000671,
+          "median_row_entropy": 2.0770397186279297,
+          "usage_entropy": 2.7723045349121094,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7933225035667419,
+          "total_loss": 0.7378770112991333,
+          "median_row_entropy": 1.9800469875335693,
+          "usage_entropy": 2.7722737789154053,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7906994223594666,
+          "total_loss": 0.7352538704872131,
+          "median_row_entropy": 1.7436954975128174,
+          "usage_entropy": 2.77227783203125,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7897090911865234,
+          "total_loss": 0.7342646718025208,
+          "median_row_entropy": 1.6982390880584717,
+          "usage_entropy": 2.7722201347351074,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.37840215222402734,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1429450511932373,
+          "total_loss": 1.087516188621521,
+          "median_row_entropy": 2.7713592052459717,
+          "usage_entropy": 2.771442413330078,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.804093062877655,
+          "total_loss": 0.7486791014671326,
+          "median_row_entropy": 2.356417179107666,
+          "usage_entropy": 2.7706990242004395,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7963526248931885,
+          "total_loss": 0.7409060597419739,
+          "median_row_entropy": 2.2205543518066406,
+          "usage_entropy": 2.7723276615142822,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7953609824180603,
+          "total_loss": 0.739910364151001,
+          "median_row_entropy": 2.173015594482422,
+          "usage_entropy": 2.7725298404693604,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7940191626548767,
+          "total_loss": 0.7385756969451904,
+          "median_row_entropy": 2.1257572174072266,
+          "usage_entropy": 2.772174596786499,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7928772568702698,
+          "total_loss": 0.7374311089515686,
+          "median_row_entropy": 2.0409512519836426,
+          "usage_entropy": 2.772307872772217,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.791708767414093,
+          "total_loss": 0.7362597584724426,
+          "median_row_entropy": 1.940848708152771,
+          "usage_entropy": 2.772449254989624,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4969587957042491,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1253300905227661,
+          "total_loss": 1.0698844194412231,
+          "median_row_entropy": 2.7722160816192627,
+          "usage_entropy": 2.7722816467285156,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8004335761070251,
+          "total_loss": 0.7450278401374817,
+          "median_row_entropy": 2.22005295753479,
+          "usage_entropy": 2.770286798477173,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.790693998336792,
+          "total_loss": 0.7352451086044312,
+          "median_row_entropy": 2.0908031463623047,
+          "usage_entropy": 2.7724435329437256,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7832643389701843,
+          "total_loss": 0.7278498411178589,
+          "median_row_entropy": 2.0650830268859863,
+          "usage_entropy": 2.7707250118255615,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7813631296157837,
+          "total_loss": 0.72601318359375,
+          "median_row_entropy": 1.907233476638794,
+          "usage_entropy": 2.7674970626831055,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7788345813751221,
+          "total_loss": 0.7233863472938538,
+          "median_row_entropy": 1.7799649238586426,
+          "usage_entropy": 2.7724111080169678,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7780055999755859,
+          "total_loss": 0.7225571274757385,
+          "median_row_entropy": 1.7373727560043335,
+          "usage_entropy": 2.7724242210388184,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.6128173472236277,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1256861686706543,
+          "total_loss": 1.0702694654464722,
+          "median_row_entropy": 2.770691394805908,
+          "usage_entropy": 2.7708377838134766,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7980466485023499,
+          "total_loss": 0.742615282535553,
+          "median_row_entropy": 2.2293572425842285,
+          "usage_entropy": 2.77156925201416,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7897692322731018,
+          "total_loss": 0.7343279123306274,
+          "median_row_entropy": 2.1487793922424316,
+          "usage_entropy": 2.772066354751587,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7828061580657959,
+          "total_loss": 0.7273773550987244,
+          "median_row_entropy": 2.1795496940612793,
+          "usage_entropy": 2.771440267562866,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7809001803398132,
+          "total_loss": 0.7254588603973389,
+          "median_row_entropy": 2.044330596923828,
+          "usage_entropy": 2.7720658779144287,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7798232436180115,
+          "total_loss": 0.7243738174438477,
+          "median_row_entropy": 1.9976489543914795,
+          "usage_entropy": 2.772470474243164,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7788412570953369,
+          "total_loss": 0.7234008312225342,
+          "median_row_entropy": 1.936798095703125,
+          "usage_entropy": 2.772019863128662,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5656875402879276,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1240416765213013,
+          "total_loss": 1.0686101913452148,
+          "median_row_entropy": 2.7714834213256836,
+          "usage_entropy": 2.771574020385742,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7996841073036194,
+          "total_loss": 0.7443212270736694,
+          "median_row_entropy": 2.2095749378204346,
+          "usage_entropy": 2.7681446075439453,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7910140156745911,
+          "total_loss": 0.7355714440345764,
+          "median_row_entropy": 2.100735902786255,
+          "usage_entropy": 2.772128105163574,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7830249667167664,
+          "total_loss": 0.7275961637496948,
+          "median_row_entropy": 2.0730040073394775,
+          "usage_entropy": 2.7714414596557617,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7809479832649231,
+          "total_loss": 0.7254987359046936,
+          "median_row_entropy": 1.9463410377502441,
+          "usage_entropy": 2.772463798522949,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7798317074775696,
+          "total_loss": 0.7243854999542236,
+          "median_row_entropy": 1.8810691833496094,
+          "usage_entropy": 2.772310972213745,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7787597179412842,
+          "total_loss": 0.7233089208602905,
+          "median_row_entropy": 1.8348935842514038,
+          "usage_entropy": 2.772540330886841,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.42519435737293565,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1240109205245972,
+          "total_loss": 1.0685745477676392,
+          "median_row_entropy": 2.771735668182373,
+          "usage_entropy": 2.7718160152435303,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 9
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7982380986213684,
+          "total_loss": 0.7428059577941895,
+          "median_row_entropy": 2.209709405899048,
+          "usage_entropy": 2.7716076374053955,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7893391847610474,
+          "total_loss": 0.7339500784873962,
+          "median_row_entropy": 2.1385035514831543,
+          "usage_entropy": 2.769456624984741,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7829399704933167,
+          "total_loss": 0.7275037169456482,
+          "median_row_entropy": 2.136333703994751,
+          "usage_entropy": 2.7718138694763184,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7814757227897644,
+          "total_loss": 0.7260271906852722,
+          "median_row_entropy": 1.9702801704406738,
+          "usage_entropy": 2.772425651550293,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7804954648017883,
+          "total_loss": 0.7250452041625977,
+          "median_row_entropy": 1.8632423877716064,
+          "usage_entropy": 2.772512197494507,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.779268205165863,
+          "total_loss": 0.7238202691078186,
+          "median_row_entropy": 1.841287612915039,
+          "usage_entropy": 2.77239727973938,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4409182229586502,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1251964569091797,
+          "total_loss": 1.0697757005691528,
+          "median_row_entropy": 2.7709012031555176,
+          "usage_entropy": 2.7710392475128174,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7986066937446594,
+          "total_loss": 0.7431769967079163,
+          "median_row_entropy": 2.2396531105041504,
+          "usage_entropy": 2.771484375,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7895024418830872,
+          "total_loss": 0.7340635061264038,
+          "median_row_entropy": 2.1101555824279785,
+          "usage_entropy": 2.771946907043457,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7829176783561707,
+          "total_loss": 0.7274777293205261,
+          "median_row_entropy": 2.0849428176879883,
+          "usage_entropy": 2.771998882293701,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7815924882888794,
+          "total_loss": 0.7261419892311096,
+          "median_row_entropy": 2.030139207839966,
+          "usage_entropy": 2.772524356842041,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7795217037200928,
+          "total_loss": 0.724071204662323,
+          "median_row_entropy": 1.8536516427993774,
+          "usage_entropy": 2.7725236415863037,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7781338691711426,
+          "total_loss": 0.7226848602294922,
+          "median_row_entropy": 1.8011119365692139,
+          "usage_entropy": 2.772451877593994,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5980555024720982,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0954710245132446,
+          "total_loss": 1.040047287940979,
+          "median_row_entropy": 2.771071434020996,
+          "usage_entropy": 2.7711894512176514,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7873844504356384,
+          "total_loss": 0.7319534420967102,
+          "median_row_entropy": 2.271190643310547,
+          "usage_entropy": 2.771550178527832,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.781705379486084,
+          "total_loss": 0.726265013217926,
+          "median_row_entropy": 2.175971031188965,
+          "usage_entropy": 2.772017002105713,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7758200764656067,
+          "total_loss": 0.7204087972640991,
+          "median_row_entropy": 2.1260342597961426,
+          "usage_entropy": 2.770564556121826,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7734924554824829,
+          "total_loss": 0.7180808782577515,
+          "median_row_entropy": 2.060908794403076,
+          "usage_entropy": 2.7705790996551514,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7713978886604309,
+          "total_loss": 0.715948224067688,
+          "median_row_entropy": 1.9406359195709229,
+          "usage_entropy": 2.772482395172119,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7700728178024292,
+          "total_loss": 0.7146362066268921,
+          "median_row_entropy": 1.8316030502319336,
+          "usage_entropy": 2.771829128265381,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5902194780662361,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0960018634796143,
+          "total_loss": 1.0405700206756592,
+          "median_row_entropy": 2.771515130996704,
+          "usage_entropy": 2.771594524383545,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 2
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7864182591438293,
+          "total_loss": 0.7310025095939636,
+          "median_row_entropy": 2.289980888366699,
+          "usage_entropy": 2.770787239074707,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7795081734657288,
+          "total_loss": 0.7240613698959351,
+          "median_row_entropy": 2.2261886596679688,
+          "usage_entropy": 2.772341728210449,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7739920020103455,
+          "total_loss": 0.7185429930686951,
+          "median_row_entropy": 2.1931381225585938,
+          "usage_entropy": 2.772449493408203,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.772595226764679,
+          "total_loss": 0.717158317565918,
+          "median_row_entropy": 2.0883708000183105,
+          "usage_entropy": 2.7718443870544434,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7709994316101074,
+          "total_loss": 0.7155591249465942,
+          "median_row_entropy": 1.8331255912780762,
+          "usage_entropy": 2.77201509475708,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7701913714408875,
+          "total_loss": 0.714753270149231,
+          "median_row_entropy": 1.7600494623184204,
+          "usage_entropy": 2.7719061374664307,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4405950466783961,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0953130722045898,
+          "total_loss": 1.0398876667022705,
+          "median_row_entropy": 2.771155595779419,
+          "usage_entropy": 2.7712690830230713,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7866669297218323,
+          "total_loss": 0.7312427759170532,
+          "median_row_entropy": 2.3923518657684326,
+          "usage_entropy": 2.7712087631225586,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7797532081604004,
+          "total_loss": 0.7243070006370544,
+          "median_row_entropy": 2.297400951385498,
+          "usage_entropy": 2.772310256958008,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7738128900527954,
+          "total_loss": 0.7183859944343567,
+          "median_row_entropy": 2.286095380783081,
+          "usage_entropy": 2.771346092224121,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7717766165733337,
+          "total_loss": 0.7163292169570923,
+          "median_row_entropy": 2.216996192932129,
+          "usage_entropy": 2.7723701000213623,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7706490159034729,
+          "total_loss": 0.715199887752533,
+          "median_row_entropy": 2.1323466300964355,
+          "usage_entropy": 2.7724578380584717,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7700080275535583,
+          "total_loss": 0.7145578861236572,
+          "median_row_entropy": 2.0748989582061768,
+          "usage_entropy": 2.772507667541504,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5297518984773028,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0937328338623047,
+          "total_loss": 1.0382959842681885,
+          "median_row_entropy": 2.7717409133911133,
+          "usage_entropy": 2.7718403339385986,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7859794497489929,
+          "total_loss": 0.7305290699005127,
+          "median_row_entropy": 2.417464256286621,
+          "usage_entropy": 2.772519826889038,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7791681885719299,
+          "total_loss": 0.7237180471420288,
+          "median_row_entropy": 2.2046775817871094,
+          "usage_entropy": 2.7725071907043457,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7734812498092651,
+          "total_loss": 0.7180314064025879,
+          "median_row_entropy": 2.2045671939849854,
+          "usage_entropy": 2.772491931915283,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7715739011764526,
+          "total_loss": 0.7161255478858948,
+          "median_row_entropy": 2.0975189208984375,
+          "usage_entropy": 2.7724175453186035,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7703909277915955,
+          "total_loss": 0.7149431109428406,
+          "median_row_entropy": 2.0229291915893555,
+          "usage_entropy": 2.7723920345306396,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7694697380065918,
+          "total_loss": 0.7140447497367859,
+          "median_row_entropy": 1.9643827676773071,
+          "usage_entropy": 2.771249294281006,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5248725042386508,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0950089693069458,
+          "total_loss": 1.0395797491073608,
+          "median_row_entropy": 2.771348714828491,
+          "usage_entropy": 2.7714600563049316,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.7867887020111084,
+          "total_loss": 0.7313782572746277,
+          "median_row_entropy": 2.3968558311462402,
+          "usage_entropy": 2.770522117614746,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7789059281349182,
+          "total_loss": 0.7234642505645752,
+          "median_row_entropy": 2.2471494674682617,
+          "usage_entropy": 2.7720842361450195,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.773631751537323,
+          "total_loss": 0.7181854248046875,
+          "median_row_entropy": 2.250216007232666,
+          "usage_entropy": 2.772317409515381,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7721258997917175,
+          "total_loss": 0.7166802287101746,
+          "median_row_entropy": 2.125405788421631,
+          "usage_entropy": 2.7722840309143066,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7707840800285339,
+          "total_loss": 0.7153377532958984,
+          "median_row_entropy": 2.043095827102661,
+          "usage_entropy": 2.77231502532959,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7694661617279053,
+          "total_loss": 0.7140153646469116,
+          "median_row_entropy": 1.9856102466583252,
+          "usage_entropy": 2.7725393772125244,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.31229309695623997,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2592239379882812,
+          "total_loss": 1.203790545463562,
+          "median_row_entropy": 2.771584987640381,
+          "usage_entropy": 2.771669387817383,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8362239599227905,
+          "total_loss": 0.7808037996292114,
+          "median_row_entropy": 2.2576732635498047,
+          "usage_entropy": 2.7710094451904297,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8280836939811707,
+          "total_loss": 0.7726398706436157,
+          "median_row_entropy": 2.1613614559173584,
+          "usage_entropy": 2.7721900939941406,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8245347738265991,
+          "total_loss": 0.7690954208374023,
+          "median_row_entropy": 2.1809165477752686,
+          "usage_entropy": 2.7719664573669434,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8235860466957092,
+          "total_loss": 0.7681657075881958,
+          "median_row_entropy": 2.0753836631774902,
+          "usage_entropy": 2.77101731300354,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.822144091129303,
+          "total_loss": 0.7666950225830078,
+          "median_row_entropy": 1.9440016746520996,
+          "usage_entropy": 2.7724533081054688,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8210021257400513,
+          "total_loss": 0.7655532956123352,
+          "median_row_entropy": 1.8931851387023926,
+          "usage_entropy": 2.7724413871765137,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5070560869072871,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.258407473564148,
+          "total_loss": 1.2029787302017212,
+          "median_row_entropy": 2.77134108543396,
+          "usage_entropy": 2.771440029144287,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8347427248954773,
+          "total_loss": 0.7793413400650024,
+          "median_row_entropy": 2.4524614810943604,
+          "usage_entropy": 2.770068645477295,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8271884918212891,
+          "total_loss": 0.7717391848564148,
+          "median_row_entropy": 2.316976308822632,
+          "usage_entropy": 2.772465705871582,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8242062330245972,
+          "total_loss": 0.7687567472457886,
+          "median_row_entropy": 2.3245439529418945,
+          "usage_entropy": 2.772472858428955,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8231843113899231,
+          "total_loss": 0.7677575349807739,
+          "median_row_entropy": 2.0871829986572266,
+          "usage_entropy": 2.7713403701782227,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8208199739456177,
+          "total_loss": 0.7653695940971375,
+          "median_row_entropy": 1.9476648569107056,
+          "usage_entropy": 2.772519111633301,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8193241953849792,
+          "total_loss": 0.763879656791687,
+          "median_row_entropy": 1.8580706119537354,
+          "usage_entropy": 2.772228240966797,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3198530951561878,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2592146396636963,
+          "total_loss": 1.203782320022583,
+          "median_row_entropy": 2.77154541015625,
+          "usage_entropy": 2.7716174125671387,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8351545929908752,
+          "total_loss": 0.7798721790313721,
+          "median_row_entropy": 2.441547155380249,
+          "usage_entropy": 2.7641215324401855,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8267322182655334,
+          "total_loss": 0.7713112831115723,
+          "median_row_entropy": 2.2985167503356934,
+          "usage_entropy": 2.771047592163086,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8241874575614929,
+          "total_loss": 0.768752932548523,
+          "median_row_entropy": 2.380988836288452,
+          "usage_entropy": 2.7717251777648926,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8231147527694702,
+          "total_loss": 0.7676673531532288,
+          "median_row_entropy": 2.35211181640625,
+          "usage_entropy": 2.772371292114258,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8220558762550354,
+          "total_loss": 0.7666075825691223,
+          "median_row_entropy": 2.2355198860168457,
+          "usage_entropy": 2.7724156379699707,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8202342391014099,
+          "total_loss": 0.7647870182991028,
+          "median_row_entropy": 2.1508102416992188,
+          "usage_entropy": 2.7723612785339355,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5424932586445234,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.25686514377594,
+          "total_loss": 1.201436161994934,
+          "median_row_entropy": 2.7713568210601807,
+          "usage_entropy": 2.771450996398926,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8353023529052734,
+          "total_loss": 0.7798693180084229,
+          "median_row_entropy": 2.362325429916382,
+          "usage_entropy": 2.7716522216796875,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.827989935874939,
+          "total_loss": 0.7725411057472229,
+          "median_row_entropy": 2.2649986743927,
+          "usage_entropy": 2.772442579269409,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8242683410644531,
+          "total_loss": 0.7688281536102295,
+          "median_row_entropy": 2.2582998275756836,
+          "usage_entropy": 2.772010326385498,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8230875134468079,
+          "total_loss": 0.7676385045051575,
+          "median_row_entropy": 2.0964837074279785,
+          "usage_entropy": 2.7724499702453613,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8217228055000305,
+          "total_loss": 0.7662739157676697,
+          "median_row_entropy": 2.0144424438476562,
+          "usage_entropy": 2.772444725036621,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8201651573181152,
+          "total_loss": 0.7648097276687622,
+          "median_row_entropy": 1.949652075767517,
+          "usage_entropy": 2.7677712440490723,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.30341189982979305,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2591543197631836,
+          "total_loss": 1.2037378549575806,
+          "median_row_entropy": 2.7707016468048096,
+          "usage_entropy": 2.770822525024414,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8355469703674316,
+          "total_loss": 0.7801238894462585,
+          "median_row_entropy": 2.382990598678589,
+          "usage_entropy": 2.771153450012207,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8260476589202881,
+          "total_loss": 0.7706155776977539,
+          "median_row_entropy": 2.252357244491577,
+          "usage_entropy": 2.7716052532196045,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.824370801448822,
+          "total_loss": 0.7689197659492493,
+          "median_row_entropy": 2.2920546531677246,
+          "usage_entropy": 2.772552728652954,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.823414146900177,
+          "total_loss": 0.7679663300514221,
+          "median_row_entropy": 2.2529592514038086,
+          "usage_entropy": 2.7723898887634277,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8226450681686401,
+          "total_loss": 0.7671943306922913,
+          "median_row_entropy": 2.1857779026031494,
+          "usage_entropy": 2.772536039352417,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8212906718254089,
+          "total_loss": 0.7658425569534302,
+          "median_row_entropy": 2.0874476432800293,
+          "usage_entropy": 2.7724056243896484,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4909110636177401,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1911014318466187,
+          "total_loss": 1.1356645822525024,
+          "median_row_entropy": 2.771756649017334,
+          "usage_entropy": 2.7718429565429688,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8069664239883423,
+          "total_loss": 0.7515247464179993,
+          "median_row_entropy": 2.4320175647735596,
+          "usage_entropy": 2.772085189819336,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7984008193016052,
+          "total_loss": 0.7429604530334473,
+          "median_row_entropy": 2.326888084411621,
+          "usage_entropy": 2.772019147872925,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7966026067733765,
+          "total_loss": 0.7411789298057556,
+          "median_row_entropy": 2.308818817138672,
+          "usage_entropy": 2.7711849212646484,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7957944869995117,
+          "total_loss": 0.7403450012207031,
+          "median_row_entropy": 2.2236220836639404,
+          "usage_entropy": 2.772474765777588,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7948983311653137,
+          "total_loss": 0.7394575476646423,
+          "median_row_entropy": 2.0640692710876465,
+          "usage_entropy": 2.7720394134521484,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7934992909431458,
+          "total_loss": 0.7380503416061401,
+          "median_row_entropy": 1.9435014724731445,
+          "usage_entropy": 2.7724475860595703,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.489017622663544,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1899919509887695,
+          "total_loss": 1.1345630884170532,
+          "median_row_entropy": 2.7713139057159424,
+          "usage_entropy": 2.7714438438415527,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.806456446647644,
+          "total_loss": 0.7510210275650024,
+          "median_row_entropy": 2.407320976257324,
+          "usage_entropy": 2.7717700004577637,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7993800640106201,
+          "total_loss": 0.7439321279525757,
+          "median_row_entropy": 2.2820491790771484,
+          "usage_entropy": 2.7723960876464844,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7969958186149597,
+          "total_loss": 0.7415487766265869,
+          "median_row_entropy": 2.271449089050293,
+          "usage_entropy": 2.772353410720825,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7957379221916199,
+          "total_loss": 0.7402883172035217,
+          "median_row_entropy": 2.205341100692749,
+          "usage_entropy": 2.772479772567749,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7950077056884766,
+          "total_loss": 0.739570677280426,
+          "median_row_entropy": 2.13199520111084,
+          "usage_entropy": 2.7718522548675537,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7940220832824707,
+          "total_loss": 0.7386406064033508,
+          "median_row_entropy": 1.9879412651062012,
+          "usage_entropy": 2.7690751552581787,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.5695139269144123,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1902979612350464,
+          "total_loss": 1.134878396987915,
+          "median_row_entropy": 2.7708399295806885,
+          "usage_entropy": 2.770979404449463,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8064496517181396,
+          "total_loss": 0.7510055899620056,
+          "median_row_entropy": 2.499724864959717,
+          "usage_entropy": 2.7722020149230957,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7986892461776733,
+          "total_loss": 0.7432631254196167,
+          "median_row_entropy": 2.4133901596069336,
+          "usage_entropy": 2.7713067531585693,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7966207265853882,
+          "total_loss": 0.7411839365959167,
+          "median_row_entropy": 2.34428071975708,
+          "usage_entropy": 2.7718396186828613,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7953168153762817,
+          "total_loss": 0.739870548248291,
+          "median_row_entropy": 2.355621099472046,
+          "usage_entropy": 2.772313117980957,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7930315136909485,
+          "total_loss": 0.7375996708869934,
+          "median_row_entropy": 2.1849725246429443,
+          "usage_entropy": 2.7715935707092285,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7919032573699951,
+          "total_loss": 0.7364603281021118,
+          "median_row_entropy": 2.1259446144104004,
+          "usage_entropy": 2.7721476554870605,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.44603845276623016,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1909184455871582,
+          "total_loss": 1.1354856491088867,
+          "median_row_entropy": 2.7715554237365723,
+          "usage_entropy": 2.7716422080993652,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8061589598655701,
+          "total_loss": 0.750726580619812,
+          "median_row_entropy": 2.4737534523010254,
+          "usage_entropy": 2.771620512008667,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7979602813720703,
+          "total_loss": 0.7425190806388855,
+          "median_row_entropy": 2.4290833473205566,
+          "usage_entropy": 2.7720589637756348,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7960324883460999,
+          "total_loss": 0.7405823469161987,
+          "median_row_entropy": 2.419013500213623,
+          "usage_entropy": 2.772507667541504,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7945899963378906,
+          "total_loss": 0.7391545176506042,
+          "median_row_entropy": 2.316758871078491,
+          "usage_entropy": 2.77177357673645,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7932475805282593,
+          "total_loss": 0.7378105521202087,
+          "median_row_entropy": 2.081759452819824,
+          "usage_entropy": 2.771852493286133,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7924806475639343,
+          "total_loss": 0.7370306253433228,
+          "median_row_entropy": 2.032069683074951,
+          "usage_entropy": 2.77250075340271,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4772100599086969,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.19259512424469,
+          "total_loss": 1.1371665000915527,
+          "median_row_entropy": 2.7713379859924316,
+          "usage_entropy": 2.771433115005493,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8063691854476929,
+          "total_loss": 0.7509307265281677,
+          "median_row_entropy": 2.4904375076293945,
+          "usage_entropy": 2.771923780441284,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.7986665368080139,
+          "total_loss": 0.7432255148887634,
+          "median_row_entropy": 2.4084904193878174,
+          "usage_entropy": 2.772050619125366,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7964074611663818,
+          "total_loss": 0.7409602999687195,
+          "median_row_entropy": 2.411792278289795,
+          "usage_entropy": 2.7723591327667236,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7952918410301208,
+          "total_loss": 0.7398501038551331,
+          "median_row_entropy": 2.329610824584961,
+          "usage_entropy": 2.7720861434936523,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7940335273742676,
+          "total_loss": 0.738588809967041,
+          "median_row_entropy": 2.171924114227295,
+          "usage_entropy": 2.7722368240356445,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7933027744293213,
+          "total_loss": 0.7378526926040649,
+          "median_row_entropy": 2.091867446899414,
+          "usage_entropy": 2.7725038528442383,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.436844290817263,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.203250527381897,
+          "total_loss": 1.147814154624939,
+          "median_row_entropy": 2.7717299461364746,
+          "usage_entropy": 2.7718193531036377,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 4
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8233208656311035,
+          "total_loss": 0.7679036259651184,
+          "median_row_entropy": 2.4969398975372314,
+          "usage_entropy": 2.7708616256713867,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8158999681472778,
+          "total_loss": 0.7604489326477051,
+          "median_row_entropy": 2.4278676509857178,
+          "usage_entropy": 2.772552490234375,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8128522038459778,
+          "total_loss": 0.7574025988578796,
+          "median_row_entropy": 2.4467673301696777,
+          "usage_entropy": 2.7724804878234863,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8115801811218262,
+          "total_loss": 0.7561317086219788,
+          "median_row_entropy": 2.4509291648864746,
+          "usage_entropy": 2.77242374420166,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8102391958236694,
+          "total_loss": 0.7548054456710815,
+          "median_row_entropy": 2.3322882652282715,
+          "usage_entropy": 2.77168607711792,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8084108233451843,
+          "total_loss": 0.7529757022857666,
+          "median_row_entropy": 2.166320323944092,
+          "usage_entropy": 2.7717559337615967,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.6768682753062643,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2030279636383057,
+          "total_loss": 1.1476026773452759,
+          "median_row_entropy": 2.7711539268493652,
+          "usage_entropy": 2.7712645530700684,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8226549029350281,
+          "total_loss": 0.7672401070594788,
+          "median_row_entropy": 2.581148624420166,
+          "usage_entropy": 2.7707412242889404,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8141841292381287,
+          "total_loss": 0.7587507367134094,
+          "median_row_entropy": 2.5117077827453613,
+          "usage_entropy": 2.7716708183288574,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8121259808540344,
+          "total_loss": 0.7566826939582825,
+          "median_row_entropy": 2.5221924781799316,
+          "usage_entropy": 2.7721633911132812,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8109506368637085,
+          "total_loss": 0.7555049061775208,
+          "median_row_entropy": 2.504209518432617,
+          "usage_entropy": 2.772286891937256,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8098465800285339,
+          "total_loss": 0.7544026970863342,
+          "median_row_entropy": 2.437854290008545,
+          "usage_entropy": 2.7721939086914062,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8083121180534363,
+          "total_loss": 0.75287264585495,
+          "median_row_entropy": 2.3786444664001465,
+          "usage_entropy": 2.7719736099243164,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.43549742407448855,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2026501893997192,
+          "total_loss": 1.147217869758606,
+          "median_row_entropy": 2.7715189456939697,
+          "usage_entropy": 2.771615505218506,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.822417140007019,
+          "total_loss": 0.7669791579246521,
+          "median_row_entropy": 2.5320065021514893,
+          "usage_entropy": 2.771900177001953,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8158555626869202,
+          "total_loss": 0.7604148387908936,
+          "median_row_entropy": 2.477292537689209,
+          "usage_entropy": 2.7720367908477783,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8127920627593994,
+          "total_loss": 0.757340669631958,
+          "median_row_entropy": 2.4715685844421387,
+          "usage_entropy": 2.7725682258605957,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8112847805023193,
+          "total_loss": 0.7558341026306152,
+          "median_row_entropy": 2.421502113342285,
+          "usage_entropy": 2.7725348472595215,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8103671073913574,
+          "total_loss": 0.7549425959587097,
+          "median_row_entropy": 2.2957723140716553,
+          "usage_entropy": 2.7712268829345703,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8090816140174866,
+          "total_loss": 0.7536332011222839,
+          "median_row_entropy": 2.143322467803955,
+          "usage_entropy": 2.7724215984344482,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.6499864028788437,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2033870220184326,
+          "total_loss": 1.1479471921920776,
+          "median_row_entropy": 2.7718915939331055,
+          "usage_entropy": 2.771988868713379,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8225761651992798,
+          "total_loss": 0.7671459317207336,
+          "median_row_entropy": 2.434720039367676,
+          "usage_entropy": 2.771512985229492,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8172078132629395,
+          "total_loss": 0.7621950507164001,
+          "median_row_entropy": 2.3494505882263184,
+          "usage_entropy": 2.7506375312805176,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8131470680236816,
+          "total_loss": 0.7576987147331238,
+          "median_row_entropy": 2.327597141265869,
+          "usage_entropy": 2.77241849899292,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8115015625953674,
+          "total_loss": 0.7560513615608215,
+          "median_row_entropy": 2.3050851821899414,
+          "usage_entropy": 2.7725095748901367,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8101308345794678,
+          "total_loss": 0.7547259330749512,
+          "median_row_entropy": 2.14432692527771,
+          "usage_entropy": 2.770244836807251,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8080544471740723,
+          "total_loss": 0.7526043653488159,
+          "median_row_entropy": 2.019246816635132,
+          "usage_entropy": 2.7725045680999756,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4873767413388583,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2034906148910522,
+          "total_loss": 1.148068904876709,
+          "median_row_entropy": 2.7709691524505615,
+          "usage_entropy": 2.7710886001586914,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 3
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.822542130947113,
+          "total_loss": 0.767113208770752,
+          "median_row_entropy": 2.570685386657715,
+          "usage_entropy": 2.7714452743530273,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8148936629295349,
+          "total_loss": 0.759455680847168,
+          "median_row_entropy": 2.4712181091308594,
+          "usage_entropy": 2.7719006538391113,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8123425841331482,
+          "total_loss": 0.756891667842865,
+          "median_row_entropy": 2.4694855213165283,
+          "usage_entropy": 2.772545576095581,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8112157583236694,
+          "total_loss": 0.7557684779167175,
+          "median_row_entropy": 2.4494619369506836,
+          "usage_entropy": 2.772364616394043,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8103177547454834,
+          "total_loss": 0.7548675537109375,
+          "median_row_entropy": 2.4127559661865234,
+          "usage_entropy": 2.7725093364715576,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8095645308494568,
+          "total_loss": 0.7541536688804626,
+          "median_row_entropy": 2.2981419563293457,
+          "usage_entropy": 2.7705421447753906,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.4516720297584137,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1613198518753052,
+          "total_loss": 1.1058807373046875,
+          "median_row_entropy": 2.771869659423828,
+          "usage_entropy": 2.77195405960083,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8416544198989868,
+          "total_loss": 0.7862135767936707,
+          "median_row_entropy": 2.237973213195801,
+          "usage_entropy": 2.7720417976379395,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8218112587928772,
+          "total_loss": 0.7664549350738525,
+          "median_row_entropy": 1.971001148223877,
+          "usage_entropy": 2.767817497253418,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8189294934272766,
+          "total_loss": 0.7634842395782471,
+          "median_row_entropy": 1.9118402004241943,
+          "usage_entropy": 2.772261619567871,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.816690981388092,
+          "total_loss": 0.7612705230712891,
+          "median_row_entropy": 1.7540662288665771,
+          "usage_entropy": 2.771022081375122,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8151284456253052,
+          "total_loss": 0.7596794366836548,
+          "median_row_entropy": 1.6739283800125122,
+          "usage_entropy": 2.772451162338257,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8140791058540344,
+          "total_loss": 0.7586315274238586,
+          "median_row_entropy": 1.6124695539474487,
+          "usage_entropy": 2.7723779678344727,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.33420170809982747,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1606111526489258,
+          "total_loss": 1.1051746606826782,
+          "median_row_entropy": 2.771726131439209,
+          "usage_entropy": 2.7718262672424316,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 9
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8419188261032104,
+          "total_loss": 0.7864704728126526,
+          "median_row_entropy": 2.328491687774658,
+          "usage_entropy": 2.7724180221557617,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8221787214279175,
+          "total_loss": 0.7667442560195923,
+          "median_row_entropy": 2.0497822761535645,
+          "usage_entropy": 2.7717244625091553,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8189876675605774,
+          "total_loss": 0.7635602951049805,
+          "median_row_entropy": 2.0149409770965576,
+          "usage_entropy": 2.7713677883148193,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8166959881782532,
+          "total_loss": 0.7612983584403992,
+          "median_row_entropy": 1.8782681226730347,
+          "usage_entropy": 2.7698822021484375,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.814953088760376,
+          "total_loss": 0.7595086693763733,
+          "median_row_entropy": 1.7955501079559326,
+          "usage_entropy": 2.772219657897949,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8130898475646973,
+          "total_loss": 0.7576474547386169,
+          "median_row_entropy": 1.727505087852478,
+          "usage_entropy": 2.7721195220947266,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.296557397711678,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.159738540649414,
+          "total_loss": 1.1043061017990112,
+          "median_row_entropy": 2.771512031555176,
+          "usage_entropy": 2.7716236114501953,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8425009250640869,
+          "total_loss": 0.7870556116104126,
+          "median_row_entropy": 2.336503267288208,
+          "usage_entropy": 2.7722666263580322,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8234267234802246,
+          "total_loss": 0.7680738568305969,
+          "median_row_entropy": 2.0497474670410156,
+          "usage_entropy": 2.7676446437835693,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8196275234222412,
+          "total_loss": 0.7641929984092712,
+          "median_row_entropy": 2.0411953926086426,
+          "usage_entropy": 2.7717273235321045,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8178271055221558,
+          "total_loss": 0.7623790502548218,
+          "median_row_entropy": 1.9930788278579712,
+          "usage_entropy": 2.772402763366699,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8160755634307861,
+          "total_loss": 0.7606293559074402,
+          "median_row_entropy": 1.9172945022583008,
+          "usage_entropy": 2.772310256958008,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.814885675907135,
+          "total_loss": 0.7594359517097473,
+          "median_row_entropy": 1.8787745237350464,
+          "usage_entropy": 2.772487163543701,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3603896983968004,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1596627235412598,
+          "total_loss": 1.1042288541793823,
+          "median_row_entropy": 2.7716262340545654,
+          "usage_entropy": 2.7716946601867676,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 8
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8423619270324707,
+          "total_loss": 0.7869158387184143,
+          "median_row_entropy": 2.244734048843384,
+          "usage_entropy": 2.7723042964935303,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8226271271705627,
+          "total_loss": 0.7673078775405884,
+          "median_row_entropy": 1.944711446762085,
+          "usage_entropy": 2.765963554382324,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8190018534660339,
+          "total_loss": 0.7635646462440491,
+          "median_row_entropy": 2.0044362545013428,
+          "usage_entropy": 2.7718605995178223,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8168507814407349,
+          "total_loss": 0.7614012360572815,
+          "median_row_entropy": 1.9079797267913818,
+          "usage_entropy": 2.7724764347076416,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8150561451911926,
+          "total_loss": 0.7596100568771362,
+          "median_row_entropy": 1.8346086740493774,
+          "usage_entropy": 2.7723031044006348,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.813469409942627,
+          "total_loss": 0.7580272555351257,
+          "median_row_entropy": 1.7892851829528809,
+          "usage_entropy": 2.772108554840088,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3467360190344449,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1614912748336792,
+          "total_loss": 1.1060733795166016,
+          "median_row_entropy": 2.770759344100952,
+          "usage_entropy": 2.7708959579467773,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 5
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8419249653816223,
+          "total_loss": 0.7864760160446167,
+          "median_row_entropy": 2.3513379096984863,
+          "usage_entropy": 2.7724461555480957,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8236954212188721,
+          "total_loss": 0.7683418393135071,
+          "median_row_entropy": 2.0434281826019287,
+          "usage_entropy": 2.7676801681518555,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8206151723861694,
+          "total_loss": 0.7653753161430359,
+          "median_row_entropy": 2.1256659030914307,
+          "usage_entropy": 2.761993646621704,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8182704448699951,
+          "total_loss": 0.7628273963928223,
+          "median_row_entropy": 2.0960357189178467,
+          "usage_entropy": 2.772153854370117,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8165643215179443,
+          "total_loss": 0.7611215710639954,
+          "median_row_entropy": 2.0368669033050537,
+          "usage_entropy": 2.772136926651001,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8153159022331238,
+          "total_loss": 0.7598763704299927,
+          "median_row_entropy": 1.9862275123596191,
+          "usage_entropy": 2.7719779014587402,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3000893071310672,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.250953197479248,
+          "total_loss": 1.1955220699310303,
+          "median_row_entropy": 2.771477222442627,
+          "usage_entropy": 2.7715582847595215,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 7
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.842437207698822,
+          "total_loss": 0.7869996428489685,
+          "median_row_entropy": 2.421494245529175,
+          "usage_entropy": 2.7718794345855713,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 14
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8289033770561218,
+          "total_loss": 0.7735520601272583,
+          "median_row_entropy": 2.2032225131988525,
+          "usage_entropy": 2.767566442489624,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8228090405464172,
+          "total_loss": 0.7673782706260681,
+          "median_row_entropy": 2.168811798095703,
+          "usage_entropy": 2.771538734436035,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8206517696380615,
+          "total_loss": 0.7652077674865723,
+          "median_row_entropy": 2.1086339950561523,
+          "usage_entropy": 2.7721986770629883,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8192200660705566,
+          "total_loss": 0.7637856006622314,
+          "median_row_entropy": 2.0156075954437256,
+          "usage_entropy": 2.7717223167419434,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8169693946838379,
+          "total_loss": 0.7615528106689453,
+          "median_row_entropy": 1.925499439239502,
+          "usage_entropy": 2.770829200744629,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.3492788148133277,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.249464988708496,
+          "total_loss": 1.1940281391143799,
+          "median_row_entropy": 2.7717652320861816,
+          "usage_entropy": 2.7718396186828613,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 9
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8425698280334473,
+          "total_loss": 0.7871271967887878,
+          "median_row_entropy": 2.4168925285339355,
+          "usage_entropy": 2.77213191986084,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8257521986961365,
+          "total_loss": 0.7703062891960144,
+          "median_row_entropy": 2.1716864109039307,
+          "usage_entropy": 2.772294521331787,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8217916488647461,
+          "total_loss": 0.7663761377334595,
+          "median_row_entropy": 1.9646061658859253,
+          "usage_entropy": 2.770775556564331,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8190456628799438,
+          "total_loss": 0.7636153101921082,
+          "median_row_entropy": 1.8563122749328613,
+          "usage_entropy": 2.7715182304382324,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8171374797821045,
+          "total_loss": 0.7617175579071045,
+          "median_row_entropy": 1.7902230024337769,
+          "usage_entropy": 2.7709968090057373,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8161627054214478,
+          "total_loss": 0.7607333660125732,
+          "median_row_entropy": 1.7248318195343018,
+          "usage_entropy": 2.7714672088623047,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.33547086661883,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.248165488243103,
+          "total_loss": 1.1927320957183838,
+          "median_row_entropy": 2.7715487480163574,
+          "usage_entropy": 2.7716727256774902,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 9
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.842997670173645,
+          "total_loss": 0.7875534892082214,
+          "median_row_entropy": 2.3430228233337402,
+          "usage_entropy": 2.7722082138061523,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 15
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8263324499130249,
+          "total_loss": 0.770896852016449,
+          "median_row_entropy": 2.168583393096924,
+          "usage_entropy": 2.7717807292938232,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8223483562469482,
+          "total_loss": 0.7669128775596619,
+          "median_row_entropy": 2.134934425354004,
+          "usage_entropy": 2.7717747688293457,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.819774866104126,
+          "total_loss": 0.7643314003944397,
+          "median_row_entropy": 2.0551681518554688,
+          "usage_entropy": 2.7721738815307617,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8181300759315491,
+          "total_loss": 0.7626814246177673,
+          "median_row_entropy": 1.9570670127868652,
+          "usage_entropy": 2.7724335193634033,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8170300722122192,
+          "total_loss": 0.7615910172462463,
+          "median_row_entropy": 1.9225056171417236,
+          "usage_entropy": 2.7719521522521973,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.32737859666887603,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2491852045059204,
+          "total_loss": 1.1937501430511475,
+          "median_row_entropy": 2.771653652191162,
+          "usage_entropy": 2.7717556953430176,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 9
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8427208065986633,
+          "total_loss": 0.7872722148895264,
+          "median_row_entropy": 2.336017608642578,
+          "usage_entropy": 2.772429943084717,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8258975744247437,
+          "total_loss": 0.7704995274543762,
+          "median_row_entropy": 2.083195209503174,
+          "usage_entropy": 2.7699031829833984,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8220682144165039,
+          "total_loss": 0.7666237354278564,
+          "median_row_entropy": 1.9733905792236328,
+          "usage_entropy": 2.7722244262695312,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8193343877792358,
+          "total_loss": 0.7638874053955078,
+          "median_row_entropy": 1.8440203666687012,
+          "usage_entropy": 2.7723500728607178,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8172073364257812,
+          "total_loss": 0.7617604732513428,
+          "median_row_entropy": 1.7910568714141846,
+          "usage_entropy": 2.7723445892333984,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8155341148376465,
+          "total_loss": 0.7600846886634827,
+          "median_row_entropy": 1.7273454666137695,
+          "usage_entropy": 2.7724716663360596,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      },
+      "ari_per_seed": 0.25175616067426687,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2501941919326782,
+          "total_loss": 1.1947827339172363,
+          "median_row_entropy": 2.770451784133911,
+          "usage_entropy": 2.770575523376465,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 6
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.842566967010498,
+          "total_loss": 0.78712397813797,
+          "median_row_entropy": 2.458672523498535,
+          "usage_entropy": 2.7721500396728516,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 10
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8290907740592957,
+          "total_loss": 0.77372145652771,
+          "median_row_entropy": 2.356397867202759,
+          "usage_entropy": 2.768465757369995,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 14
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8238499164581299,
+          "total_loss": 0.7684095501899719,
+          "median_row_entropy": 2.342228889465332,
+          "usage_entropy": 2.7720179557800293,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.822080135345459,
+          "total_loss": 0.7666299939155579,
+          "median_row_entropy": 2.308673858642578,
+          "usage_entropy": 2.7725062370300293,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.820014476776123,
+          "total_loss": 0.7645766139030457,
+          "median_row_entropy": 2.272531270980835,
+          "usage_entropy": 2.7718944549560547,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8180243968963623,
+          "total_loss": 0.762579619884491,
+          "median_row_entropy": 2.210230588912964,
+          "usage_entropy": 2.772240161895752,
+          "max_entropy": 2.772588722239781,
+          "n_slots_used": 16
+        }
+      ],
+      "error": null
+    }
+  ],
+  "per_unit": [
+    {
+      "unit_id": "151508",
+      "n_spots": 4384,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.2939575778268805,
+        0.2784845757335233,
+        0.3248859426103305,
+        0.5045868027652036,
+        0.37840215222402734
+      ],
+      "mean": 0.35606341023199306,
+      "std": 0.08173843892751259,
+      "consensus_ari": 0.30900697714838576,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151509",
+      "n_spots": 4789,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.4969587957042491,
+        0.6128173472236277,
+        0.5656875402879276,
+        0.42519435737293565,
+        0.4409182229586502
+      ],
+      "mean": 0.5083152527094781,
+      "std": 0.07182294774836605,
+      "consensus_ari": 0.5256432030375684,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151510",
+      "n_spots": 4634,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.5980555024720982,
+        0.5902194780662361,
+        0.4405950466783961,
+        0.5297518984773028,
+        0.5248725042386508
+      ],
+      "mean": 0.5366988859865367,
+      "std": 0.05666243911725464,
+      "consensus_ari": 0.596096839669035,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151670",
+      "n_spots": 3498,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.31229309695623997,
+        0.5070560869072871,
+        0.3198530951561878,
+        0.5424932586445234,
+        0.30341189982979305
+      ],
+      "mean": 0.3970214874988063,
+      "std": 0.10503929275418541,
+      "consensus_ari": 0.32602384084484726,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151671",
+      "n_spots": 4110,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.4909110636177401,
+        0.489017622663544,
+        0.5695139269144123,
+        0.44603845276623016,
+        0.4772100599086969
+      ],
+      "mean": 0.4945382251741247,
+      "std": 0.040785983964023845,
+      "consensus_ari": 0.4816395353950089,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151672",
+      "n_spots": 4015,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.436844290817263,
+        0.6768682753062643,
+        0.43549742407448855,
+        0.6499864028788437,
+        0.4873767413388583
+      ],
+      "mean": 0.5373146268831436,
+      "std": 0.10499997478459992,
+      "consensus_ari": 0.6442672006625879,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151675",
+      "n_spots": 3592,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.4516720297584137,
+        0.33420170809982747,
+        0.296557397711678,
+        0.3603896983968004,
+        0.3467360190344449
+      ],
+      "mean": 0.3579113706002329,
+      "std": 0.051475333669934405,
+      "consensus_ari": 0.36229055941043314,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    },
+    {
+      "unit_id": "151676",
+      "n_spots": 3460,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.3000893071310672,
+        0.3492788148133277,
+        0.33547086661883,
+        0.32737859666887603,
+        0.25175616067426687
+      ],
+      "mean": 0.3127947491812736,
+      "std": 0.03448222585404363,
+      "consensus_ari": 0.3588752943038042,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02
+      }
+    }
+  ],
+  "summary": {
+    "n_units": 8,
+    "per_seed_mean": 0.4375822510331986,
+    "per_seed_std": 0.08531387737723246,
+    "consensus_mean": 0.4504804313089588,
+    "consensus_std": 0.12096017844463543
+  }
+}
