@@ -979,3 +979,26 @@ Final picture, same harness, same metrics, both tissues, all four tested archite
 **The headline finding: both mechanisms that showed any positive signal on breast cancer trade it away on DLPFC, in the same direction and roughly proportional magnitude to their gain.** This is stronger evidence than either result alone — two architecturally different mechanisms (AGAP's per-spot adaptive gate, LDCM's latent contrastive smoothing) show the same tradeoff shape, consistent with a real, general tension between small/heterogeneous domains (breast cancer tumor regions) and large/uniform domains (DLPFC cortical layers) rather than an architecture-specific quirk. This reframes the project's open question from "find an architecture that beats baseline everywhere" to "there may not be one fixed architecture that's best across both regimes" — a more interesting, defensible, and mechanistically grounded claim than either a clean win or a clean loss would have been, and it's supported by Phase D's earlier domain-size-vs-propagation-depth diagnosis rather than contradicting it.
 
 GMSM/BAAP/MSAP/HMA remain closed under the legacy protocol only — their regressions were large enough (−0.09 to full collapse) that a block-protocol rerun is very unlikely to change the conclusion, so this was deprioritized in favor of completing the more informative AGAP/LDCM/PPR matrix.
+
+## Phase G — Literature-grounded follow-up plan (external research, verified before implementing)
+
+A detailed 4-stage plan arrived from external literature research targeting the domain-scale tradeoff found in Phase F. Citations verified before implementing anything (this project has been burned by fabricated/mischaracterized citations before): ClustSIGNAL (bioRxiv 10.64898/2025.11.30.691081), SimVQ (ICCV 2025, arXiv 2411.02038), the rotation trick (arXiv 2410.06424), NID (arXiv 2405.16435), DeepSeek loss-free balancing (arXiv 2408.15664), and MMP (ICLR 2022) are all real and accurately described. One imprecision caught: arXiv 2505.19525 was cited for "auxiliary loss causes interference gradients," but that claim is actually the DeepSeek paper's (2408.15664) own point -- 2505.19525 is a real, different paper (Conf-SMoE, multimodal missing-modality gating). Not a fabrication, a mis-citation; doesn't block Stage 3 since the underlying claim it needs is solid.
+
+Also caught: the plan's target baseline numbers (DLPFC ~0.562, breast cancer ~0.546) were stale -- both had already been recomputed fresh under the leakage-safe block protocol earlier in Phase F (DLPFC 8-slice: consensus_mean 0.5726/per_seed 0.5443; breast cancer 4-block: consensus_mean 0.4760/per_seed 0.3789). All Stage 1-4 evaluations use these real numbers as the target, not the plan's stale ones.
+
+### 32. Stage 1 RESULT: fixed heterogeneity gate fails its DLPFC threshold -- a mechanistically important negative result
+
+Implemented `src/models/heterogeneity_gated_layer.py` + `train_heterogeneity_gated_model.py`: a per-spot propagation-depth gate computed ONCE from raw (untrained) data via this repo's own `local_expression_heterogeneity` (already built for Hop-Fusion), converted to a rank-based certainty score, and applied through the same convex-combination formula as `entropy_gated_propagation` -- but with certainty as an external argument, `.detach()`-ed, provably independent of any trainable parameter (regression-tested: a certainty tensor deliberately built from an `nn.Parameter` still receives zero gradient). 11 new unit tests, 130/130 total pass.
+
+Result, standardized protocol, both tissues:
+
+| metric | baseline | Stage 1 | delta |
+|---|---|---|---|
+| BC per_seed_mean | 0.3789±0.1889 | 0.4361±0.2363 | **+0.057 (passes)** |
+| BC consensus_mean | 0.4760±0.2160 | 0.5257±0.1981 | **+0.050 (passes)** |
+| DLPFC per_seed_mean | 0.5443±0.0803 | 0.4183±0.0966 | **-0.126 (FAILS)** |
+| DLPFC consensus_mean | 0.5726±0.0940 | 0.4385±0.1370 | **-0.134 (FAILS)** |
+
+Fails the plan's conjunctive success threshold -- and by more on DLPFC than AGAP's learned gate did. This is genuinely informative, not just another loss: it rules out "the gate is learned and collapse-prone" as the explanation for the domain-scale tradeoff, since Stage 1's gate is provably immune to that specific failure mode and shows the identical tradeoff shape anyway. The real cause is more fundamental -- local heterogeneity exists WITHIN true large domains too (dropout noise, mixed cell types inside one real cortical layer), so any mechanism that reduces propagation wherever local heterogeneity is detected will fire inside true domains on DLPFC, not just at genuine boundaries, costing exactly the deep propagation that was already working there.
+
+Per the plan's own stopping rule, proceeding to Stage 2 (independent of Stage 1's outcome) and flagging Stage 3 as now in-scope (explicitly gated on Stage 1 underperforming, which it did).
