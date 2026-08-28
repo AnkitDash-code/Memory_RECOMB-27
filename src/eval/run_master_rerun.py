@@ -49,6 +49,7 @@ from src.models.train_hma_model import train_hma_model
 from src.models.train_ldcm_model import train_ldcm_model
 from src.models.train_msap_model import train_msap_model
 from src.models.train_ppr_model import train_ppr_model
+from src.models.train_simvq_model import train_simvq_model
 from src.models.train_spatial_address import train_spatial_address_model
 from src.models.train_zism_model import train_zism_model
 
@@ -166,6 +167,19 @@ ARCH_SPECS = [
         # step, not a new hyperparameter to tune.
         "name": "heterogeneity_gated",
         "train_fn": train_heterogeneity_gated_model,
+        "dlpfc": True,
+        "breast_cancer": True,
+        "hp_grid": {},
+        "default_hp": dict(SHARED_BASELINE_HP),
+    },
+    {
+        # Stage 2: SimVQ-style codebook reparameterization (see
+        # src/models/simvq_layer.py docstring for the calibration check --
+        # this project's dense softmax addressing already shows no dead-
+        # codebook-entry problem in every baseline fit logged tonight, so
+        # this is a correctly-calibrated null test, not an expected win).
+        "name": "simvq",
+        "train_fn": train_simvq_model,
         "dlpfc": True,
         "breast_cancer": True,
         "hp_grid": {},
