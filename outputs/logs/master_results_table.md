@@ -19,6 +19,7 @@ rerun the builder script to refresh after new runs complete._
 | baap | — | — |  |
 | zism | — | — |  |
 | heterogeneity_gated | 0.4385 ± 0.1370 | 0.5257 ± 0.1981 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
+| loss_free_gated | 0.4250 ± 0.0833 | 0.4909 ± 0.2369 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | simvq | 0.5098 ± 0.1592 | 0.4548 ± 0.2775 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | stagate | — | — |  |
 
@@ -37,6 +38,7 @@ rerun the builder script to refresh after new runs complete._
 | baap | — | — |
 | zism | — | — |
 | heterogeneity_gated | 0.4183 ± 0.0966 | 0.4361 ± 0.2363 |
+| loss_free_gated | 0.3596 ± 0.0602 | 0.4141 ± 0.1799 |
 | simvq | 0.4908 ± 0.1399 | 0.4198 ± 0.2677 |
 | stagate | — | — |
 
@@ -172,6 +174,30 @@ rerun the builder script to refresh after new runs complete._
 | blocks_4 | 575 | 20 | 0.3746 | 0.3312 ± 0.0476 |
 | blocks_5 | 626 | 20 | 0.3582 | 0.2202 ± 0.0652 |
 
+### loss_free_gated
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.2693 | 0.3042 ± 0.0382 |
+| 151509 | 4789 | 7 | 0.3618 | 0.3247 ± 0.0183 |
+| 151510 | 4634 | 7 | 0.4458 | 0.3484 ± 0.0492 |
+| 151670 | 3498 | 5 | 0.4131 | 0.2659 ± 0.0418 |
+| 151671 | 4110 | 5 | 0.5023 | 0.4442 ± 0.0521 |
+| 151672 | 4015 | 5 | 0.5494 | 0.3929 ± 0.0754 |
+| 151675 | 3592 | 7 | 0.4798 | 0.4458 ± 0.0246 |
+| 151676 | 3460 | 7 | 0.3781 | 0.3509 ± 0.0425 |
+
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.5369 | 0.4172 ± 0.0902 |
+| blocks_3 | 550 | 20 | 0.8383 | 0.6871 ± 0.1586 |
+| blocks_4 | 575 | 20 | 0.4048 | 0.3681 ± 0.0454 |
+| blocks_5 | 626 | 20 | 0.1838 | 0.1841 ± 0.1376 |
+
 ### simvq
 
 **DLPFC report slices:**
@@ -206,6 +232,7 @@ All rows above come from these files (re-run individual architecture harnesses t
 - `baseline_dlpfc_results.json` + `baseline_breast_cancer_results.json`
 - `heterogeneity_gated_dlpfc_results.json` + `heterogeneity_gated_breast_cancer_results.json`
 - `ldcm_dlpfc_results.json` + `ldcm_breast_cancer_results.json`
+- `loss_free_gated_dlpfc_results.json` + `loss_free_gated_breast_cancer_results.json`
 - `ppr_dlpfc_results.json` + `ppr_breast_cancer_results.json`
 - `simvq_dlpfc_results.json` + `simvq_breast_cancer_results.json`
 - `stagate_dlpfc_results.json` + `stagate_breast_cancer_results.json`
