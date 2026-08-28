@@ -1,0 +1,4238 @@
+{
+  "architecture": "heterogeneity_gated",
+  "dataset": "dlpfc",
+  "hp_config_used": {
+    "memory_slots": 16,
+    "memory_dim": 128,
+    "n_hops": 4,
+    "lambda_usage": 0.02,
+    "expression_weighted": true
+  },
+  "fits_report": [
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.2897128786205942,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1402430534362793,
+          "total_loss": 1.0848110914230347,
+          "usage_entropy": 2.7715985774993896,
+          "median_entropy": 2.7713823318481445,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0015872558578848839,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9155132174491882,
+          "total_loss": 0.8616613745689392,
+          "usage_entropy": 2.692592144012451,
+          "median_entropy": 2.1091856956481934,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02786972187459469,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8259618282318115,
+          "total_loss": 0.7737128138542175,
+          "usage_entropy": 2.6124517917633057,
+          "median_entropy": 2.0578975677490234,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.003173446748405695,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7991774082183838,
+          "total_loss": 0.7445394396781921,
+          "usage_entropy": 2.7318994998931885,
+          "median_entropy": 2.0194778442382812,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0029882830567657948,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7949939370155334,
+          "total_loss": 0.739622175693512,
+          "usage_entropy": 2.7685890197753906,
+          "median_entropy": 1.8343379497528076,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.021318743005394936,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7928958535194397,
+          "total_loss": 0.7374672293663025,
+          "usage_entropy": 2.7714314460754395,
+          "median_entropy": 1.6909723281860352,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.030887983739376068,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7908631563186646,
+          "total_loss": 0.7354445457458496,
+          "usage_entropy": 2.7709293365478516,
+          "median_entropy": 1.6331825256347656,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03658011555671692,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.29353774199893207,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.141161322593689,
+          "total_loss": 1.0857281684875488,
+          "usage_entropy": 2.7716569900512695,
+          "median_entropy": 2.7714662551879883,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008310445584356785,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9168254733085632,
+          "total_loss": 0.8629410266876221,
+          "usage_entropy": 2.6942214965820312,
+          "median_entropy": 2.1233644485473633,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.026098642498254776,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8266130685806274,
+          "total_loss": 0.7746636867523193,
+          "usage_entropy": 2.597468376159668,
+          "median_entropy": 2.05265212059021,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.014783311635255814,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7993868589401245,
+          "total_loss": 0.7449593544006348,
+          "usage_entropy": 2.721374988555908,
+          "median_entropy": 1.9884059429168701,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.005191540811210871,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7950830459594727,
+          "total_loss": 0.7398146986961365,
+          "usage_entropy": 2.7634177207946777,
+          "median_entropy": 1.8620119094848633,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008306559175252914,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7925262451171875,
+          "total_loss": 0.7370869517326355,
+          "usage_entropy": 2.7719640731811523,
+          "median_entropy": 1.7101552486419678,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.014434656128287315,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7905219793319702,
+          "total_loss": 0.7350781559944153,
+          "usage_entropy": 2.772191286087036,
+          "median_entropy": 1.6765823364257812,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018604101613163948,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.31544790123942174,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1411586999893188,
+          "total_loss": 1.0857278108596802,
+          "usage_entropy": 2.7715468406677246,
+          "median_entropy": 2.7713565826416016,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0007077853078953922,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.914467453956604,
+          "total_loss": 0.8606407046318054,
+          "usage_entropy": 2.6913363933563232,
+          "median_entropy": 2.12085223197937,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.017206288874149323,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8256605267524719,
+          "total_loss": 0.7734066247940063,
+          "usage_entropy": 2.6126937866210938,
+          "median_entropy": 2.058784246444702,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.02251199260354042,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7993987202644348,
+          "total_loss": 0.7446969747543335,
+          "usage_entropy": 2.735086441040039,
+          "median_entropy": 2.0297579765319824,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.014379693195223808,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7950460910797119,
+          "total_loss": 0.7396478056907654,
+          "usage_entropy": 2.7699155807495117,
+          "median_entropy": 1.8813494443893433,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0036972842644900084,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.792592465877533,
+          "total_loss": 0.7371459007263184,
+          "usage_entropy": 2.772327184677124,
+          "median_entropy": 1.691523790359497,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.016327345743775368,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7905358672142029,
+          "total_loss": 0.7350882887840271,
+          "usage_entropy": 2.7723793983459473,
+          "median_entropy": 1.6353857517242432,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02351495996117592,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3149679238455754,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1420049667358398,
+          "total_loss": 1.0865647792816162,
+          "usage_entropy": 2.7720110416412354,
+          "median_entropy": 2.7718026638031006,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008948604576289654,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9156703948974609,
+          "total_loss": 0.8622090816497803,
+          "usage_entropy": 2.6730642318725586,
+          "median_entropy": 2.1029653549194336,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008239961229264736,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8272630572319031,
+          "total_loss": 0.7747713327407837,
+          "usage_entropy": 2.624586343765259,
+          "median_entropy": 2.0383048057556152,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0259364303201437,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7992134690284729,
+          "total_loss": 0.74470454454422,
+          "usage_entropy": 2.725447416305542,
+          "median_entropy": 2.0022788047790527,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.023470968008041382,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.794931948184967,
+          "total_loss": 0.7395716905593872,
+          "usage_entropy": 2.7680130004882812,
+          "median_entropy": 1.8604257106781006,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.010026169009506702,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7925754189491272,
+          "total_loss": 0.7371363639831543,
+          "usage_entropy": 2.7719526290893555,
+          "median_entropy": 1.7146263122558594,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.002166922902688384,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7906425595283508,
+          "total_loss": 0.7352072596549988,
+          "usage_entropy": 2.7717645168304443,
+          "median_entropy": 1.6448029279708862,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010069550015032291,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151508",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3225204439951559,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1431522369384766,
+          "total_loss": 1.0877217054367065,
+          "usage_entropy": 2.7715275287628174,
+          "median_entropy": 2.7713303565979004,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011732698418200016,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9171411395072937,
+          "total_loss": 0.8638794422149658,
+          "usage_entropy": 2.663083791732788,
+          "median_entropy": 2.0864570140838623,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008128591813147068,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.82756507396698,
+          "total_loss": 0.7754446268081665,
+          "usage_entropy": 2.606020927429199,
+          "median_entropy": 2.0361742973327637,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0031144937966018915,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7992483377456665,
+          "total_loss": 0.7447696328163147,
+          "usage_entropy": 2.723936080932617,
+          "median_entropy": 2.018897533416748,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0067178611643612385,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7953532338142395,
+          "total_loss": 0.739956796169281,
+          "usage_entropy": 2.7698230743408203,
+          "median_entropy": 1.9176329374313354,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.017803531140089035,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7929447889328003,
+          "total_loss": 0.7375907897949219,
+          "usage_entropy": 2.7677001953125,
+          "median_entropy": 1.7174639701843262,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02421869896352291,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7909831404685974,
+          "total_loss": 0.7355832457542419,
+          "usage_entropy": 2.7699954509735107,
+          "median_entropy": 1.6550354957580566,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02785530686378479,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28877392411231995
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3311122175675819,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1247743368148804,
+          "total_loss": 1.0693280696868896,
+          "usage_entropy": 2.7723119258880615,
+          "median_entropy": 2.7721199989318848,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0017288208473473787,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8803883790969849,
+          "total_loss": 0.8268356919288635,
+          "usage_entropy": 2.6776351928710938,
+          "median_entropy": 2.1127095222473145,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.017533564940094948,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.816971480846405,
+          "total_loss": 0.7629499435424805,
+          "usage_entropy": 2.7010762691497803,
+          "median_entropy": 2.0435314178466797,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0055816336534917355,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.790759801864624,
+          "total_loss": 0.735750138759613,
+          "usage_entropy": 2.7504818439483643,
+          "median_entropy": 1.9114059209823608,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.00045712789869867265,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7827300429344177,
+          "total_loss": 0.7273328304290771,
+          "usage_entropy": 2.769862174987793,
+          "median_entropy": 1.8339314460754395,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006114665884524584,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7803385853767395,
+          "total_loss": 0.7249143719673157,
+          "usage_entropy": 2.7712111473083496,
+          "median_entropy": 1.7449849843978882,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013225563801825047,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7787037491798401,
+          "total_loss": 0.7232643961906433,
+          "usage_entropy": 2.771967887878418,
+          "median_entropy": 1.7086015939712524,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.017760897055268288,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3733846028879148,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1252031326293945,
+          "total_loss": 1.0697824954986572,
+          "usage_entropy": 2.771033763885498,
+          "median_entropy": 2.770796775817871,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008493821136653423,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8831443786621094,
+          "total_loss": 0.8287168741226196,
+          "usage_entropy": 2.7213737964630127,
+          "median_entropy": 2.112096071243286,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.042535919696092606,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8183082342147827,
+          "total_loss": 0.7639898657798767,
+          "usage_entropy": 2.715919017791748,
+          "median_entropy": 2.0599489212036133,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.024894842877984047,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7908074259757996,
+          "total_loss": 0.7359699606895447,
+          "usage_entropy": 2.7418742179870605,
+          "median_entropy": 1.9688777923583984,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.026194998994469643,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7829921841621399,
+          "total_loss": 0.7276703119277954,
+          "usage_entropy": 2.7660932540893555,
+          "median_entropy": 1.8584437370300293,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03050406463444233,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7805821299552917,
+          "total_loss": 0.7251617312431335,
+          "usage_entropy": 2.7710187435150146,
+          "median_entropy": 1.7499516010284424,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03321632742881775,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7787271738052368,
+          "total_loss": 0.7233086228370667,
+          "usage_entropy": 2.7709288597106934,
+          "median_entropy": 1.7162799835205078,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03403889387845993,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.4697019680698347,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1252665519714355,
+          "total_loss": 1.0698332786560059,
+          "usage_entropy": 2.7716641426086426,
+          "median_entropy": 2.7714664936065674,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0004361232277005911,
+          "n_slots_used": 11,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8806931376457214,
+          "total_loss": 0.8267644047737122,
+          "usage_entropy": 2.6964354515075684,
+          "median_entropy": 2.1054282188415527,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010511327534914017,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8163744807243347,
+          "total_loss": 0.7621273994445801,
+          "usage_entropy": 2.7123539447784424,
+          "median_entropy": 2.0452144145965576,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.01557434443384409,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7905045747756958,
+          "total_loss": 0.7355220913887024,
+          "usage_entropy": 2.7491233348846436,
+          "median_entropy": 1.958742380142212,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.006638877093791962,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7829006910324097,
+          "total_loss": 0.7275550961494446,
+          "usage_entropy": 2.767280101776123,
+          "median_entropy": 1.8518478870391846,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0055406889878213406,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7804737687110901,
+          "total_loss": 0.7250850200653076,
+          "usage_entropy": 2.769437789916992,
+          "median_entropy": 1.7379746437072754,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011925197206437588,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7787449359893799,
+          "total_loss": 0.723309338092804,
+          "usage_entropy": 2.7717795372009277,
+          "median_entropy": 1.7159476280212402,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013786809518933296,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.347530010710545,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1247193813323975,
+          "total_loss": 1.0692815780639648,
+          "usage_entropy": 2.771892547607422,
+          "median_entropy": 2.7716917991638184,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009091322310268879,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.881589949131012,
+          "total_loss": 0.8279733061790466,
+          "usage_entropy": 2.6808319091796875,
+          "median_entropy": 2.071075201034546,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013336571864783764,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.815837025642395,
+          "total_loss": 0.761622428894043,
+          "usage_entropy": 2.710728406906128,
+          "median_entropy": 2.014899730682373,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.008851703256368637,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.789072573184967,
+          "total_loss": 0.7341724634170532,
+          "usage_entropy": 2.7450056076049805,
+          "median_entropy": 1.9408560991287231,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.01007161196321249,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.782522976398468,
+          "total_loss": 0.7271367907524109,
+          "usage_entropy": 2.769310235977173,
+          "median_entropy": 1.8484519720077515,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.004092065617442131,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.780105710029602,
+          "total_loss": 0.7246913313865662,
+          "usage_entropy": 2.7707200050354004,
+          "median_entropy": 1.7132806777954102,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.015335313975811005,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7784200310707092,
+          "total_loss": 0.7229949831962585,
+          "usage_entropy": 2.7712528705596924,
+          "median_entropy": 1.679534912109375,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02013728767633438,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151509",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3261006414046545,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1247276067733765,
+          "total_loss": 1.0693039894104004,
+          "usage_entropy": 2.7711832523345947,
+          "median_entropy": 2.7709555625915527,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011551789939403534,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8827625513076782,
+          "total_loss": 0.828995406627655,
+          "usage_entropy": 2.6883583068847656,
+          "median_entropy": 2.1219730377197266,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009198888204991817,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.817700207233429,
+          "total_loss": 0.7635223269462585,
+          "usage_entropy": 2.7088942527770996,
+          "median_entropy": 2.069195508956909,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.009251110255718231,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7904253005981445,
+          "total_loss": 0.7354596853256226,
+          "usage_entropy": 2.748281240463257,
+          "median_entropy": 1.9959166049957275,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.015119338408112526,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7829434275627136,
+          "total_loss": 0.7275786399841309,
+          "usage_entropy": 2.768238067626953,
+          "median_entropy": 1.9557551145553589,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.013719193637371063,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7808035612106323,
+          "total_loss": 0.7253835201263428,
+          "usage_entropy": 2.7710025310516357,
+          "median_entropy": 1.8781760931015015,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.005697202868759632,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7792282700538635,
+          "total_loss": 0.7237939834594727,
+          "usage_entropy": 2.7717158794403076,
+          "median_entropy": 1.7938724756240845,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.00205429014749825,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.288765549659729
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.28791371915254604,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0941652059555054,
+          "total_loss": 1.0387382507324219,
+          "usage_entropy": 2.771350383758545,
+          "median_entropy": 2.7711358070373535,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0020237606950104237,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.867987871170044,
+          "total_loss": 0.8140248656272888,
+          "usage_entropy": 2.6981515884399414,
+          "median_entropy": 2.1628334522247314,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.007395442575216293,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.80425626039505,
+          "total_loss": 0.7501457929611206,
+          "usage_entropy": 2.705522060394287,
+          "median_entropy": 2.098517417907715,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.009719209745526314,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7802719473838806,
+          "total_loss": 0.7251480221748352,
+          "usage_entropy": 2.756195545196533,
+          "median_entropy": 2.0075414180755615,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.004238518420606852,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7737008929252625,
+          "total_loss": 0.71831876039505,
+          "usage_entropy": 2.769106149673462,
+          "median_entropy": 1.8906519412994385,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0059058829210698605,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7716485857963562,
+          "total_loss": 0.7162147760391235,
+          "usage_entropy": 2.7716894149780273,
+          "median_entropy": 1.7449822425842285,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018662529066205025,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7700473666191101,
+          "total_loss": 0.7146041393280029,
+          "usage_entropy": 2.772160291671753,
+          "median_entropy": 1.7014853954315186,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.026220466941595078,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.35969538689889635,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0951107740402222,
+          "total_loss": 1.0396770238876343,
+          "usage_entropy": 2.7716867923736572,
+          "median_entropy": 2.771505355834961,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008517146110534668,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8696599006652832,
+          "total_loss": 0.8152512311935425,
+          "usage_entropy": 2.7204339504241943,
+          "median_entropy": 2.175236463546753,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03734198212623596,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8048709034919739,
+          "total_loss": 0.7506103515625,
+          "usage_entropy": 2.713026523590088,
+          "median_entropy": 2.1037235260009766,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01770758628845215,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7806296348571777,
+          "total_loss": 0.725784420967102,
+          "usage_entropy": 2.742260456085205,
+          "median_entropy": 1.9080078601837158,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.022273799404501915,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7734532356262207,
+          "total_loss": 0.7181082963943481,
+          "usage_entropy": 2.767246723175049,
+          "median_entropy": 1.8367104530334473,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.024303723126649857,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7712831497192383,
+          "total_loss": 0.7158682346343994,
+          "usage_entropy": 2.770746946334839,
+          "median_entropy": 1.7381561994552612,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.026559004560112953,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.769721269607544,
+          "total_loss": 0.7142998576164246,
+          "usage_entropy": 2.771071672439575,
+          "median_entropy": 1.7153489589691162,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02886001020669937,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.5131254252774219,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0952036380767822,
+          "total_loss": 1.039776086807251,
+          "usage_entropy": 2.7713775634765625,
+          "median_entropy": 2.771162748336792,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0004971901653334498,
+          "n_slots_used": 11,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8677085638046265,
+          "total_loss": 0.8135866522789001,
+          "usage_entropy": 2.706094741821289,
+          "median_entropy": 2.175971508026123,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03200005739927292,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8040537238121033,
+          "total_loss": 0.7495476007461548,
+          "usage_entropy": 2.7253060340881348,
+          "median_entropy": 2.101407766342163,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.020715992897748947,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.7801644802093506,
+          "total_loss": 0.7250369191169739,
+          "usage_entropy": 2.7563767433166504,
+          "median_entropy": 1.9595050811767578,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02244565263390541,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7737414240837097,
+          "total_loss": 0.718362033367157,
+          "usage_entropy": 2.7689709663391113,
+          "median_entropy": 1.8694802522659302,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.027655746787786484,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7716715335845947,
+          "total_loss": 0.7162739634513855,
+          "usage_entropy": 2.7698795795440674,
+          "median_entropy": 1.7583601474761963,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03341184929013252,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7700331807136536,
+          "total_loss": 0.714612603187561,
+          "usage_entropy": 2.7710304260253906,
+          "median_entropy": 1.701529622077942,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.037959132343530655,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3674465567641672,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0953935384750366,
+          "total_loss": 1.0399556159973145,
+          "usage_entropy": 2.7718944549560547,
+          "median_entropy": 2.771679639816284,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008601642213761806,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8673798441886902,
+          "total_loss": 0.8137043118476868,
+          "usage_entropy": 2.6837759017944336,
+          "median_entropy": 2.1387650966644287,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.007936859503388405,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8042371273040771,
+          "total_loss": 0.749666154384613,
+          "usage_entropy": 2.7285499572753906,
+          "median_entropy": 2.057516574859619,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.008650573901832104,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.779954731464386,
+          "total_loss": 0.7247896194458008,
+          "usage_entropy": 2.7582552433013916,
+          "median_entropy": 1.9481956958770752,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0017098428215831518,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7735127210617065,
+          "total_loss": 0.7182245850563049,
+          "usage_entropy": 2.7644059658050537,
+          "median_entropy": 1.8460551500320435,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.014628645963966846,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7717878222465515,
+          "total_loss": 0.7163994908332825,
+          "usage_entropy": 2.769415855407715,
+          "median_entropy": 1.7552006244659424,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.025479130446910858,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7699248790740967,
+          "total_loss": 0.7145193815231323,
+          "usage_entropy": 2.7702746391296387,
+          "median_entropy": 1.7073166370391846,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0323726050555706,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151510",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.45457626315977995,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.0973224639892578,
+          "total_loss": 1.04189133644104,
+          "usage_entropy": 2.771554946899414,
+          "median_entropy": 2.77134108543396,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012250459752976894,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8691102266311646,
+          "total_loss": 0.8158825635910034,
+          "usage_entropy": 2.6613831520080566,
+          "median_entropy": 2.174126148223877,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.014250565320253372,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8051102161407471,
+          "total_loss": 0.7506123781204224,
+          "usage_entropy": 2.7248916625976562,
+          "median_entropy": 2.130154609680176,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0027165731880813837,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.779835045337677,
+          "total_loss": 0.7250453233718872,
+          "usage_entropy": 2.739485263824463,
+          "median_entropy": 2.0441019535064697,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.007796772755682468,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7737576365470886,
+          "total_loss": 0.718347430229187,
+          "usage_entropy": 2.770510673522949,
+          "median_entropy": 1.9363378286361694,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.002779480069875717,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.77186518907547,
+          "total_loss": 0.7164242267608643,
+          "usage_entropy": 2.7720470428466797,
+          "median_entropy": 1.8452255725860596,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012783544138073921,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7703717947006226,
+          "total_loss": 0.714938759803772,
+          "usage_entropy": 2.771651268005371,
+          "median_entropy": 1.7781540155410767,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02106506936252117,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28876858949661255
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.2896394733289878,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.257502794265747,
+          "total_loss": 1.2020678520202637,
+          "usage_entropy": 2.771747589111328,
+          "median_entropy": 2.7715461254119873,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0015905778855085373,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9358212351799011,
+          "total_loss": 0.8836031556129456,
+          "usage_entropy": 2.6109046936035156,
+          "median_entropy": 2.121096134185791,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.004005464259535074,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8523741960525513,
+          "total_loss": 0.7987709045410156,
+          "usage_entropy": 2.6801655292510986,
+          "median_entropy": 2.1690120697021484,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.002075966214761138,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.831303060054779,
+          "total_loss": 0.7761771082878113,
+          "usage_entropy": 2.7562971115112305,
+          "median_entropy": 2.008185386657715,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0024236321914941072,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8244489431381226,
+          "total_loss": 0.7691028714179993,
+          "usage_entropy": 2.7673046588897705,
+          "median_entropy": 1.7742853164672852,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011693760752677917,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8219307065010071,
+          "total_loss": 0.7665071487426758,
+          "usage_entropy": 2.77117919921875,
+          "median_entropy": 1.6419767141342163,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018995294347405434,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.81992107629776,
+          "total_loss": 0.7644948363304138,
+          "usage_entropy": 2.7713115215301514,
+          "median_entropy": 1.6023097038269043,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02822067029774189,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.4843639427474595,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2583142518997192,
+          "total_loss": 1.2028825283050537,
+          "usage_entropy": 2.7715835571289062,
+          "median_entropy": 2.7713868618011475,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.00835384614765644,
+          "n_slots_used": 11,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9342330694198608,
+          "total_loss": 0.8826910257339478,
+          "usage_entropy": 2.577100992202759,
+          "median_entropy": 2.1094303131103516,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.004230150021612644,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8521904945373535,
+          "total_loss": 0.798846423625946,
+          "usage_entropy": 2.667203426361084,
+          "median_entropy": 2.1396663188934326,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.011776209808886051,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8316769599914551,
+          "total_loss": 0.7766543030738831,
+          "usage_entropy": 2.7511327266693115,
+          "median_entropy": 2.03120756149292,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.007279539480805397,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8249910473823547,
+          "total_loss": 0.7696025967597961,
+          "usage_entropy": 2.769423484802246,
+          "median_entropy": 1.8275171518325806,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01014675758779049,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8223764896392822,
+          "total_loss": 0.76694655418396,
+          "usage_entropy": 2.771496295928955,
+          "median_entropy": 1.6720142364501953,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02456635795533657,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8204551339149475,
+          "total_loss": 0.7650159001350403,
+          "usage_entropy": 2.771963119506836,
+          "median_entropy": 1.621521234512329,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03279120847582817,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.40919353002541686,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2593605518341064,
+          "total_loss": 1.203926920890808,
+          "usage_entropy": 2.7716827392578125,
+          "median_entropy": 2.7715020179748535,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0003717025392688811,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.934263288974762,
+          "total_loss": 0.8824782967567444,
+          "usage_entropy": 2.589249610900879,
+          "median_entropy": 2.067545175552368,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.011184176430106163,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8514732122421265,
+          "total_loss": 0.7981692552566528,
+          "usage_entropy": 2.6651973724365234,
+          "median_entropy": 2.1529507637023926,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.018477408215403557,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8314486742019653,
+          "total_loss": 0.7765095829963684,
+          "usage_entropy": 2.746955156326294,
+          "median_entropy": 2.131706476211548,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.009211190976202488,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8253125548362732,
+          "total_loss": 0.7699876427650452,
+          "usage_entropy": 2.766244411468506,
+          "median_entropy": 1.9351937770843506,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.002593958517536521,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8230386972427368,
+          "total_loss": 0.7676387429237366,
+          "usage_entropy": 2.76999831199646,
+          "median_entropy": 1.7263166904449463,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013373649679124355,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8210686445236206,
+          "total_loss": 0.7656314969062805,
+          "usage_entropy": 2.7718563079833984,
+          "median_entropy": 1.5992095470428467,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02454768866300583,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.4676289537912246,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.260193943977356,
+          "total_loss": 1.2047630548477173,
+          "usage_entropy": 2.7715468406677246,
+          "median_entropy": 2.771333694458008,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009483210742473602,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9339673519134521,
+          "total_loss": 0.8831822872161865,
+          "usage_entropy": 2.5392541885375977,
+          "median_entropy": 2.1073617935180664,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0436224490404129,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8528665900230408,
+          "total_loss": 0.7993351221084595,
+          "usage_entropy": 2.6765735149383545,
+          "median_entropy": 2.183290481567383,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.05297691002488136,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8316919207572937,
+          "total_loss": 0.7767103910446167,
+          "usage_entropy": 2.749077558517456,
+          "median_entropy": 2.0528335571289062,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.04485709220170975,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8248353600502014,
+          "total_loss": 0.7695156931877136,
+          "usage_entropy": 2.7659835815429688,
+          "median_entropy": 1.7967398166656494,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.018452486023306847,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8221518993377686,
+          "total_loss": 0.7667432427406311,
+          "usage_entropy": 2.7704319953918457,
+          "median_entropy": 1.665874719619751,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.00015363296552095562,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8201875686645508,
+          "total_loss": 0.7647484540939331,
+          "usage_entropy": 2.7719545364379883,
+          "median_entropy": 1.6042149066925049,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012558571994304657,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151670",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.43880206496259233,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2598059177398682,
+          "total_loss": 1.2043859958648682,
+          "usage_entropy": 2.7709951400756836,
+          "median_entropy": 2.7707552909851074,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012024673633277416,
+          "n_slots_used": 10,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.93531733751297,
+          "total_loss": 0.883802592754364,
+          "usage_entropy": 2.5757362842559814,
+          "median_entropy": 2.1218388080596924,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0008101463899947703,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8527987599372864,
+          "total_loss": 0.799507737159729,
+          "usage_entropy": 2.6645500659942627,
+          "median_entropy": 2.178560733795166,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0072731738910079,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.831651508808136,
+          "total_loss": 0.7767115235328674,
+          "usage_entropy": 2.7470006942749023,
+          "median_entropy": 2.1537654399871826,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.00517753791064024,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.825139045715332,
+          "total_loss": 0.7698163390159607,
+          "usage_entropy": 2.766134262084961,
+          "median_entropy": 1.9209911823272705,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0030630272813141346,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8226498961448669,
+          "total_loss": 0.7672066688537598,
+          "usage_entropy": 2.772160291671753,
+          "median_entropy": 1.7393453121185303,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013989218510687351,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8206236958503723,
+          "total_loss": 0.7652009725570679,
+          "usage_entropy": 2.7711374759674072,
+          "median_entropy": 1.657611608505249,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.024578023701906204,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887989580631256
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.4133458930880539,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.192554235458374,
+          "total_loss": 1.1371158361434937,
+          "usage_entropy": 2.7719216346740723,
+          "median_entropy": 2.7717092037200928,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0013262908905744553,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8674719929695129,
+          "total_loss": 0.8140878677368164,
+          "usage_entropy": 2.669207811355591,
+          "median_entropy": 2.1356303691864014,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01600886695086956,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8115087747573853,
+          "total_loss": 0.7565812468528748,
+          "usage_entropy": 2.746375799179077,
+          "median_entropy": 2.193831443786621,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009728793986141682,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8019018173217773,
+          "total_loss": 0.7466010451316833,
+          "usage_entropy": 2.7650394439697266,
+          "median_entropy": 2.1741418838500977,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010396401397883892,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.797488272190094,
+          "total_loss": 0.7420879602432251,
+          "usage_entropy": 2.7700157165527344,
+          "median_entropy": 1.9846922159194946,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01807679794728756,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7946503162384033,
+          "total_loss": 0.7392213344573975,
+          "usage_entropy": 2.7714502811431885,
+          "median_entropy": 1.7515357732772827,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.028031660243868828,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7927131652832031,
+          "total_loss": 0.7372986674308777,
+          "usage_entropy": 2.770725727081299,
+          "median_entropy": 1.678153157234192,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03239239752292633,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.5412691455439259,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.19292414188385,
+          "total_loss": 1.1374919414520264,
+          "usage_entropy": 2.771608829498291,
+          "median_entropy": 2.7713682651519775,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008425279520452023,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8677189350128174,
+          "total_loss": 0.8145644664764404,
+          "usage_entropy": 2.6577224731445312,
+          "median_entropy": 2.2163634300231934,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018983809277415276,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8126752972602844,
+          "total_loss": 0.7576413154602051,
+          "usage_entropy": 2.751699924468994,
+          "median_entropy": 2.2059943675994873,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.016259830445051193,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8027161359786987,
+          "total_loss": 0.7473291158676147,
+          "usage_entropy": 2.769351005554199,
+          "median_entropy": 2.187338352203369,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.015692202374339104,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7978343963623047,
+          "total_loss": 0.7424063682556152,
+          "usage_entropy": 2.771400213241577,
+          "median_entropy": 1.9566757678985596,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02473718486726284,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7946866154670715,
+          "total_loss": 0.7392491698265076,
+          "usage_entropy": 2.771871566772461,
+          "median_entropy": 1.7014514207839966,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03147382661700249,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7926173806190491,
+          "total_loss": 0.7371749877929688,
+          "usage_entropy": 2.77211856842041,
+          "median_entropy": 1.6059536933898926,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03433197736740112,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.5324957003678269,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1909936666488647,
+          "total_loss": 1.1355712413787842,
+          "usage_entropy": 2.7711238861083984,
+          "median_entropy": 2.77089524269104,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.000615795492194593,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8671190142631531,
+          "total_loss": 0.8139661550521851,
+          "usage_entropy": 2.6576428413391113,
+          "median_entropy": 2.25699520111084,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.004586680792272091,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8115910887718201,
+          "total_loss": 0.75663822889328,
+          "usage_entropy": 2.74764347076416,
+          "median_entropy": 2.2450602054595947,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0002494732616469264,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8025345206260681,
+          "total_loss": 0.7472057938575745,
+          "usage_entropy": 2.7664361000061035,
+          "median_entropy": 2.2410166263580322,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0029743751510977745,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7983047962188721,
+          "total_loss": 0.7428823113441467,
+          "usage_entropy": 2.771125316619873,
+          "median_entropy": 2.1497249603271484,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006203929893672466,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7956416606903076,
+          "total_loss": 0.7401978969573975,
+          "usage_entropy": 2.772188901901245,
+          "median_entropy": 1.8974125385284424,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.022332927212119102,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7936405539512634,
+          "total_loss": 0.7382103800773621,
+          "usage_entropy": 2.7715086936950684,
+          "median_entropy": 1.7169663906097412,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02616017870604992,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.7351271279812892,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1924129724502563,
+          "total_loss": 1.1369787454605103,
+          "usage_entropy": 2.7717132568359375,
+          "median_entropy": 2.7715015411376953,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009024668484926224,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8654764294624329,
+          "total_loss": 0.8128300905227661,
+          "usage_entropy": 2.632317304611206,
+          "median_entropy": 2.1708626747131348,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01256733387708664,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8114156126976013,
+          "total_loss": 0.7566302418708801,
+          "usage_entropy": 2.7392680644989014,
+          "median_entropy": 2.2104039192199707,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01407137792557478,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8022632598876953,
+          "total_loss": 0.7469208240509033,
+          "usage_entropy": 2.7671217918395996,
+          "median_entropy": 2.1997897624969482,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012505222111940384,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7977367639541626,
+          "total_loss": 0.7423139214515686,
+          "usage_entropy": 2.7711434364318848,
+          "median_entropy": 1.9992625713348389,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02050102688372135,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7945727705955505,
+          "total_loss": 0.7391509413719177,
+          "usage_entropy": 2.771091938018799,
+          "median_entropy": 1.6904101371765137,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03145619481801987,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7925503253936768,
+          "total_loss": 0.7371103763580322,
+          "usage_entropy": 2.771998882293701,
+          "median_entropy": 1.637789011001587,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03586728870868683,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151671",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.6731744179191888,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1905059814453125,
+          "total_loss": 1.135075569152832,
+          "usage_entropy": 2.7715225219726562,
+          "median_entropy": 2.7713122367858887,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011871489696204662,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8685277104377747,
+          "total_loss": 0.8153441548347473,
+          "usage_entropy": 2.659177303314209,
+          "median_entropy": 2.236137866973877,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.01753678359091282,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8125203251838684,
+          "total_loss": 0.7575855255126953,
+          "usage_entropy": 2.7467405796051025,
+          "median_entropy": 2.2292163372039795,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.011539634317159653,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8026710152626038,
+          "total_loss": 0.7472798824310303,
+          "usage_entropy": 2.7695555686950684,
+          "median_entropy": 2.226619243621826,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.011905102990567684,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.7979452610015869,
+          "total_loss": 0.7425239682197571,
+          "usage_entropy": 2.7710647583007812,
+          "median_entropy": 2.111917495727539,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.00035592319909483194,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.7949729561805725,
+          "total_loss": 0.7395310997962952,
+          "usage_entropy": 2.7720932960510254,
+          "median_entropy": 1.7982361316680908,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.019754759967327118,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.7929749488830566,
+          "total_loss": 0.737534761428833,
+          "usage_entropy": 2.7720084190368652,
+          "median_entropy": 1.677612066268921,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02596232295036316,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887805104255676
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.6032549861565714,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.202186942100525,
+          "total_loss": 1.1467492580413818,
+          "usage_entropy": 2.7718863487243652,
+          "median_entropy": 2.7716879844665527,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0018697581253945827,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8786865472793579,
+          "total_loss": 0.8249833583831787,
+          "usage_entropy": 2.6851606369018555,
+          "median_entropy": 2.240398406982422,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01651245914399624,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8269482851028442,
+          "total_loss": 0.7718576788902283,
+          "usage_entropy": 2.7545313835144043,
+          "median_entropy": 2.2579855918884277,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.002375547308474779,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8179792761802673,
+          "total_loss": 0.7626025676727295,
+          "usage_entropy": 2.768836498260498,
+          "median_entropy": 2.232496976852417,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 9.271304588764906e-05,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8137602210044861,
+          "total_loss": 0.7584088444709778,
+          "usage_entropy": 2.767568826675415,
+          "median_entropy": 2.082259178161621,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009308123961091042,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8108452558517456,
+          "total_loss": 0.7554060220718384,
+          "usage_entropy": 2.7719602584838867,
+          "median_entropy": 1.806531310081482,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.021741410717368126,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8087166547775269,
+          "total_loss": 0.7532699704170227,
+          "usage_entropy": 2.7723350524902344,
+          "median_entropy": 1.6929584741592407,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02548244222998619,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.5230890362535656,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2040883302688599,
+          "total_loss": 1.1486603021621704,
+          "usage_entropy": 2.7714011669158936,
+          "median_entropy": 2.771182060241699,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008404724299907684,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8797703981399536,
+          "total_loss": 0.82630854845047,
+          "usage_entropy": 2.673093557357788,
+          "median_entropy": 2.284963607788086,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.006423473823815584,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8284505009651184,
+          "total_loss": 0.7732686400413513,
+          "usage_entropy": 2.7590935230255127,
+          "median_entropy": 2.2775707244873047,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0005267779342830181,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.818911612033844,
+          "total_loss": 0.7635378241539001,
+          "usage_entropy": 2.7686898708343506,
+          "median_entropy": 2.246288299560547,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0014135520905256271,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8142863512039185,
+          "total_loss": 0.7588583827018738,
+          "usage_entropy": 2.771397113800049,
+          "median_entropy": 2.0914981365203857,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006352639757096767,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.811121940612793,
+          "total_loss": 0.7556965351104736,
+          "usage_entropy": 2.771270275115967,
+          "median_entropy": 1.7902727127075195,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.016590651124715805,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8090437650680542,
+          "total_loss": 0.7536235451698303,
+          "usage_entropy": 2.7710120677948,
+          "median_entropy": 1.6636734008789062,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02325424924492836,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.48715014458247896,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2026649713516235,
+          "total_loss": 1.1472312211990356,
+          "usage_entropy": 2.7716896533966064,
+          "median_entropy": 2.771488666534424,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.000486119621200487,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8782668709754944,
+          "total_loss": 0.824431300163269,
+          "usage_entropy": 2.6917781829833984,
+          "median_entropy": 2.2930402755737305,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.004303201101720333,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8272219300270081,
+          "total_loss": 0.7722892165184021,
+          "usage_entropy": 2.7466344833374023,
+          "median_entropy": 2.272366523742676,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011017529293894768,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8185982704162598,
+          "total_loss": 0.7632003426551819,
+          "usage_entropy": 2.7698974609375,
+          "median_entropy": 2.2607901096343994,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.019630281254649162,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8141061067581177,
+          "total_loss": 0.7586798667907715,
+          "usage_entropy": 2.7713119983673096,
+          "median_entropy": 2.052027702331543,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.031179755926132202,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8108406662940979,
+          "total_loss": 0.7553966641426086,
+          "usage_entropy": 2.7721996307373047,
+          "median_entropy": 1.73250412940979,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.042837757617235184,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8087487816810608,
+          "total_loss": 0.7533366680145264,
+          "usage_entropy": 2.7706055641174316,
+          "median_entropy": 1.6710615158081055,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.04613017663359642,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.6149827421866363,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2028720378875732,
+          "total_loss": 1.1474312543869019,
+          "usage_entropy": 2.772041082382202,
+          "median_entropy": 2.77181339263916,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009189654141664505,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8782490491867065,
+          "total_loss": 0.8249603509902954,
+          "usage_entropy": 2.664435625076294,
+          "median_entropy": 2.2426466941833496,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0023570142220705748,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8268926739692688,
+          "total_loss": 0.7718803286552429,
+          "usage_entropy": 2.7506184577941895,
+          "median_entropy": 2.2469186782836914,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0054511986672878265,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8182528018951416,
+          "total_loss": 0.7628732919692993,
+          "usage_entropy": 2.7689766883850098,
+          "median_entropy": 2.2159781455993652,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0073240045458078384,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8137128353118896,
+          "total_loss": 0.7582813501358032,
+          "usage_entropy": 2.7715728282928467,
+          "median_entropy": 1.9801912307739258,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018490131944417953,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8104956746101379,
+          "total_loss": 0.7550570368766785,
+          "usage_entropy": 2.7719333171844482,
+          "median_entropy": 1.7132365703582764,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03103957697749138,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8084537982940674,
+          "total_loss": 0.7530073523521423,
+          "usage_entropy": 2.7723217010498047,
+          "median_entropy": 1.666311264038086,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03611002862453461,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151672",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.6440400498640969,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2030411958694458,
+          "total_loss": 1.1476166248321533,
+          "usage_entropy": 2.7712273597717285,
+          "median_entropy": 2.770998239517212,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011976671405136585,
+          "n_slots_used": 11,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.879500687122345,
+          "total_loss": 0.8259837627410889,
+          "usage_entropy": 2.67584490776062,
+          "median_entropy": 2.319368839263916,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006447001826018095,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8276312351226807,
+          "total_loss": 0.7725943326950073,
+          "usage_entropy": 2.751845121383667,
+          "median_entropy": 2.304093837738037,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006845124997198582,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8188011050224304,
+          "total_loss": 0.7633901834487915,
+          "usage_entropy": 2.7705464363098145,
+          "median_entropy": 2.2856993675231934,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0048288507387042046,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8144298791885376,
+          "total_loss": 0.7590175867080688,
+          "usage_entropy": 2.770613670349121,
+          "median_entropy": 2.164015769958496,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010478660464286804,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8115648627281189,
+          "total_loss": 0.7561181783676147,
+          "usage_entropy": 2.772334337234497,
+          "median_entropy": 1.852952241897583,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.023589013144373894,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8093892931938171,
+          "total_loss": 0.7539452314376831,
+          "usage_entropy": 2.7722034454345703,
+          "median_entropy": 1.7023766040802002,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.03266095370054245,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.2887830138206482
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.27428869406509027,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1606189012527466,
+          "total_loss": 1.105178713798523,
+          "usage_entropy": 2.7720067501068115,
+          "median_entropy": 2.7718076705932617,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.002414099406450987,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8781471848487854,
+          "total_loss": 0.8238418698310852,
+          "usage_entropy": 2.7152671813964844,
+          "median_entropy": 2.1606905460357666,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.011572393588721752,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8298025131225586,
+          "total_loss": 0.7747960686683655,
+          "usage_entropy": 2.750321388244629,
+          "median_entropy": 1.9074323177337646,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0032805006485432386,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8202818632125854,
+          "total_loss": 0.7648435235023499,
+          "usage_entropy": 2.7719168663024902,
+          "median_entropy": 1.7644158601760864,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.000541305576916784,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8174898028373718,
+          "total_loss": 0.7620709538459778,
+          "usage_entropy": 2.770941734313965,
+          "median_entropy": 1.6264927387237549,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.003679319517686963,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8153895139694214,
+          "total_loss": 0.7599437832832336,
+          "usage_entropy": 2.772287368774414,
+          "median_entropy": 1.5507088899612427,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011550438590347767,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8138866424560547,
+          "total_loss": 0.7584509253501892,
+          "usage_entropy": 2.771784782409668,
+          "median_entropy": 1.5582497119903564,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01651460863649845,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.38653741109909073,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1616382598876953,
+          "total_loss": 1.1062002182006836,
+          "usage_entropy": 2.771904468536377,
+          "median_entropy": 2.7716825008392334,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009129282087087631,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8775022625923157,
+          "total_loss": 0.8233621716499329,
+          "usage_entropy": 2.7070045471191406,
+          "median_entropy": 2.1859841346740723,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.002592627424746752,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8347219824790955,
+          "total_loss": 0.7794042229652405,
+          "usage_entropy": 2.7658886909484863,
+          "median_entropy": 1.897324800491333,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011411755345761776,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8206295371055603,
+          "total_loss": 0.7652361989021301,
+          "usage_entropy": 2.7696661949157715,
+          "median_entropy": 1.7773594856262207,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009222066961228848,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8177302479743958,
+          "total_loss": 0.7622968554496765,
+          "usage_entropy": 2.771669387817383,
+          "median_entropy": 1.700198769569397,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.011013142764568329,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.81571364402771,
+          "total_loss": 0.7602788209915161,
+          "usage_entropy": 2.771739959716797,
+          "median_entropy": 1.6043763160705566,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.014530682936310768,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8141195178031921,
+          "total_loss": 0.7586806416511536,
+          "usage_entropy": 2.771944522857666,
+          "median_entropy": 1.5814290046691895,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.016657091677188873,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3230778786262186,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1608591079711914,
+          "total_loss": 1.1054253578186035,
+          "usage_entropy": 2.771686553955078,
+          "median_entropy": 2.7714591026306152,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0005096038221381605,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8786713480949402,
+          "total_loss": 0.8245100975036621,
+          "usage_entropy": 2.708061695098877,
+          "median_entropy": 2.265011787414551,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010637149214744568,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8360431790351868,
+          "total_loss": 0.7809170484542847,
+          "usage_entropy": 2.75630521774292,
+          "median_entropy": 2.054720401763916,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01657063327729702,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8211176991462708,
+          "total_loss": 0.7657058238983154,
+          "usage_entropy": 2.77059268951416,
+          "median_entropy": 1.9247077703475952,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.017241066321730614,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8181483745574951,
+          "total_loss": 0.7627049684524536,
+          "usage_entropy": 2.7721714973449707,
+          "median_entropy": 1.7862904071807861,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.019774088636040688,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8161550760269165,
+          "total_loss": 0.7607102394104004,
+          "usage_entropy": 2.772242546081543,
+          "median_entropy": 1.670116901397705,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02469424530863762,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.814638078212738,
+          "total_loss": 0.7592087984085083,
+          "usage_entropy": 2.77146315574646,
+          "median_entropy": 1.6140005588531494,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.029918242245912552,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.38282803966936224,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1610661745071411,
+          "total_loss": 1.1056309938430786,
+          "usage_entropy": 2.771761417388916,
+          "median_entropy": 2.771552085876465,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008817991241812706,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8781881928443909,
+          "total_loss": 0.8241548538208008,
+          "usage_entropy": 2.7016677856445312,
+          "median_entropy": 2.208390235900879,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.015890782698988914,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8335338234901428,
+          "total_loss": 0.7783002257347107,
+          "usage_entropy": 2.7616803646087646,
+          "median_entropy": 1.9652578830718994,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.002681017154827714,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8206520080566406,
+          "total_loss": 0.7652143836021423,
+          "usage_entropy": 2.771881580352783,
+          "median_entropy": 1.8279327154159546,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.004847232718020678,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8177676200866699,
+          "total_loss": 0.7623293995857239,
+          "usage_entropy": 2.7719106674194336,
+          "median_entropy": 1.7249023914337158,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.002355480333790183,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8159189224243164,
+          "total_loss": 0.7605187296867371,
+          "usage_entropy": 2.7700085639953613,
+          "median_entropy": 1.6201807260513306,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006810371298342943,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8142544627189636,
+          "total_loss": 0.7588192820549011,
+          "usage_entropy": 2.771759033203125,
+          "median_entropy": 1.5845977067947388,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013978068716824055,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151675",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.36315134192090737,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.1624391078948975,
+          "total_loss": 1.1070178747177124,
+          "usage_entropy": 2.771059274673462,
+          "median_entropy": 2.7707996368408203,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012353742495179176,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.8785070776939392,
+          "total_loss": 0.824442446231842,
+          "usage_entropy": 2.7032322883605957,
+          "median_entropy": 2.2416625022888184,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.006898355670273304,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8380115032196045,
+          "total_loss": 0.7827050685882568,
+          "usage_entropy": 2.765321731567383,
+          "median_entropy": 2.101531982421875,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018942715600132942,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8215749263763428,
+          "total_loss": 0.7661716938018799,
+          "usage_entropy": 2.7701611518859863,
+          "median_entropy": 1.89229416847229,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02780572697520256,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8183984756469727,
+          "total_loss": 0.7629567384719849,
+          "usage_entropy": 2.7720882892608643,
+          "median_entropy": 1.7866923809051514,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.025005869567394257,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8163914680480957,
+          "total_loss": 0.7609935402870178,
+          "usage_entropy": 2.769896984100342,
+          "median_entropy": 1.6837327480316162,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02508867345750332,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.814752995967865,
+          "total_loss": 0.7593073844909668,
+          "usage_entropy": 2.772282123565674,
+          "median_entropy": 1.635595679283142,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02746688202023506,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28879570960998535
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 0,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3375766210620714,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.251133680343628,
+          "total_loss": 1.1957001686096191,
+          "usage_entropy": 2.7716732025146484,
+          "median_entropy": 2.771477699279785,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.0018804313149303198,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9019071459770203,
+          "total_loss": 0.8497411608695984,
+          "usage_entropy": 2.608299732208252,
+          "median_entropy": 2.3949716091156006,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.049390651285648346,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8423614501953125,
+          "total_loss": 0.7875645756721497,
+          "usage_entropy": 2.7398438453674316,
+          "median_entropy": 2.1522560119628906,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.01684289053082466,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8254647254943848,
+          "total_loss": 0.7701182961463928,
+          "usage_entropy": 2.7673227787017822,
+          "median_entropy": 1.9466543197631836,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.025930330157279968,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8217992186546326,
+          "total_loss": 0.7663660645484924,
+          "usage_entropy": 2.771658420562744,
+          "median_entropy": 1.7881584167480469,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.028162973001599312,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8196024298667908,
+          "total_loss": 0.7641586065292358,
+          "usage_entropy": 2.772190570831299,
+          "median_entropy": 1.6551084518432617,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.029773443937301636,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.817892849445343,
+          "total_loss": 0.7624544501304626,
+          "usage_entropy": 2.7719204425811768,
+          "median_entropy": 1.5956151485443115,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.030248843133449554,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 1,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.3847715815635936,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2500197887420654,
+          "total_loss": 1.1945815086364746,
+          "usage_entropy": 2.771912097930908,
+          "median_entropy": 2.771712064743042,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.008676012977957726,
+          "n_slots_used": 15,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9037865400314331,
+          "total_loss": 0.850193202495575,
+          "usage_entropy": 2.679666042327881,
+          "median_entropy": 2.2628769874572754,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013031248934566975,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8423909544944763,
+          "total_loss": 0.7874137759208679,
+          "usage_entropy": 2.748859405517578,
+          "median_entropy": 2.044828414916992,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018423311412334442,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8254048228263855,
+          "total_loss": 0.7700332999229431,
+          "usage_entropy": 2.7685768604278564,
+          "median_entropy": 1.8379849195480347,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.021466121077537537,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.82171231508255,
+          "total_loss": 0.766272783279419,
+          "usage_entropy": 2.771976947784424,
+          "median_entropy": 1.7238044738769531,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.02234213799238205,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8194748759269714,
+          "total_loss": 0.7640305161476135,
+          "usage_entropy": 2.772216796875,
+          "median_entropy": 1.6142041683197021,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.025441214442253113,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.817660391330719,
+          "total_loss": 0.7622162103652954,
+          "usage_entropy": 2.7722079753875732,
+          "median_entropy": 1.5583853721618652,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.027930976822972298,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 2,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.38691867986209644,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2504613399505615,
+          "total_loss": 1.1950265169143677,
+          "usage_entropy": 2.7717394828796387,
+          "median_entropy": 2.7714905738830566,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.0005355119938030839,
+          "n_slots_used": 13,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.901338517665863,
+          "total_loss": 0.8482122421264648,
+          "usage_entropy": 2.6563124656677246,
+          "median_entropy": 2.31339168548584,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.01720331609249115,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.842401921749115,
+          "total_loss": 0.7876278162002563,
+          "usage_entropy": 2.7387051582336426,
+          "median_entropy": 2.132573127746582,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009129985235631466,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8256919384002686,
+          "total_loss": 0.7703474164009094,
+          "usage_entropy": 2.7672271728515625,
+          "median_entropy": 1.9372787475585938,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.013700438663363457,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8221269845962524,
+          "total_loss": 0.7666808366775513,
+          "usage_entropy": 2.772307872772217,
+          "median_entropy": 1.807750940322876,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.015106551349163055,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8199992179870605,
+          "total_loss": 0.7645508050918579,
+          "usage_entropy": 2.772420883178711,
+          "median_entropy": 1.6733615398406982,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018380960449576378,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8184100985527039,
+          "total_loss": 0.7629855871200562,
+          "usage_entropy": 2.7712244987487793,
+          "median_entropy": 1.6010675430297852,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.023253608494997025,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 3,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.31574562010413865,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.2492161989212036,
+          "total_loss": 1.193779706954956,
+          "usage_entropy": 2.7718257904052734,
+          "median_entropy": 2.771608829498291,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.009172376245260239,
+          "n_slots_used": 14,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.9027010798454285,
+          "total_loss": 0.849521815776825,
+          "usage_entropy": 2.658964157104492,
+          "median_entropy": 2.2524218559265137,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -5.9620542742777616e-05,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8412951827049255,
+          "total_loss": 0.7863190174102783,
+          "usage_entropy": 2.748807668685913,
+          "median_entropy": 2.0543885231018066,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.00883897952735424,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.824779212474823,
+          "total_loss": 0.769392728805542,
+          "usage_entropy": 2.7693228721618652,
+          "median_entropy": 1.8560729026794434,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.004415178671479225,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8213263750076294,
+          "total_loss": 0.7658839821815491,
+          "usage_entropy": 2.7721195220947266,
+          "median_entropy": 1.7013397216796875,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.005691373720765114,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8191449046134949,
+          "total_loss": 0.7637055516242981,
+          "usage_entropy": 2.7719669342041016,
+          "median_entropy": 1.5907233953475952,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012360414490103722,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.817448079586029,
+          "total_loss": 0.7620030641555786,
+          "usage_entropy": 2.772252082824707,
+          "median_entropy": 1.5471973419189453,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.018600258976221085,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        }
+      ],
+      "error": null
+    },
+    {
+      "dataset": "dlpfc",
+      "unit_id": "151676",
+      "seed": 4,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      },
+      "ari_per_seed": 0.35094597855858345,
+      "units_used": {},
+      "training_history": [
+        {
+          "epoch": 0,
+          "recon_loss": 1.251185655593872,
+          "total_loss": 1.195770263671875,
+          "usage_entropy": 2.770771026611328,
+          "median_entropy": 2.7705440521240234,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.012323400005698204,
+          "n_slots_used": 12,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 100,
+          "recon_loss": 0.902287483215332,
+          "total_loss": 0.8496823310852051,
+          "usage_entropy": 2.6302576065063477,
+          "median_entropy": 2.324164628982544,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": 0.01605876348912716,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 200,
+          "recon_loss": 0.8422466516494751,
+          "total_loss": 0.78743976354599,
+          "usage_entropy": 2.7403435707092285,
+          "median_entropy": 2.132643938064575,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.001525712083093822,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 300,
+          "recon_loss": 0.8253983855247498,
+          "total_loss": 0.770106315612793,
+          "usage_entropy": 2.764604091644287,
+          "median_entropy": 1.8890687227249146,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010010850615799427,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 400,
+          "recon_loss": 0.8218479752540588,
+          "total_loss": 0.7664149403572083,
+          "usage_entropy": 2.7716517448425293,
+          "median_entropy": 1.7899572849273682,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.010730600915849209,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 500,
+          "recon_loss": 0.8197875022888184,
+          "total_loss": 0.7643521428108215,
+          "usage_entropy": 2.771768569946289,
+          "median_entropy": 1.6898201704025269,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.015608800575137138,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        },
+        {
+          "epoch": 599,
+          "recon_loss": 0.8181885480880737,
+          "total_loss": 0.7627452611923218,
+          "usage_entropy": 2.7721638679504395,
+          "median_entropy": 1.6188766956329346,
+          "max_entropy": 2.772588722239781,
+          "key_cosine_similarity": -0.022891579195857048,
+          "n_slots_used": 16,
+          "certainty_mean": 0.5,
+          "certainty_std": 0.28880029916763306
+        }
+      ],
+      "error": null
+    }
+  ],
+  "per_unit": [
+    {
+      "unit_id": "151508",
+      "n_spots": 4384,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.2897128786205942,
+        0.29353774199893207,
+        0.31544790123942174,
+        0.3149679238455754,
+        0.3225204439951559
+      ],
+      "mean": 0.3072373779399359,
+      "std": 0.013080781644905394,
+      "consensus_ari": 0.27639388183155156,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151509",
+      "n_spots": 4789,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.3311122175675819,
+        0.3733846028879148,
+        0.4697019680698347,
+        0.347530010710545,
+        0.3261006414046545
+      ],
+      "mean": 0.3695658881281062,
+      "std": 0.05271680839046057,
+      "consensus_ari": 0.36724386237305484,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151510",
+      "n_spots": 4634,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.28791371915254604,
+        0.35969538689889635,
+        0.5131254252774219,
+        0.3674465567641672,
+        0.45457626315977995
+      ],
+      "mean": 0.39655147025056225,
+      "std": 0.07869433450442528,
+      "consensus_ari": 0.38692850191055567,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151670",
+      "n_spots": 3498,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.2896394733289878,
+        0.4843639427474595,
+        0.40919353002541686,
+        0.4676289537912246,
+        0.43880206496259233
+      ],
+      "mean": 0.4179255929711362,
+      "std": 0.06907080844575463,
+      "consensus_ari": 0.4656892263709889,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151671",
+      "n_spots": 4110,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.4133458930880539,
+        0.5412691455439259,
+        0.5324957003678269,
+        0.7351271279812892,
+        0.6731744179191888
+      ],
+      "mean": 0.5790824569800568,
+      "std": 0.11337726181681664,
+      "consensus_ari": 0.6921273053523912,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151672",
+      "n_spots": 4015,
+      "n_classes": 5,
+      "per_seed_aris": [
+        0.6032549861565714,
+        0.5230890362535656,
+        0.48715014458247896,
+        0.6149827421866363,
+        0.6440400498640969
+      ],
+      "mean": 0.5745033918086698,
+      "std": 0.059286768433087236,
+      "consensus_ari": 0.6239897124422125,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151675",
+      "n_spots": 3592,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.27428869406509027,
+        0.38653741109909073,
+        0.3230778786262186,
+        0.38282803966936224,
+        0.36315134192090737
+      ],
+      "mean": 0.3459766730761339,
+      "std": 0.042336006095592855,
+      "consensus_ari": 0.3365994674734931,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    },
+    {
+      "unit_id": "151676",
+      "n_spots": 3460,
+      "n_classes": 7,
+      "per_seed_aris": [
+        0.3375766210620714,
+        0.3847715815635936,
+        0.38691867986209644,
+        0.31574562010413865,
+        0.35094597855858345
+      ],
+      "mean": 0.3551916962300967,
+      "std": 0.027444055896256522,
+      "consensus_ari": 0.3589188343795205,
+      "hp_config": {
+        "memory_slots": 16,
+        "memory_dim": 128,
+        "n_hops": 4,
+        "lambda_usage": 0.02,
+        "expression_weighted": true
+      }
+    }
+  ],
+  "summary": {
+    "n_units": 8,
+    "per_seed_mean": 0.4182543184230872,
+    "per_seed_std": 0.09659636472090967,
+    "consensus_mean": 0.438486349016721,
+    "consensus_std": 0.13702409758191733
+  }
+}

@@ -18,6 +18,7 @@ rerun the builder script to refresh after new runs complete._
 | msap | — | — |  |
 | baap | — | — |  |
 | zism | — | — |  |
+| heterogeneity_gated | 0.4385 ± 0.1370 | 0.5257 ± 0.1981 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | stagate | — | — |  |
 
 ## Per-seed mean ARI (secondary metric, per-unit mean ± std)
@@ -34,6 +35,7 @@ rerun the builder script to refresh after new runs complete._
 | msap | — | — |
 | baap | — | — |
 | zism | — | — |
+| heterogeneity_gated | 0.4183 ± 0.0966 | 0.4361 ± 0.2363 |
 | stagate | — | — |
 
 ## Per-unit detail (consensus ARI, each slice/block)
@@ -144,6 +146,30 @@ rerun the builder script to refresh after new runs complete._
 
 ### zism
 
+### heterogeneity_gated
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.2764 | 0.3072 ± 0.0131 |
+| 151509 | 4789 | 7 | 0.3672 | 0.3696 ± 0.0527 |
+| 151510 | 4634 | 7 | 0.3869 | 0.3966 ± 0.0787 |
+| 151670 | 3498 | 5 | 0.4657 | 0.4179 ± 0.0691 |
+| 151671 | 4110 | 5 | 0.6921 | 0.5791 ± 0.1134 |
+| 151672 | 4015 | 5 | 0.6240 | 0.5745 ± 0.0593 |
+| 151675 | 3592 | 7 | 0.3366 | 0.3460 ± 0.0423 |
+| 151676 | 3460 | 7 | 0.3589 | 0.3552 ± 0.0274 |
+
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.5186 | 0.3575 ± 0.0418 |
+| blocks_3 | 550 | 20 | 0.8515 | 0.8355 ± 0.0343 |
+| blocks_4 | 575 | 20 | 0.3746 | 0.3312 ± 0.0476 |
+| blocks_5 | 626 | 20 | 0.3582 | 0.2202 ± 0.0652 |
+
 ### stagate
 
 ## Raw JSON sources
@@ -152,6 +178,7 @@ All rows above come from these files (re-run individual architecture harnesses t
 
 - `agap_dlpfc_results.json` + `agap_breast_cancer_results.json`
 - `baseline_dlpfc_results.json` + `baseline_breast_cancer_results.json`
+- `heterogeneity_gated_dlpfc_results.json` + `heterogeneity_gated_breast_cancer_results.json`
 - `ldcm_dlpfc_results.json` + `ldcm_breast_cancer_results.json`
 - `ppr_dlpfc_results.json` + `ppr_breast_cancer_results.json`
 - `stagate_dlpfc_results.json` + `stagate_breast_cancer_results.json`
