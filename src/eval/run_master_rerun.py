@@ -47,6 +47,7 @@ from src.models.train_gmsm_model import train_gmsm_model
 from src.models.train_heterogeneity_gated_model import train_heterogeneity_gated_model
 from src.models.train_hma_model import train_hma_model
 from src.models.train_ldcm_model import train_ldcm_model
+from src.models.train_loss_free_gated_model import train_loss_free_gated_model
 from src.models.train_msap_model import train_msap_model
 from src.models.train_ppr_model import train_ppr_model
 from src.models.train_simvq_model import train_simvq_model
@@ -180,6 +181,21 @@ ARCH_SPECS = [
         # this is a correctly-calibrated null test, not an expected win).
         "name": "simvq",
         "train_fn": train_simvq_model,
+        "dlpfc": True,
+        "breast_cancer": True,
+        "hp_grid": {},
+        "default_hp": dict(SHARED_BASELINE_HP),
+    },
+    {
+        # Stage 3: adaptive per-spot depth gate, balanced via loss-free bias
+        # updates (DeepSeek arXiv 2408.15664) instead of an auxiliary loss --
+        # only reached because Stage 1's fixed monotone map failed its DLPFC
+        # threshold. See loss_free_gated_layer.py for why this differs from
+        # Phase D's already-rejected adaptive_hops (that one's balancing
+        # signal, when present at all, went through backprop; this one never
+        # does).
+        "name": "loss_free_gated",
+        "train_fn": train_loss_free_gated_model,
         "dlpfc": True,
         "breast_cancer": True,
         "hp_grid": {},
