@@ -29,6 +29,7 @@ figures so partial results are always visible, not waiting on the slowest run.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -43,6 +44,7 @@ from src.eval.standard_protocol import run_standard_protocol
 from src.models.train_agap_model import train_agap_model
 from src.models.train_baap_model import train_baap_model
 from src.models.train_gmsm_model import train_gmsm_model
+from src.models.train_heterogeneity_gated_model import train_heterogeneity_gated_model
 from src.models.train_hma_model import train_hma_model
 from src.models.train_ldcm_model import train_ldcm_model
 from src.models.train_msap_model import train_msap_model
@@ -153,6 +155,23 @@ ARCH_SPECS = [
         "default_hp": dict(SHARED_BASELINE_HP),
     },
     {
+        # Stage 1 of the domain-scale-vs-propagation-depth follow-up plan
+        # (see PROGRESS.md, session dated 2026-08-27/28): gate propagation
+        # depth by a FIXED, externally-precomputed heterogeneity statistic
+        # (ClustSIGNAL-style) instead of any learned gate -- every learned
+        # gate tried so far (adaptive_hops, entropy_gated_propagation)
+        # collapsed toward the easiest-to-reconstruct behavior. No hp_grid:
+        # deliberately uses the same n_hops=4/reference default as baseline,
+        # since the whole point is a drop-in replacement for the propagation
+        # step, not a new hyperparameter to tune.
+        "name": "heterogeneity_gated",
+        "train_fn": train_heterogeneity_gated_model,
+        "dlpfc": True,
+        "breast_cancer": True,
+        "hp_grid": {},
+        "default_hp": dict(SHARED_BASELINE_HP),
+    },
+    {
         "name": "zism",
         "train_fn": train_zism_model,
         "dlpfc": False,
@@ -223,8 +242,21 @@ def main():
         for ds in datasets:
             out = _run_single(spec, ds, device)
             if out is not None:
+                # Read back the file we just supposedly wrote and verify it's
+                # real before declaring success -- this project has lost
+                # results before (LDCM, ZISM's breast-cancer run) to trusting
+                # an in-memory "it finished" without checking the artifact on
+                # disk actually exists and is well-formed.
+                if not out.exists():
+                    raise RuntimeError(f"{spec['name']}/{ds} reported done but {out} does not exist")
+                verify_payload = json.loads(out.read_text(encoding="utf-8"))
+                if not verify_payload or "summary" not in verify_payload:
+                    raise RuntimeError(
+                        f"{spec['name']}/{ds} wrote {out} but it is empty or missing 'summary': "
+                        f"keys={list(verify_payload.keys())}"
+                    )
                 any_done = True
-                print(f"DONE: {spec['name']}/{ds} -> {out.name}")
+                print(f"DONE: {spec['name']}/{ds} -> {out.name} (verified on disk, summary={verify_payload['summary']})")
                 if not args.skip_table:
                     try:
                         build_master_table()
