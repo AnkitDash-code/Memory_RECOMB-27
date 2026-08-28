@@ -19,6 +19,7 @@ rerun the builder script to refresh after new runs complete._
 | baap | — | — |  |
 | zism | — | — |  |
 | heterogeneity_gated | 0.4385 ± 0.1370 | 0.5257 ± 0.1981 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
+| simvq | 0.5098 ± 0.1592 | 0.4548 ± 0.2775 | HP: expression_weighted=True, lambda_usage=0.02, memory_dim=128, memory_slots=16, n_hops=4 |
 | stagate | — | — |  |
 
 ## Per-seed mean ARI (secondary metric, per-unit mean ± std)
@@ -36,6 +37,7 @@ rerun the builder script to refresh after new runs complete._
 | baap | — | — |
 | zism | — | — |
 | heterogeneity_gated | 0.4183 ± 0.0966 | 0.4361 ± 0.2363 |
+| simvq | 0.4908 ± 0.1399 | 0.4198 ± 0.2677 |
 | stagate | — | — |
 
 ## Per-unit detail (consensus ARI, each slice/block)
@@ -170,6 +172,30 @@ rerun the builder script to refresh after new runs complete._
 | blocks_4 | 575 | 20 | 0.3746 | 0.3312 ± 0.0476 |
 | blocks_5 | 626 | 20 | 0.3582 | 0.2202 ± 0.0652 |
 
+### simvq
+
+**DLPFC report slices:**
+
+| Slice | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| 151508 | 4384 | 7 | 0.3097 | 0.3798 ± 0.0828 |
+| 151509 | 4789 | 7 | 0.3876 | 0.3980 ± 0.0349 |
+| 151510 | 4634 | 7 | 0.4786 | 0.3686 ± 0.0327 |
+| 151670 | 3498 | 5 | 0.5069 | 0.5281 ± 0.0425 |
+| 151671 | 4110 | 5 | 0.7822 | 0.7063 ± 0.0744 |
+| 151672 | 4015 | 5 | 0.7543 | 0.7326 ± 0.0615 |
+| 151675 | 3592 | 7 | 0.4323 | 0.4160 ± 0.0340 |
+| 151676 | 3460 | 7 | 0.4267 | 0.3972 ± 0.0250 |
+
+**Breast Cancer report blocks:**
+
+| Block(s) | n_spots | n_classes | Consensus ARI | Per-seed mean ± std |
+|---|---:|---:|---:|---|
+| blocks_2 | 721 | 20 | 0.4892 | 0.3919 ± 0.0718 |
+| blocks_3 | 550 | 20 | 0.8770 | 0.8420 ± 0.0460 |
+| blocks_4 | 575 | 20 | 0.3367 | 0.3450 ± 0.0445 |
+| blocks_5 | 626 | 20 | 0.1161 | 0.1004 ± 0.0170 |
+
 ### stagate
 
 ## Raw JSON sources
@@ -181,4 +207,5 @@ All rows above come from these files (re-run individual architecture harnesses t
 - `heterogeneity_gated_dlpfc_results.json` + `heterogeneity_gated_breast_cancer_results.json`
 - `ldcm_dlpfc_results.json` + `ldcm_breast_cancer_results.json`
 - `ppr_dlpfc_results.json` + `ppr_breast_cancer_results.json`
+- `simvq_dlpfc_results.json` + `simvq_breast_cancer_results.json`
 - `stagate_dlpfc_results.json` + `stagate_breast_cancer_results.json`
